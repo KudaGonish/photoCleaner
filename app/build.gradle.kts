@@ -49,7 +49,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
     implementation(project(":photo-finder"))
+    implementation(project(":start-feature"))
     implementation(libs.coil.compose)
 
     testImplementation(libs.junit)

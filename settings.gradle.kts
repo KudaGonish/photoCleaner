@@ -21,5 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "PhotoCleaner"
 include(":app")
-include(":main")
+include(":start-feature")
 include(":photo-finder")
