@@ -2,7 +2,7 @@
 <resources>
     <string name="hello">Привет!</string>
     <string-array name="permissions_description">
-        <item>Для поиска и очистки ненужных кадров приложению нужен доступ к вашей галерее. Пожалуйста, разрешите доступ, выбрав вариант</item>
+        <item>Для поиска и очистки ненужных фотографий приложению необходим доступ к вашей галерее.\nПожалуйста, разрешите доступ, выбрав вариант</item>
         <item>«Разрешить ко всем».</item>
     </string-array>
     <string name="button_grant_permission">Выдать разрешение</string>
