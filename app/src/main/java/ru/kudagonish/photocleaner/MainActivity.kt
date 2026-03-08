@@ -1,26 +1,19 @@
 package ru.kudagonish.photocleaner
 
-import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,8 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
-import ru.kudagonish.photocleaner.ui.theme.PhotoCleanerTheme
+import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.photofinder.GalleryScanner
+import ru.kudagonish.start_feature.screens.permissions.GetPermissionsScreen
+import ru.kudagonish.start_feature.util.galleryPermission
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,39 +35,31 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PhotoCleanerTheme {
-                val context = LocalContext.current
-                val permissionsToRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-                } else {
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                val needsRequestPermission = galleryPermission.any {
+                    ContextCompat.checkSelfPermission(
+                        LocalContext.current,
+                        galleryPermission
+                    ) != PackageManager.PERMISSION_GRANTED
                 }
 
-                val launcher = rememberLauncherForActivityResult(
-                    ActivityResultContracts.RequestMultiplePermissions()
-                ) { permissions ->
-                    val allGranted = permissions.values.all { it }
-                    if (allGranted) {
-                        Log.d("MainActivity", "Permissions granted")
-                    } else {
-                        Log.d("MainActivity", "Permissions denied")
-                    }
-                }
 
-                LaunchedEffect(Unit) {
-                    val needsRequest = permissionsToRequest.any {
-                        ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
-                    }
-                    if (needsRequest) {
-                        launcher.launch(permissionsToRequest)
-                    }
-                }
+                //todo navhost if needsRequestPermission GetPermissionsScreen else main screen
 
+                GetPermissionsScreen(
+                    onNavigateToMainScreen = {
+                        Log.d("TAG", "GetPermissionsScreenPreview: permissions granted")
+                    },
+                    onNavigateToSettingsInstructionScreen = {
+                        Log.d("TAG", "GetPermissionsScreenPreview: need show settings")
+                    }
+                )
+                /*
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
-                }
+                }*/
             }
         }
     }
@@ -86,9 +73,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     Column(modifier = modifier.padding(16.dp)) {
         Text(text = "Hello $name!")
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         Button(onClick = {
             val images = scanner.getImages()
             if (images.isNotEmpty()) {

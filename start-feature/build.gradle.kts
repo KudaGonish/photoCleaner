@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.kudagonish.main"
+    namespace = "ru.kudagonish.start_feature"
     compileSdk = 36
 
     defaultConfig {
@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material3)
+    implementation(project(":core-ui"))
 
     // Koin
     implementation(libs.koin.android)

@@ -23,3 +23,4 @@ rootProject.name = "PhotoCleaner"
 include(":app")
 include(":start-feature")
 include(":photo-finder")
+include(":core-ui")

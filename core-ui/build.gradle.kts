@@ -1,20 +1,14 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "ru.kudagonish.photocleaner"
+    namespace = "ru.kudagonish.core_ui"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "ru.kudagonish.photocleaner"
         minSdk = 29
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -49,20 +43,5 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-
-    implementation(project(":photo-finder"))
-    implementation(project(":start-feature"))
-    implementation(project(":core-ui"))
-    implementation(libs.coil.compose)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

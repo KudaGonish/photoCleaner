@@ -1,4 +1,4 @@
-package ru.kudagonish.photocleaner.ui.theme
+package ru.kudagonish.core_ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,3 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="button_grant_premission">Grant permission</string>
+    <string name="hello">Hello!</string>
+    <string name="button_grant_permission">Grant permission</string>
+    <string-array name="permissions_description">
+        <item>To find and clean up unnecessary photos, the app needs access to your gallery. Please grant access by selecting the</item>
+        <item>«Allow access to all» option.</item>
+    </string-array>
+
 </resources>

@@ -1,6 +1,5 @@
-package ru.kudagonish.photocleaner.ui.theme
+package ru.kudagonish.core_ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

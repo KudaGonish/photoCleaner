@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="button_grant_premission">Выдать разрешение</string>
+    <string name="hello">Привет!</string>
+    <string-array name="permissions_description">
+        <item>Для поиска и очистки ненужных кадров приложению нужен доступ к вашей галерее. Пожалуйста, разрешите доступ, выбрав вариант</item>
+        <item>«Разрешить ко всем».</item>
+    </string-array>
+    <string name="button_grant_permission">Выдать разрешение</string>
 </resources>
