@@ -1,5 +1,11 @@
 package ru.kudagonish.start_feature.screens.permissions.content
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +17,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,10 +40,13 @@ import ru.kudagonish.core_ui.theme.helloTitleFontStyle
 import ru.kudagonish.start_feature.R
 import ru.kudagonish.start_feature.screens.permissions.ui.BlurBlobsContainer
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun GetPermissionsContent(
     onGrantPermissionClick: () -> Unit
 ) {
+    var isVisible by remember { mutableStateOf(false) }
+
     val description = buildAnnotatedString {
         val strings = stringArrayResource(R.array.permissions_description)
         if (strings.size >= 2) {
@@ -42,6 +56,10 @@ fun GetPermissionsContent(
                 append(strings[1])
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        isVisible = true
     }
 
     BlurBlobsContainer(background = Color.White) {
@@ -56,47 +74,76 @@ fun GetPermissionsContent(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                modifier = Modifier,
-                textAlign = TextAlign.Center,
-                style = helloTitleFontStyle,
-                color = Color(0xFF111827),
-                text = stringResource(R.string.hello)
-            )
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = scaleIn(animationSpec = getTweenSpec(HELLO_DELAY)) +
+                        fadeIn(animationSpec = getTweenSpec(HELLO_DELAY))
+            ) {
+                Text(
+                    modifier = Modifier,
+                    textAlign = TextAlign.Center,
+                    style = helloTitleFontStyle,
+                    color = Color(0xFF111827),
+                    text = stringResource(R.string.hello)
+                )
+            }
             Spacer(Modifier.weight(0.5f))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
-                color = Color(0xFF4B5563),
-                textAlign = TextAlign.Center
-            )
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = fadeIn(animationSpec = getTweenSpec(DESCRIPTION_DELAY)) +
+                        expandVertically(animationSpec = getTweenSpec(DESCRIPTION_DELAY))
+            ) {
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
+                    color = Color(0xFF4B5563),
+                    textAlign = TextAlign.Center
+                )
+            }
             Spacer(Modifier.weight(1f))
-            Button(
-                modifier = Modifier
-                    .size(256.dp, 56.dp),
-                onClick = onGrantPermissionClick,
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF111827),
-                    contentColor = Color.White
-                ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 8.dp
-                ),
-                content = {
-                    Text(
-                        text = stringResource(R.string.button_grant_permission),
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = fadeIn(animationSpec = getTweenSpec(BUTTON_DELAY)) +
+                        expandVertically(
+                            animationSpec = getTweenSpec(BUTTON_DELAY),
+                            expandFrom = Alignment.Top
                         )
-                    )
-                }
-            )
+            ) {
+                Button(
+                    modifier = Modifier
+                        .size(256.dp, 56.dp),
+                    onClick = onGrantPermissionClick,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF111827),
+                        contentColor = Color.White
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 4.dp,
+                        pressedElevation = 8.dp
+                    ),
+                    content = {
+                        Text(
+                            text = stringResource(R.string.button_grant_permission),
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                        )
+                    }
+                )
+            }
         }
     }
 }
+
+private fun <T> getTweenSpec(delay: Int) =
+    tween<T>(ANIM_DURATION, delayMillis = delay)
+
+private const val HELLO_DELAY = 300
+private const val DESCRIPTION_DELAY = HELLO_DELAY + 600
+private const val BUTTON_DELAY = DESCRIPTION_DELAY + 700
+private const val ANIM_DURATION = 600
 
 @Preview(showBackground = true, locale = "RU")
 @Composable
