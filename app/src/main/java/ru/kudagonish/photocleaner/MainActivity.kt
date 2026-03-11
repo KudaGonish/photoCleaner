@@ -26,10 +26,10 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.photofinder.GalleryScanner
-import ru.kudagonish.start_feature.screens.permissions.navigation.PermissionsScreens
-import ru.kudagonish.start_feature.screens.permissions.navigation.registerPermissionsScreens
-import ru.kudagonish.start_feature.util.PermissionStatus
-import ru.kudagonish.start_feature.util.getPermissionStatus
+import ru.kudagonish.permission_rationale.screens.navigation.PermissionsScreens
+import ru.kudagonish.permission_rationale.screens.navigation.registerPermissionsScreens
+import ru.kudagonish.permission_rationale.util.PermissionStatus
+import ru.kudagonish.permission_rationale.util.getPermissionStatus
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

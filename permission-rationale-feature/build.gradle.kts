@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.kudagonish.start_feature"
+    namespace = "ru.kudagonish.permission_rationale"
     compileSdk = 36
 
     defaultConfig {
@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.material.icons.extended)
 
     // Koin
     implementation(libs.koin.android)

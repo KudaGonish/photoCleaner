@@ -1,4 +1,4 @@
-package ru.kudagonish.start_feature.util
+package ru.kudagonish.permission_rationale.util
 
 import android.Manifest
 import android.app.Activity
@@ -20,10 +20,8 @@ fun Context.checkPermissionGranted() = ContextCompat
 fun Activity.permissionRequestRationale() = ActivityCompat
     .shouldShowRequestPermissionRationale(this, galleryPermission)
 
-fun getPermissionStatus(context: Context, activity: Activity): PermissionStatus {
-    return when {
-        !context.checkPermissionGranted() -> PermissionStatus.NotGranted
-        activity.permissionRequestRationale() -> PermissionStatus.PermanentlyDenied
-        else -> PermissionStatus.Granted
-    }
+fun getPermissionStatus(context: Context, activity: Activity): PermissionStatus = when {
+    context.checkPermissionGranted() -> PermissionStatus.Granted
+    !activity.permissionRequestRationale() -> PermissionStatus.PermanentlyDenied
+    else -> PermissionStatus.NotGranted
 }

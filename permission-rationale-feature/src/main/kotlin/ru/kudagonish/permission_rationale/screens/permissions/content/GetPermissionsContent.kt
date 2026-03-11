@@ -1,4 +1,4 @@
-package ru.kudagonish.start_feature.screens.permissions.content
+package ru.kudagonish.permission_rationale.screens.permissions.content
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.core_ui.theme.helloTitleFontStyle
-import ru.kudagonish.start_feature.R
-import ru.kudagonish.start_feature.screens.permissions.ui.BlurBlobsContainer
-import ru.kudagonish.start_feature.screens.permissions.ui.getTweenSpec
+import ru.kudagonish.permission_rationale.R
+import ru.kudagonish.permission_rationale.screens.ui.BlurBlobsContainer
+import ru.kudagonish.permission_rationale.screens.permissions.ui.getTweenSpec
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

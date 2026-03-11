@@ -1,4 +1,4 @@
-package ru.kudagonish.start_feature.screens.permissions.ui
+package ru.kudagonish.permission_rationale.screens.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
-import ru.kudagonish.start_feature.util.composableCallback
+import ru.kudagonish.permission_rationale.util.composableCallback
 
 @Composable
 internal fun BlurBlobsContainer(

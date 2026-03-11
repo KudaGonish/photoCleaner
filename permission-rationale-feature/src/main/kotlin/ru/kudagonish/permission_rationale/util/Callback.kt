@@ -1,4 +1,4 @@
-package ru.kudagonish.start_feature.util
+package ru.kudagonish.permission_rationale.util
 
 import androidx.compose.runtime.Composable
 

@@ -1,4 +1,4 @@
-package ru.kudagonish.start_feature.screens.permissions.navigation
+package ru.kudagonish.permission_rationale.screens.navigation
 
 import kotlinx.serialization.Serializable
 

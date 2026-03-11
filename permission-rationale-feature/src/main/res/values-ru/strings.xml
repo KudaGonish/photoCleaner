@@ -6,4 +6,12 @@
         <item>«Разрешить ко всем».</item>
     </string-array>
     <string name="button_grant_permission">Выдать разрешение</string>
+
+    <!-- Settings Rationale Screen -->
+    <string name="settings_rationale_title">Давай дружить с галереей</string>
+    <string name="settings_rationale_description">Похоже, вы несколько раз отклонили запрос на доступ. Чтобы приложение заработало, нужно выдать разрешение вручную в настройках системы.</string>
+    <string name="settings_rationale_step_1">Нажмите на кнопку ниже</string>
+    <string name="settings_rationale_step_2">Перейдите в раздел «Разрешения»</string>
+    <string name="settings_rationale_step_3">Разрешите доступ к «Фото и видео»</string>
+    <string name="settings_rationale_button">Открыть настройки</string>
 </resources>

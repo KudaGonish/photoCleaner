@@ -1,14 +1,13 @@
-package ru.kudagonish.start_feature.screens.permissions
+package ru.kudagonish.permission_rationale.screens.permissions
 
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.core.app.ActivityCompat
-import ru.kudagonish.start_feature.screens.permissions.content.PermissionRationaleContent
-import ru.kudagonish.start_feature.util.callback
-import ru.kudagonish.start_feature.util.galleryPermission
-import ru.kudagonish.start_feature.util.permissionRequestRationale
+import ru.kudagonish.permission_rationale.screens.permissions.content.PermissionRationaleContent
+import ru.kudagonish.permission_rationale.util.callback
+import ru.kudagonish.permission_rationale.util.galleryPermission
+import ru.kudagonish.permission_rationale.util.permissionRequestRationale
 
 @Composable
 internal fun PermissionRationaleScreen(
