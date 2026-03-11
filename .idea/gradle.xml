@@ -12,8 +12,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core-ui" />
+            <option value="$PROJECT_DIR$/permission-rationale-feature" />
             <option value="$PROJECT_DIR$/photo-finder" />
-            <option value="$PROJECT_DIR$/start-feature" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(project(":photo-finder"))
-    implementation(project(":start-feature"))
+    implementation(project(":permission-rationale-feature"))
     implementation(project(":core-ui"))
     implementation(libs.coil.compose)
 
