@@ -2,7 +2,6 @@ package ru.kudagonish.start_feature.screens.permissions.content
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
@@ -39,10 +38,11 @@ import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.core_ui.theme.helloTitleFontStyle
 import ru.kudagonish.start_feature.R
 import ru.kudagonish.start_feature.screens.permissions.ui.BlurBlobsContainer
+import ru.kudagonish.start_feature.screens.permissions.ui.getTweenSpec
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun GetPermissionsContent(
+internal fun PermissionRationaleContent(
     onGrantPermissionClick: () -> Unit
 ) {
     var isVisible by remember { mutableStateOf(false) }
@@ -103,11 +103,10 @@ fun GetPermissionsContent(
             Spacer(Modifier.weight(1f))
             AnimatedVisibility(
                 visible = isVisible,
-                enter = fadeIn(animationSpec = getTweenSpec(BUTTON_DELAY)) +
-                        expandVertically(
-                            animationSpec = getTweenSpec(BUTTON_DELAY),
-                            expandFrom = Alignment.Top
-                        )
+                enter = expandVertically(
+                    animationSpec = getTweenSpec(BUTTON_DELAY),
+                    expandFrom = Alignment.Top
+                ) + fadeIn(animationSpec = getTweenSpec(BUTTON_DELAY))
             ) {
                 Button(
                     modifier = Modifier
@@ -137,19 +136,15 @@ fun GetPermissionsContent(
     }
 }
 
-private fun <T> getTweenSpec(delay: Int) =
-    tween<T>(ANIM_DURATION, delayMillis = delay)
-
 private const val HELLO_DELAY = 300
 private const val DESCRIPTION_DELAY = HELLO_DELAY + 600
 private const val BUTTON_DELAY = DESCRIPTION_DELAY + 700
-private const val ANIM_DURATION = 600
 
 @Preview(showBackground = true, locale = "RU")
 @Composable
-fun GetPermissionsScreenPreview() {
+private fun PermissionRationaleScreenPreview() {
     PhotoCleanerTheme {
-        GetPermissionsContent(
+        PermissionRationaleContent(
             onGrantPermissionClick = { }
         )
     }

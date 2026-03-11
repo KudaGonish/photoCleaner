@@ -1,6 +1,5 @@
 package ru.kudagonish.photocleaner
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -22,12 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.photofinder.GalleryScanner
-import ru.kudagonish.start_feature.screens.permissions.GetPermissionsScreen
-import ru.kudagonish.start_feature.util.galleryPermission
+import ru.kudagonish.start_feature.screens.permissions.navigation.PermissionsScreens
+import ru.kudagonish.start_feature.screens.permissions.navigation.registerPermissionsScreens
+import ru.kudagonish.start_feature.util.PermissionStatus
+import ru.kudagonish.start_feature.util.getPermissionStatus
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,31 +37,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PhotoCleanerTheme {
-                val needsRequestPermission = galleryPermission.any {
-                    ContextCompat.checkSelfPermission(
-                        LocalContext.current,
-                        galleryPermission
-                    ) != PackageManager.PERMISSION_GRANTED
+                val navController = rememberNavController()
+                val permissionStatus = getPermissionStatus(this.applicationContext, this)
+                val startDestination = when (permissionStatus) {
+                    PermissionStatus.Granted -> Any()
+                    PermissionStatus.NotGranted -> PermissionsScreens.PermissionRationale
+                    PermissionStatus.PermanentlyDenied -> PermissionsScreens.SettingsRationale
                 }
 
-
-                //todo navhost if needsRequestPermission GetPermissionsScreen else main screen
-
-                GetPermissionsScreen(
-                    onNavigateToMainScreen = {
-                        Log.d("TAG", "GetPermissionsScreenPreview: permissions granted")
-                    },
-                    onNavigateToSettingsInstructionScreen = {
-                        Log.d("TAG", "GetPermissionsScreenPreview: need show settings")
-                    }
-                )
-                /*
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }*/
+                NavHost(navController, startDestination = startDestination) {
+                    registerPermissionsScreens(navController)
+                }
             }
         }
     }

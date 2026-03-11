@@ -3,16 +3,15 @@ package ru.kudagonish.start_feature.screens.permissions
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
-import ru.kudagonish.start_feature.screens.permissions.content.GetPermissionsContent
+import ru.kudagonish.start_feature.screens.permissions.content.PermissionRationaleContent
 import ru.kudagonish.start_feature.util.callback
 import ru.kudagonish.start_feature.util.galleryPermission
+import ru.kudagonish.start_feature.util.permissionRequestRationale
 
 @Composable
-fun GetPermissionsScreen(
+internal fun PermissionRationaleScreen(
     onNavigateToMainScreen: callback,
     onNavigateToSettingsInstructionScreen: callback
 ) {
@@ -23,14 +22,12 @@ fun GetPermissionsScreen(
         if (permissionGranted) {
             onNavigateToMainScreen()
         } else {
-            val needNavigateTpSettings =
-                !ActivityCompat.shouldShowRequestPermissionRationale(activity, galleryPermission)
-
-            if (needNavigateTpSettings) onNavigateToSettingsInstructionScreen()
+            val needNavigateToSettings = !activity.permissionRequestRationale()
+            if (needNavigateToSettings) onNavigateToSettingsInstructionScreen()
         }
     }
 
-    GetPermissionsContent(
+    PermissionRationaleContent(
         onGrantPermissionClick = { launcher.launch(galleryPermission) }
     )
 }
