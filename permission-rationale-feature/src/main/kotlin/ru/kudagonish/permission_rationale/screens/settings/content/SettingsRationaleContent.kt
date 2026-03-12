@@ -26,10 +26,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.kudagonish.core_ui.elements.containers.blurBlobs.BlurBlobsContainer
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.permission_rationale.R
 import ru.kudagonish.permission_rationale.screens.settings.ui.StepItem
-import ru.kudagonish.permission_rationale.screens.ui.BlurBlobsContainer
 import ru.kudagonish.permission_rationale.util.callback
 
 @Composable

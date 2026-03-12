@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -20,8 +21,13 @@ fun Context.checkPermissionGranted() = ContextCompat
 fun Activity.permissionRequestRationale() = ActivityCompat
     .shouldShowRequestPermissionRationale(this, galleryPermission)
 
-fun getPermissionStatus(context: Context, activity: Activity): PermissionStatus = when {
-    context.checkPermissionGranted() -> PermissionStatus.Granted
-    !activity.permissionRequestRationale() -> PermissionStatus.PermanentlyDenied
-    else -> PermissionStatus.NotGranted
+fun getPermissionStatus(context: Context, activity: ()->Activity): PermissionStatus {
+    Log.d("TAG", "getPermissionStatus: ${context.checkPermissionGranted()}")
+    Log.d("TAG", "getPermissionStatus: ${activity().permissionRequestRationale()}")
+
+
+    return if(!context.checkPermissionGranted()){
+        //if(!activity().permissionRequestRationale()) PermissionStatus.PermanentlyDenied
+        /*else*/ PermissionStatus.NotGranted
+    } else PermissionStatus.Granted
 }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- Base application theme. -->
     <style name="Theme.PhotoCleaner" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Splash Screen theme. -->
+    <style name="Theme.PhotoCleaner.Splash" parent="Theme.SplashScreen">
+        <!-- Background of the splash screen. -->
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <!-- Icon that will be displayed in the center. -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <!-- Duration of the splash screen (only for API 31+). -->
+        <item name="windowSplashScreenAnimationDuration">200</item>
+        <!-- Theme to use after the splash screen is finished. -->
+        <item name="postSplashScreenTheme">@style/Theme.PhotoCleaner</item>
+    </style>
 </resources>

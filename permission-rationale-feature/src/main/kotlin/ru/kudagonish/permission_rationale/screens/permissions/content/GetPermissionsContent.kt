@@ -34,10 +34,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.kudagonish.core_ui.elements.containers.blurBlobs.BlurBlobsContainer
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.core_ui.theme.helloTitleFontStyle
 import ru.kudagonish.permission_rationale.R
-import ru.kudagonish.permission_rationale.screens.ui.BlurBlobsContainer
 import ru.kudagonish.permission_rationale.screens.permissions.ui.getTweenSpec
 
 @OptIn(ExperimentalAnimationApi::class)
