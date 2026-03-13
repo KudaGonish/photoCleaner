@@ -21,13 +21,14 @@ fun Context.checkPermissionGranted() = ContextCompat
 fun Activity.permissionRequestRationale() = ActivityCompat
     .shouldShowRequestPermissionRationale(this, galleryPermission)
 
-fun getPermissionStatus(context: Context, activity: ()->Activity): PermissionStatus {
-    Log.d("TAG", "getPermissionStatus: ${context.checkPermissionGranted()}")
-    Log.d("TAG", "getPermissionStatus: ${activity().permissionRequestRationale()}")
-
-
-    return if(!context.checkPermissionGranted()){
-        //if(!activity().permissionRequestRationale()) PermissionStatus.PermanentlyDenied
-        /*else*/ PermissionStatus.NotGranted
-    } else PermissionStatus.Granted
+fun getPermissionStatus(
+    context: Context,
+    activity: Activity,
+    requestPermissionCount: Int
+): PermissionStatus {
+    return when {
+        context.checkPermissionGranted() -> PermissionStatus.Granted
+        requestPermissionCount > 0 && !activity.permissionRequestRationale() -> PermissionStatus.PermanentlyDenied
+        else -> PermissionStatus.NotGranted
+    }
 }

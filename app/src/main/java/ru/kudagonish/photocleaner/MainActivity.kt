@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,43 +27,44 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import org.koin.android.ext.android.inject
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
-import ru.kudagonish.photofinder.GalleryScanner
-import ru.kudagonish.permission_rationale.screens.navigation.PermissionsScreens
-import ru.kudagonish.permission_rationale.screens.navigation.registerPermissionsScreens
+import ru.kudagonish.permission_rationale.ui.navigation.PermissionsScreens
+import ru.kudagonish.permission_rationale.ui.navigation.registerPermissionsScreens
 import ru.kudagonish.permission_rationale.util.PermissionStatus
 import ru.kudagonish.permission_rationale.util.getPermissionStatus
 import ru.kudagonish.photocleaner.splash.SplashBlurBlobs
+import ru.kudagonish.photofinder.GalleryScanner
 
 class MainActivity : ComponentActivity() {
-    
-    // Флаг для удержания системного сплэша
-    private var isAppReady = false
+
+    private val viewModel: MainViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
-        
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
-        // Держим системный сплэш, пока Compose не просигнализирует о готовности
-        splashScreen.setKeepOnScreenCondition { !isAppReady }
+
+        splashScreen.setKeepOnScreenCondition { viewModel.requestPermissionCount.value == null }
 
         setContent {
             PhotoCleanerTheme {
+                val navController = rememberNavController()
                 var showSplashAnim by remember { mutableStateOf(true) }
-                
+                val permissionRequestCount by viewModel.requestPermissionCount.collectAsState()
+
                 if (showSplashAnim) {
-                    SplashBlurBlobs(
-                        onAnimationFinished = { showSplashAnim = false },
-                        onStarted = { isAppReady = true }
-                    )
+                    SplashBlurBlobs(onAnimationFinished = { showSplashAnim = false })
                 } else {
-                    val activity = LocalActivity.current
-                    val navController = rememberNavController()
-                    val permissionStatus = getPermissionStatus(this.applicationContext, {activity!! })
-                    Log.d("TAG", "onCreate: ${this as Activity}")
-                    val startDestination: Any = when (permissionStatus) {
+                    val permissionStatus = remember(permissionRequestCount != null) {
+                        getPermissionStatus(
+                            this.applicationContext,
+                            this as Activity,
+                            permissionRequestCount!!
+                        )
+                    }
+                    val startDestination = when (permissionStatus) {
                         PermissionStatus.Granted -> PermissionsScreens.PermissionRationale
                         PermissionStatus.NotGranted -> PermissionsScreens.PermissionRationale
                         PermissionStatus.PermanentlyDenied -> PermissionsScreens.SettingsRationale

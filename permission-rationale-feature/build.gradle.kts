@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(":core-ui"))
+    implementation(project(":data-store"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

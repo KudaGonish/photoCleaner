@@ -17,10 +17,7 @@ import ru.kudagonish.core_ui.elements.containers.blurBlobs.BlurBlobsPositions
 
 
 @Composable
-fun SplashBlurBlobs(
-    onStarted: () -> Unit,
-    onAnimationFinished: () -> Unit
-) {
+fun SplashBlurBlobs(onAnimationFinished: () -> Unit) {
     val containerSize = LocalWindowInfo.current.containerSize
     val density = LocalDensity.current
 
@@ -37,7 +34,7 @@ fun SplashBlurBlobs(
 
     LaunchedEffect(Unit) {
         state.startAnimation(
-            onStarted = onStarted,
+            onStarted = { },
             onFinished = onAnimationFinished
         )
     }

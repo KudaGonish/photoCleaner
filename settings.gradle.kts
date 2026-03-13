@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         google {
@@ -24,3 +26,4 @@ include(":app")
 include(":permission-rationale-feature")
 include(":photo-finder")
 include(":core-ui")
+include(":data-store")

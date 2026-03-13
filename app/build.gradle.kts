@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":photo-finder"))
     implementation(project(":permission-rationale-feature"))
     implementation(project(":core-ui"))
+    implementation(project(":data-store"))
     implementation(libs.coil.compose)
 
     testImplementation(libs.junit)

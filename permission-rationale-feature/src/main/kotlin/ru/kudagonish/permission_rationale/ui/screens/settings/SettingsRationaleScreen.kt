@@ -1,4 +1,4 @@
-package ru.kudagonish.permission_rationale.screens.settings
+package ru.kudagonish.permission_rationale.ui.screens.settings
 
 import android.content.Intent
 import android.net.Uri
@@ -6,7 +6,7 @@ import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import ru.kudagonish.permission_rationale.screens.settings.content.SettingsRationaleContent
+import ru.kudagonish.permission_rationale.ui.screens.settings.content.SettingsRationaleContent
 import ru.kudagonish.permission_rationale.util.checkPermissionGranted
 
 @Composable

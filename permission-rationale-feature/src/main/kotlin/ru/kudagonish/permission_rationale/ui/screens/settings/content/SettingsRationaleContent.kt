@@ -1,4 +1,4 @@
-package ru.kudagonish.permission_rationale.screens.settings.content
+package ru.kudagonish.permission_rationale.ui.screens.settings.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import ru.kudagonish.core_ui.elements.containers.blurBlobs.BlurBlobsContainer
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.permission_rationale.R
-import ru.kudagonish.permission_rationale.screens.settings.ui.StepItem
+import ru.kudagonish.permission_rationale.ui.screens.settings.ui.StepItem
 import ru.kudagonish.permission_rationale.util.callback
 
 @Composable

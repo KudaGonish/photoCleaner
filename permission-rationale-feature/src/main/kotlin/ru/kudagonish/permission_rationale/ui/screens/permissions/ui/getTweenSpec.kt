@@ -1,4 +1,4 @@
-package ru.kudagonish.permission_rationale.screens.permissions.ui
+package ru.kudagonish.permission_rationale.ui.screens.permissions.ui
 
 import androidx.compose.animation.core.tween
 

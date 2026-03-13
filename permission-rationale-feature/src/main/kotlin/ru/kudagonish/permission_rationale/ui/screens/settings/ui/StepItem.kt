@@ -1,4 +1,4 @@
-package ru.kudagonish.permission_rationale.screens.settings.ui
+package ru.kudagonish.permission_rationale.ui.screens.settings.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
