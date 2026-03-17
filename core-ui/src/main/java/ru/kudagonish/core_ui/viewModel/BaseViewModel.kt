@@ -19,7 +19,7 @@ abstract class BaseViewModel<State, Event : ViewModelEvent, Action : ViewModelAc
     private val mutableState: MutableStateFlow<State> = MutableStateFlow(initialState)
     val state: StateFlow<State> = mutableState.asStateFlow()
 
-    private val _actionFlow: MutableSharedFlow<Action?> = MutableSharedFlow()
+    private val _actionFlow: MutableSharedFlow<Action> = MutableSharedFlow()
     val action = _actionFlow.asSharedFlow()
 
     fun sendEvent(event: Event) = handleEvent(event)
@@ -34,7 +34,7 @@ abstract class BaseViewModel<State, Event : ViewModelEvent, Action : ViewModelAc
         mutableState.update { onUpdate(state.value) }
     }
 
-    protected fun produceAction(action: Action?) {
+    protected fun produceAction(action: Action) {
         viewModelScope.launch { _actionFlow.emit(action) }
     }
 

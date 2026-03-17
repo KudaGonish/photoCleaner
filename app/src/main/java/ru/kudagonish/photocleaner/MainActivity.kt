@@ -25,11 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import org.koin.android.ext.android.inject
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
-import ru.kudagonish.permission_rationale.ui.navigation.PermissionsScreens
+import ru.kudagonish.permission_rationale.ui.navigation.Main
+import ru.kudagonish.permission_rationale.ui.navigation.PermissionsNavigation
 import ru.kudagonish.permission_rationale.ui.navigation.registerPermissionsScreens
 import ru.kudagonish.permission_rationale.util.PermissionStatus
 import ru.kudagonish.permission_rationale.util.getPermissionStatus
@@ -64,20 +66,24 @@ class MainActivity : ComponentActivity() {
                             permissionRequestCount!!
                         )
                     }
-                    val startDestination = when (permissionStatus) {
-                        PermissionStatus.Granted -> PermissionsScreens.PermissionRationale
-                        PermissionStatus.NotGranted -> PermissionsScreens.PermissionRationale
-                        PermissionStatus.PermanentlyDenied -> PermissionsScreens.SettingsRationale
+                    val startDestination: Any = when (permissionStatus) {
+                        PermissionStatus.Granted -> Main
+                        else -> PermissionsNavigation.Route
                     }
 
                     NavHost(navController, startDestination = startDestination) {
-                        registerPermissionsScreens(navController)
+                        registerPermissionsScreens(navController, permissionStatus)
+                        composable<Main> {
+                            Greeting("Android")
+                        }
                     }
                 }
             }
         }
     }
 }
+
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {

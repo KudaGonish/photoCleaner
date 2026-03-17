@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import ru.kudagonish.core_ui.elements.containers.blurBlobs.BlurBlobsContainer
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.permission_rationale.R
+import ru.kudagonish.permission_rationale.ui.screens.settings.ui.AnimatedAppearance
 import ru.kudagonish.permission_rationale.ui.screens.settings.ui.StepItem
 import ru.kudagonish.permission_rationale.util.callback
 
@@ -45,73 +46,97 @@ internal fun SettingsRationaleContent(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-            Icon(
-                imageVector = Icons.Default.ImageSearch,
-                contentDescription = null,
-                modifier = Modifier.size(80.dp),
-                tint = Color(0xFF111827)
-            )
+
+            AnimatedAppearance(index = 0) {
+                Icon(
+                    imageVector = Icons.Default.ImageSearch,
+                    contentDescription = null,
+                    modifier = Modifier.size(80.dp),
+                    tint = Color(0xFF111827)
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(R.string.settings_rationale_title),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF111827),
-                textAlign = TextAlign.Center
-            )
+
+            AnimatedAppearance(index = 1) {
+                Text(
+                    text = stringResource(R.string.settings_rationale_title),
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF111827),
+                    textAlign = TextAlign.Center
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(R.string.settings_rationale_description),
-                style = MaterialTheme.typography.bodyLarge,
-                lineHeight = 24.sp,
-                color = Color(0xFF4B5563),
-                textAlign = TextAlign.Justify
-            )
+
+            AnimatedAppearance(index = 2) {
+                Text(
+                    text = stringResource(R.string.settings_rationale_description),
+                    style = MaterialTheme.typography.bodyLarge,
+                    lineHeight = 24.sp,
+                    color = Color(0xFF4B5563),
+                    textAlign = TextAlign.Justify
+                )
+            }
+
             Spacer(modifier = Modifier.height(48.dp))
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                StepItem(
-                    number = stringResource(R.string.step_1),
-                    text = stringResource(R.string.settings_rationale_step_1)
-                )
-                StepItem(
-                    number = stringResource(R.string.step_2),
-                    text = stringResource(R.string.settings_rationale_step_2)
-                )
-                StepItem(
-                    number = stringResource(R.string.step_3),
-                    text = stringResource(R.string.settings_rationale_step_3)
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Button(
-                onClick = onNavigateToSettings,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF111827),
-                    contentColor = Color.White
-                ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 8.dp
-                )
-            ) {
-                Text(
-                    text = stringResource(R.string.settings_rationale_button),
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
+                AnimatedAppearance(index = 3) {
+                    StepItem(
+                        number = stringResource(R.string.step_1),
+                        text = stringResource(R.string.settings_rationale_step_1)
                     )
-                )
+                }
+                AnimatedAppearance(index = 4) {
+                    StepItem(
+                        number = stringResource(R.string.step_2),
+                        text = stringResource(R.string.settings_rationale_step_2)
+                    )
+                }
+                AnimatedAppearance(index = 5) {
+                    StepItem(
+                        number = stringResource(R.string.step_3),
+                        text = stringResource(R.string.settings_rationale_step_3)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            AnimatedAppearance(index = 6) {
+                Button(
+                    onClick = onNavigateToSettings,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF111827),
+                        contentColor = Color.White
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 4.dp,
+                        pressedElevation = 8.dp
+                    )
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_rationale_button),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    )
+                }
             }
         }
     }
 }
+
 
 @Preview(showBackground = true, locale = "ru")
 @Composable

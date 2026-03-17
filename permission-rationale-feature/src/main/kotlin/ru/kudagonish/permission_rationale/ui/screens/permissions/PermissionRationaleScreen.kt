@@ -4,9 +4,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import org.koin.androidx.compose.koinViewModel
-import ru.kudagonish.permission_rationale.screens.permissions.PermissionRationaleViewModel
-import ru.kudagonish.permission_rationale.screens.permissions.PermissionRationaleViewModel.Event
+import ru.kudagonish.permission_rationale.ui.screens.permissions.PermissionRationaleViewModel.Event
 import ru.kudagonish.permission_rationale.ui.screens.permissions.content.PermissionRationaleContent
 import ru.kudagonish.permission_rationale.util.callback
 import ru.kudagonish.permission_rationale.util.galleryPermission
@@ -16,7 +14,7 @@ import ru.kudagonish.permission_rationale.util.permissionRequestRationale
 internal fun PermissionRationaleScreen(
     onNavigateToMainScreen: callback,
     onNavigateToSettingsInstructionScreen: callback,
-    viewmodel: PermissionRationaleViewModel = koinViewModel()
+    viewmodel: PermissionRationaleViewModel
 ) {
     val activity = requireNotNull(LocalActivity.current)
     val launcher = rememberLauncherForActivityResult(

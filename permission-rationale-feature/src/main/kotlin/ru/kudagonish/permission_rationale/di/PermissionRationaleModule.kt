@@ -6,7 +6,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import ru.kudagonish.permission_rationale.data.PermissionRepositoryImpl
 import ru.kudagonish.permission_rationale.domain.PermissionRepository
-import ru.kudagonish.permission_rationale.screens.permissions.PermissionRationaleViewModel
+import ru.kudagonish.permission_rationale.ui.screens.permissions.PermissionRationaleViewModel
 
 val permissionRationaleModule = module {
     factoryOf(::PermissionRepositoryImpl) bind PermissionRepository::class
