@@ -1,26 +1,20 @@
 package ru.kudagonish.photocleaner
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,54 +23,67 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import ru.kudagonish.photocleaner.ui.theme.PhotoCleanerTheme
+import org.koin.android.ext.android.inject
+import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
+import ru.kudagonish.permission_rationale.ui.navigation.Main
+import ru.kudagonish.permission_rationale.ui.navigation.PermissionsNavigation
+import ru.kudagonish.permission_rationale.ui.navigation.registerPermissionsScreens
+import ru.kudagonish.permission_rationale.util.PermissionStatus
+import ru.kudagonish.permission_rationale.util.getPermissionStatus
+import ru.kudagonish.photocleaner.splash.SplashBlurBlobs
 import ru.kudagonish.photofinder.GalleryScanner
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainViewModel by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        splashScreen.setKeepOnScreenCondition { viewModel.requestPermissionCount.value == null }
+
         setContent {
             PhotoCleanerTheme {
-                val context = LocalContext.current
-                val permissionsToRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+                val navController = rememberNavController()
+                var showSplashAnim by remember { mutableStateOf(true) }
+                val permissionRequestCount by viewModel.requestPermissionCount.collectAsState()
+
+                if (showSplashAnim) {
+                    SplashBlurBlobs(onAnimationFinished = { showSplashAnim = false })
                 } else {
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                }
-
-                val launcher = rememberLauncherForActivityResult(
-                    ActivityResultContracts.RequestMultiplePermissions()
-                ) { permissions ->
-                    val allGranted = permissions.values.all { it }
-                    if (allGranted) {
-                        Log.d("MainActivity", "Permissions granted")
-                    } else {
-                        Log.d("MainActivity", "Permissions denied")
+                    val permissionStatus = remember(permissionRequestCount != null) {
+                        getPermissionStatus(
+                            this.applicationContext,
+                            this as Activity,
+                            permissionRequestCount!!
+                        )
                     }
-                }
-
-                LaunchedEffect(Unit) {
-                    val needsRequest = permissionsToRequest.any {
-                        ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
+                    val startDestination: Any = when (permissionStatus) {
+                        PermissionStatus.Granted -> Main
+                        else -> PermissionsNavigation.Route
                     }
-                    if (needsRequest) {
-                        launcher.launch(permissionsToRequest)
-                    }
-                }
 
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    NavHost(navController, startDestination = startDestination) {
+                        registerPermissionsScreens(navController, permissionStatus)
+                        composable<Main> {
+                            Greeting("Android")
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -86,9 +93,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     Column(modifier = modifier.padding(16.dp)) {
         Text(text = "Hello $name!")
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         Button(onClick = {
             val images = scanner.getImages()
             if (images.isNotEmpty()) {

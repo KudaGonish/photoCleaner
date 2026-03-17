@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello!</string>
+    <string name="button_grant_permission">Grant permission</string>
+    <string-array name="permissions_description">
+        <item>To find and clean up unnecessary photos, the app needs access to your gallery. Please grant access by selecting the</item>
+        <item>«Allow access to all» option.</item>
+    </string-array>
+
+    <!-- Settings Rationale Screen -->
+    <string name="settings_rationale_title">Let’s be friends with your gallery</string>
+    <string name="settings_rationale_description">It looks like you have declined the access request several times. To make the app work, you need to grant permission manually in the system settings.</string>
+    <string name="settings_rationale_step_1">Click the button below</string>
+    <string name="settings_rationale_step_2">Go to the \"Permissions\" section</string>
+    <string name="settings_rationale_step_3">Allow access to \"Photos and videos\"</string>
+    <string name="settings_rationale_button">Open Settings</string>
+
+    <!-- Step Numbers -->
+    <string name="step_1" translatable="false">1</string>
+    <string name="step_2" translatable="false">2</string>
+    <string name="step_3" translatable="false">3</string>
+</resources>

@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         google {
@@ -21,5 +23,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "PhotoCleaner"
 include(":app")
-include(":main")
+include(":permission-rationale-feature")
 include(":photo-finder")
+include(":core-ui")
+include(":data-store")

@@ -1,21 +1,18 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "ru.kudagonish.photocleaner"
+    namespace = "ru.kudagonish.permission_rationale"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "ru.kudagonish.photocleaner"
         minSdk = 29
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -49,9 +46,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    // Splash API
-    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.material.icons.extended)
 
     // Koin
     implementation(libs.koin.android)
@@ -59,12 +54,10 @@ dependencies {
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
-    implementation(project(":photo-finder"))
-    implementation(project(":permission-rationale-feature"))
     implementation(project(":core-ui"))
     implementation(project(":data-store"))
-    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
