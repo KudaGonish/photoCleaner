@@ -32,7 +32,10 @@ kotlin {
 }
 
 dependencies {
+    // AndroidX & Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.datastore.preferences)
+
+    // Koin
     implementation(libs.koin.android)
 }

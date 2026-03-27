@@ -41,39 +41,35 @@ kotlin {
 }
 
 dependencies {
+    // AndroidX & Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    // Splash API
-    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.compose)
 
     // Koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
-
-    implementation(project(":photo-finder"))
-    implementation(project(":permission-rationale-feature"))
-    implementation(project(":core-ui"))
-    implementation(project(":data-store"))
-    implementation(project(":core"))
     implementation(libs.koin.androidx.workmanager)
 
-    implementation(libs.coil.compose)
-    implementation(libs.androidx.work.runtime.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    // Internal Modules
+    implementation(project(":core"))
+    implementation(project(":core-ui"))
+    implementation(project(":data-store"))
+    implementation(project(":photo-finder"))
+    implementation(project(":permission-rationale-feature"))
+
+    // Debug
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

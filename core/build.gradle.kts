@@ -32,6 +32,9 @@ kotlin {
 }
 
 dependencies {
+    // AndroidX & Core
     implementation(libs.androidx.core.ktx)
+
+    // Koin
     implementation(libs.koin.android)
 }
