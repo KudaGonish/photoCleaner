@@ -65,9 +65,10 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":data-store"))
     implementation(project(":core"))
-    implementation(project(":photo-finder"))
-    implementation(libs.coil.compose)
+    implementation(libs.koin.androidx.workmanager)
 
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

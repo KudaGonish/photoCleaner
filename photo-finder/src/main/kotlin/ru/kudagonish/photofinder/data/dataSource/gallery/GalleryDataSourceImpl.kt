@@ -3,6 +3,7 @@ package ru.kudagonish.photofinder.data.dataSource.gallery
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
+import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,45 +17,18 @@ private const val PAGE_SIZE = 500
 
 internal class GalleryDataSourceImpl(private val context: Context) : GalleryDataSource {
 
+    private val projection = arrayOf(
+        MediaStore.Images.Media._ID,
+        MediaStore.Images.Media.DATE_ADDED,
+    )
+
     override suspend fun scanGallery(): Flow<List<PhotoInfoDto>> = flow {
         var offset = 0
         var hasMore = true
 
-        val projection = arrayOf(
-            MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DATE_ADDED,
-        )
-
         while (hasMore) {
-            val imagesChunk = mutableListOf<PhotoInfoDto>()
-            val queryArgs = getQueryParams(offset)
-
-            context.contentResolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                queryArgs,
-                null
-            )?.use { c ->
-                val idColumn = c.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-                val dateAddedColumn = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
-
-                while (c.moveToNext()) {
-                    val id = c.getLong(idColumn)
-                    val dateAdded = c.getLong(dateAddedColumn)
-
-                    val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        id
-                    )
-
-                    imagesChunk.add(
-                        PhotoInfoDto(
-                            uri = contentUri.toString(),
-                            dateAdded = Date(dateAdded * SECONDS_TO_MILLIS),
-                        )
-                    )
-                }
-            }
+            val queryArgs = buildQueryArgs(limit = PAGE_SIZE, offset = offset)
+            val imagesChunk = queryPhotos(queryArgs)
 
             if (imagesChunk.isNotEmpty()) {
                 emit(imagesChunk)
@@ -69,7 +43,46 @@ internal class GalleryDataSourceImpl(private val context: Context) : GalleryData
         }
     }
 
-    private fun getQueryParams(offset: Int) = Bundle().apply {
+    override suspend fun fetchLastPhoto(): PhotoInfoDto? {
+        val queryArgs = buildQueryArgs(limit = 1)
+        return queryPhotos(queryArgs).firstOrNull()
+    }
+
+    private fun queryPhotos(queryArgs: Bundle): List<PhotoInfoDto> {
+        val photos = mutableListOf<PhotoInfoDto>()
+
+        context.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            queryArgs,
+            null
+        )?.use { cursor ->
+            while (cursor.moveToNext()) {
+                photos.add(cursor.toPhotoInfoDto())
+            }
+        }
+        return photos
+    }
+
+    private fun Cursor.toPhotoInfoDto(): PhotoInfoDto {
+        val idColumn = getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+        val dateAddedColumn = getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
+
+        val id = getLong(idColumn)
+        val dateAdded = getLong(dateAddedColumn)
+
+        val contentUri = ContentUris.withAppendedId(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            id
+        )
+
+        return PhotoInfoDto(
+            uri = contentUri.toString(),
+            dateAdded = Date(dateAdded * SECONDS_TO_MILLIS),
+        )
+    }
+
+    private fun buildQueryArgs(limit: Int, offset: Int = 0) = Bundle().apply {
         putString(ContentResolver.QUERY_ARG_SQL_SELECTION, getSelectionParams())
         putStringArray(
             ContentResolver.QUERY_ARG_SORT_COLUMNS,
@@ -79,7 +92,7 @@ internal class GalleryDataSourceImpl(private val context: Context) : GalleryData
             ContentResolver.QUERY_ARG_SORT_DIRECTION,
             ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
         )
-        putInt(ContentResolver.QUERY_ARG_LIMIT, PAGE_SIZE)
+        putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
         putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
     }
 

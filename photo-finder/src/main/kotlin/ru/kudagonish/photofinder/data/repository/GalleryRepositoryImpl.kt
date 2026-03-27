@@ -22,4 +22,15 @@ internal class GalleryRepositoryImpl(
             galleryInformationDao.insertPhotos(entities)
         }
     }
+
+    override suspend fun addLastPhoto() {
+        galleryDataSource.fetchLastPhoto()?.let { dto ->
+            val entity = GalleryInformationEntity(
+                uri = dto.uri,
+                takenTimestamp = dto.dateAdded.time,
+                plannedDeletionTimestamp = null
+            )
+            galleryInformationDao.insertPhotos(listOf(entity))
+        }
+    }
 }

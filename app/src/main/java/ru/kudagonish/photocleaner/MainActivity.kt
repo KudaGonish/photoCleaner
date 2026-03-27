@@ -16,11 +16,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.koin.android.ext.android.inject
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
-import ru.kudagonish.permission_rationale.ui.navigation.Main
-import ru.kudagonish.permission_rationale.ui.navigation.PermissionsNavigation
-import ru.kudagonish.permission_rationale.ui.navigation.registerPermissionsScreens
-import ru.kudagonish.permission_rationale.util.PermissionStatus
-import ru.kudagonish.permission_rationale.util.getPermissionStatus
+import ru.kudagonish.permission_rationale_feature.ui.navigation.Main
+import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation
+import ru.kudagonish.permission_rationale_feature.ui.navigation.registerPermissionsScreens
+import ru.kudagonish.core.PermissionStatus
+import ru.kudagonish.core.getPermissionStatus
 import ru.kudagonish.photocleaner.splash.SplashBlurBlobs
 
 class MainActivity : ComponentActivity() {
