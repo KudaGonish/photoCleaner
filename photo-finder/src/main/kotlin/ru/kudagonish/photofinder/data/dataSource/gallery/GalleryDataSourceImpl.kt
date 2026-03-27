@@ -1,4 +1,4 @@
-package ru.kudagonish.photofinder
+package ru.kudagonish.photofinder.data.dataSource.gallery
 
 import android.content.ContentResolver
 import android.content.ContentUris
@@ -8,54 +8,49 @@ import android.os.Bundle
 import android.provider.MediaStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.kudagonish.photofinder.data.dataSource.gallery.model.PhotoInfoDto
 import java.util.Date
 
 private const val SECONDS_TO_MILLIS = 1000L
 private const val PAGE_SIZE = 500
 
-data class PhotoInfo(
-    val uri: String,
-    val dateAdded: Date
-)
+internal class GalleryDataSourceImpl(private val context: Context) : GalleryDataSource {
 
-class GalleryScanner(private val context: Context) {
-
-    fun scanGallery(): Flow<List<PhotoInfo>> = flow {
+    override suspend fun scanGallery(): Flow<List<PhotoInfoDto>> = flow {
         var offset = 0
         var hasMore = true
 
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DATE_ADDED
+            MediaStore.Images.Media.DATE_ADDED,
         )
 
         while (hasMore) {
-            val imagesChunk = mutableListOf<PhotoInfo>()
-
+            val imagesChunk = mutableListOf<PhotoInfoDto>()
             val queryArgs = getQueryParams(offset)
 
-            val cursor = context.contentResolver.query(
+            context.contentResolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 queryArgs,
                 null
-            )
-
-            cursor?.use { c ->
+            )?.use { c ->
                 val idColumn = c.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
                 val dateAddedColumn = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
 
                 while (c.moveToNext()) {
                     val id = c.getLong(idColumn)
                     val dateAdded = c.getLong(dateAddedColumn)
+
                     val contentUri = ContentUris.withAppendedId(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                         id
                     )
+
                     imagesChunk.add(
-                        PhotoInfo(
+                        PhotoInfoDto(
                             uri = contentUri.toString(),
-                            dateAdded = Date(dateAdded * SECONDS_TO_MILLIS)
+                            dateAdded = Date(dateAdded * SECONDS_TO_MILLIS),
                         )
                     )
                 }
@@ -63,9 +58,8 @@ class GalleryScanner(private val context: Context) {
 
             if (imagesChunk.isNotEmpty()) {
                 emit(imagesChunk)
-
                 if (imagesChunk.size < PAGE_SIZE) {
-                    hasMore = false // Данные закончились
+                    hasMore = false
                 } else {
                     offset += PAGE_SIZE
                 }
@@ -88,7 +82,6 @@ class GalleryScanner(private val context: Context) {
         putInt(ContentResolver.QUERY_ARG_LIMIT, PAGE_SIZE)
         putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
     }
-
 
     private fun getSelectionParams() = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->
