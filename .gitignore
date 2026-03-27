@@ -1,16 +1,39 @@
+# Android & Java
 *.iml
 .gradle
+local.properties
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
 .DS_Store
 /build
-./build
+/*/build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+
+# IDE - IntelliJ IDEA
+.idea/
+!.idea/codeStyles/
+!.idea/copyright/
+!.idea/inspectionProfiles/
+!.idea/vcs.xml
+
+# IDE - Android Studio specific
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/shelf/
+.idea/dictionaries
+.idea/modules/
+
+# Generated files
+/build/
+/*/build/
+.gradle/
+build/
+bin/
+
+# Log files
+*.log
