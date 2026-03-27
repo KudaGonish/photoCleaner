@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.kudagonish.permission_rationale"
+    namespace = "ru.kudagonish.permission_rationale_feature"
     compileSdk = 36
 
     defaultConfig {
@@ -58,6 +58,8 @@ dependencies {
 
     implementation(project(":core-ui"))
     implementation(project(":data-store"))
+    implementation(project(":photo-finder"))
+    implementation(project(":core"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

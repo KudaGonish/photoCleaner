@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import ru.kudagonish.permission_rationale.domain.PermissionRepository
+import ru.kudagonish.permission_rationale_feature.domain.PermissionRepository
 
 internal class MainViewModel(
-    permissionRepository: PermissionRepository
+    permissionRepository: PermissionRepository,
 ) : ViewModel() {
 
     val requestPermissionCount: StateFlow<Int?> = permissionRepository

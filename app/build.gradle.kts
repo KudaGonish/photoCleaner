@@ -64,8 +64,11 @@ dependencies {
     implementation(project(":permission-rationale-feature"))
     implementation(project(":core-ui"))
     implementation(project(":data-store"))
-    implementation(libs.coil.compose)
+    implementation(project(":core"))
+    implementation(libs.koin.androidx.workmanager)
 
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
