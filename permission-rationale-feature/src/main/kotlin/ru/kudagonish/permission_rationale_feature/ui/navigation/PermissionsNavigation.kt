@@ -7,8 +7,8 @@ sealed interface PermissionsNavigation {
     data object Route : PermissionsNavigation
 
     @Serializable
-    data object PermissionRationale : PermissionsNavigation
+    data object PermissionRationaleScreen : PermissionsNavigation
 
     @Serializable
-    data object SettingsRationale : PermissionsNavigation
+    data object SettingsRationaleScreen : PermissionsNavigation
 }
