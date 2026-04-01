@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_trash">Корзина</string>
+    <string name="tab_clean">Очистка</string>
+    <string name="tab_settings">Настройки</string>
+</resources>

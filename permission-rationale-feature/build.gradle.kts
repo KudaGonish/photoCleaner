@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":data-store"))
     implementation(project(":photo-finder"))
+    implementation(project(":feature-main"))
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

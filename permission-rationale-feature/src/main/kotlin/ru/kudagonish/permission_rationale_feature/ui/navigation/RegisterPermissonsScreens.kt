@@ -7,38 +7,38 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation.PermissionRationale
-import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation.SettingsRationale
+import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation.PermissionRationaleScreen
+import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation.SettingsRationaleScreen
 import ru.kudagonish.permission_rationale_feature.ui.screens.permissions.PermissionRationaleScreen
 import ru.kudagonish.permission_rationale_feature.ui.screens.settings.SettingsRationaleScreen
 import ru.kudagonish.core.PermissionStatus
+import ru.kudagonish.feature_main.ui.navigation.MainNavigation
 
 fun NavGraphBuilder.registerPermissionsScreens(
     navController: NavController,
     permissionStatus: PermissionStatus
 ) {
     val startDestination: Any = when (permissionStatus) {
-        PermissionStatus.PermanentlyDenied -> SettingsRationale
-        else -> PermissionRationale
+        PermissionStatus.PermanentlyDenied -> SettingsRationaleScreen
+        else -> PermissionRationaleScreen
     }
 
     this.navigation<PermissionsNavigation.Route>(startDestination) {
-        composable<PermissionRationale> { backstack ->
+        composable<PermissionRationaleScreen> { backstack ->
             val parentBackstack = backstack.requireParentBackStackEntry(navController)
             PermissionRationaleScreen(
                 viewmodel = koinViewModel(viewModelStoreOwner = parentBackstack),
                 onNavigateToMainScreen = {
-                    navController.navigate(Main) {
+                    navController.navigate(MainNavigation.MainScreen) {
                         popUpTo(route = PermissionsNavigation.Route){
                             inclusive = true
                         }
                     }
                 },
                 onNavigateToSettingsInstructionScreen = {
-                    navController.navigate(SettingsRationale) {
-                        this.popUpTo(PermissionRationale) {
+                    navController.navigate(SettingsRationaleScreen) {
+                        this.popUpTo(PermissionRationaleScreen) {
                             this.inclusive = true
                         }
                     }
@@ -46,12 +46,12 @@ fun NavGraphBuilder.registerPermissionsScreens(
             )
         }
 
-        composable<SettingsRationale> { backstack ->
+        composable<SettingsRationaleScreen> { backstack ->
             val parentBackstack = backstack.requireParentBackStackEntry(navController)
             SettingsRationaleScreen(
                 viewmodel = koinViewModel(viewModelStoreOwner = parentBackstack),
                 onNavigateToMainScreen = {
-                    navController.navigate(Main) {
+                    navController.navigate(MainNavigation.MainScreen) {
                         popUpTo(route = PermissionsNavigation.Route) {
                             inclusive = true
                         }
@@ -62,14 +62,10 @@ fun NavGraphBuilder.registerPermissionsScreens(
     }
 }
 
-@Serializable
-data object Main
-
 @Composable
 fun NavBackStackEntry.requireParentBackStackEntry(
     navController: NavController
 ): NavBackStackEntry = remember(this) {
     val parentRoute = destination.parent?.route ?: error("current destination has no parent")
-
     navController.getBackStackEntry(parentRoute)
 }

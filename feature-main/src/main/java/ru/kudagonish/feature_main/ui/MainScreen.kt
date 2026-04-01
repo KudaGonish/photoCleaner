@@ -19,9 +19,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.DeleteSweep
+import androidx.compose.material.icons.outlined.Http
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.RestoreFromTrash
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.ViewCozy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,64 +42,62 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
+import ru.kudagonish.feature_main.R
 
 @Composable
 internal fun MainScreen() {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 1, pageCount = { 3 })
-
+    var jumpInfo by remember { mutableStateOf<Pair<Int, Int>?>(null) }
     val pages = listOf(
         PagerItem(
-            icon = Icons.Outlined.RestoreFromTrash,
-            title = "Корзина",
-            onClick = {scope.launch { pagerState.scrollToPage(0) }},
+            icon = Icons.Outlined.DeleteSweep,
+            title = stringResource(R.string.tab_trash),
             content = {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .background(Color.Green),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Корзина", color = Color.Black)
+                    //TODO таб из модуля корзины, виден только если выбран режим "удалить через N дней"
                 }
             }
         ),
         PagerItem(
-            icon = Icons.Outlined.Image,
-            title = "Отчистка",
-            onClick = { scope.launch { pagerState.scrollToPage(1) } },
+            icon = Icons.Outlined.ViewCozy,
+            title = stringResource(R.string.tab_clean),
             content = {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .background(Color.Red),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Отчистка", color = Color.Black)
+                    //TODO таб из модуля с отчисткой
                 }
             }
         ),
         PagerItem(
             icon = Icons.Outlined.Settings,
-            title = "Настройки",
-            onClick = { scope.launch { pagerState.scrollToPage(2) } },
+            title = stringResource(R.string.tab_settings),
             content = {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .background(Color.Blue),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Настройки", color = Color.Black)
+                    //TODO таб из модуля с настройками
                 }
             }
         )
     )
-
-
-    // Храним стабильную информацию о прыжке: 
-    // (какой индекс физической страницы подменить -> какой реальный контент там показать)
-    var jumpInfo by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
@@ -103,70 +105,37 @@ internal fun MainScreen() {
             modifier = Modifier.fillMaxSize(),
             userScrollEnabled = false
         ) { pageIndex ->
-            // Используем зафиксированный индекс для подмены
             val displayPageIndex = if (pageIndex == jumpInfo?.first) {
                 jumpInfo!!.second
             } else {
                 pageIndex
             }
 
-            pages[pageIndex].content()
+            pages[displayPageIndex].content()
         }
-        BottomMenu(pagerState.currentPage, pages)
+        BottomMenu(
+            currentPage = jumpInfo?.second ?: pagerState.currentPage,
+            items = pages,
+            onClick = { targetPage ->
+                scope.launch {
+                    val current = pagerState.currentPage
+                    val fakeIndex = if (targetPage < current) current - 1 else current + 1
 
-        /*        Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(onClick = {
-                        scope.launch {
-                            val targetPage = 0
-                            val current = pagerState.currentPage
-
-                            if (current > 1) {
-                                val fakeIndex = current - 1
-                                jumpInfo =
-                                    fakeIndex to targetPage // Фиксируем: страница слева теперь выглядит как Первая
-                                pagerState.animateScrollToPage(fakeIndex)
-                                pagerState.scrollToPage(targetPage)
-                                jumpInfo = null
-                            } else if (current != targetPage) {
-                                pagerState.animateScrollToPage(targetPage)
-                            }
-                        }
-                    }) {
-                        Text("На 1 страницу")
-                    }
-
-                    Button(onClick = {
-                        scope.launch {
-                            val targetPage = pageCount - 1
-                            val current = pagerState.currentPage
-
-                            if (current < targetPage - 1) {
-                                val fakeIndex = current + 1
-                                jumpInfo =
-                                    fakeIndex to targetPage // Фиксируем: страница справа теперь выглядит как Последняя
-                                pagerState.animateScrollToPage(fakeIndex)
-                                pagerState.scrollToPage(targetPage)
-                                jumpInfo = null
-                            } else if (current != targetPage) {
-                                pagerState.animateScrollToPage(targetPage)
-                            }
-                        }
-                    }) {
-                        Text("На последнюю")
-                    }
-                }*/
+                    jumpInfo = fakeIndex to targetPage
+                    pagerState.animateScrollToPage(fakeIndex)
+                    pagerState.scrollToPage(targetPage)
+                    jumpInfo = null
+                }
+            }
+        )
     }
 }
 
 @Composable
 internal fun BoxScope.BottomMenu(
     currentPage: Int,
-    items: List<PagerItem>
+    items: List<PagerItem>,
+    onClick: (targetPage: Int) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -205,7 +174,7 @@ internal fun BoxScope.BottomMenu(
                         .clickable(
                             indication = null,
                             interactionSource = null,
-                            onClick = item.onClick
+                            onClick = { onClick(index) }
                         ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -225,12 +194,7 @@ internal fun BoxScope.BottomMenu(
     }
 }
 
-internal data class PagerItem(
-    val icon: ImageVector,
-    val title: String,
-    val onClick: () -> Unit,
-    val content: @Composable () -> Unit
-)
+
 
 @Preview(showBackground = true)
 @Composable
