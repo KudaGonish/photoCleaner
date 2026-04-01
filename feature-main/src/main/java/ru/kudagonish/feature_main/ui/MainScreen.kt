@@ -19,12 +19,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.Http
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.RestoreFromTrash
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.ViewCozy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -41,23 +36,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
 import ru.kudagonish.feature_main.R
+import ru.kudagonish.feature_settings.tab.settingsTabItem
 
 @Composable
 internal fun MainScreen() {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 1, pageCount = { 3 })
     var jumpInfo by remember { mutableStateOf<Pair<Int, Int>?>(null) }
-    val pages = listOf(
+
+    val pages = persistentListOf(
         PagerItem(
             icon = Icons.Outlined.DeleteSweep,
-            title = stringResource(R.string.tab_trash),
+            title = R.string.tab_trash,
             content = {
                 Box(
                     modifier = Modifier
@@ -71,7 +69,7 @@ internal fun MainScreen() {
         ),
         PagerItem(
             icon = Icons.Outlined.ViewCozy,
-            title = stringResource(R.string.tab_clean),
+            title = R.string.tab_clean,
             content = {
                 Box(
                     modifier = Modifier
@@ -83,20 +81,7 @@ internal fun MainScreen() {
                 }
             }
         ),
-        PagerItem(
-            icon = Icons.Outlined.Settings,
-            title = stringResource(R.string.tab_settings),
-            content = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Blue),
-                    contentAlignment = Alignment.Center
-                ) {
-                    //TODO таб из модуля с настройками
-                }
-            }
-        )
+        settingsTabItem()
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -134,7 +119,7 @@ internal fun MainScreen() {
 @Composable
 internal fun BoxScope.BottomMenu(
     currentPage: Int,
-    items: List<PagerItem>,
+    items: ImmutableList<PagerItem>,
     onClick: (targetPage: Int) -> Unit
 ) {
     Row(
@@ -185,7 +170,7 @@ internal fun BoxScope.BottomMenu(
                         contentDescription = null,
                         tint = Color.Black
                     )
-                    Text(text = item.title)
+                    Text(text = stringResource(item.title))
                 }
                 if (items.lastIndex != index)
                     Spacer(Modifier.width(8.dp))
@@ -193,7 +178,6 @@ internal fun BoxScope.BottomMenu(
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_settings">Настройки</string>
+    <string name="selection_theme">Внешний вид</string>
+    <string name="selection_search_algorithm">Алгоритм поиска</string>
+</resources>
