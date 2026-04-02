@@ -3,4 +3,8 @@
     <string name="tab_settings">Настройки</string>
     <string name="selection_theme">Внешний вид</string>
     <string name="selection_search_algorithm">Алгоритм поиска</string>
+    <string name="selection_utilization">Утилизация</string>
+    <string name="utilization_instantly">Мгновенно</string>
+    <string name="utilization_deffered">Отложенное удаление</string>
+    <string name="utilization_system_basket">Системная корзина</string>
 </resources>

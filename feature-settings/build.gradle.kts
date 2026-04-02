@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
 
+    // Kotlinx
+    implementation(libs.kotlinx.datetime)
+
     // Internal Modules
     implementation(project(":core-ui"))
 

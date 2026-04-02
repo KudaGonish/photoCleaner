@@ -46,7 +46,6 @@ internal fun SettingsRationaleContent(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-
             AnimatedAppearance(index = 0) {
                 Icon(
                     imageVector = Icons.Default.ImageSearch,
@@ -55,9 +54,7 @@ internal fun SettingsRationaleContent(
                     tint = Color(0xFF111827)
                 )
             }
-
             Spacer(modifier = Modifier.height(32.dp))
-
             AnimatedAppearance(index = 1) {
                 Text(
                     text = stringResource(R.string.settings_rationale_title),
@@ -67,9 +64,7 @@ internal fun SettingsRationaleContent(
                     textAlign = TextAlign.Center
                 )
             }
-
             Spacer(modifier = Modifier.height(32.dp))
-
             AnimatedAppearance(index = 2) {
                 Text(
                     text = stringResource(R.string.settings_rationale_description),
@@ -79,9 +74,7 @@ internal fun SettingsRationaleContent(
                     textAlign = TextAlign.Justify
                 )
             }
-
             Spacer(modifier = Modifier.height(48.dp))
-
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -105,9 +98,7 @@ internal fun SettingsRationaleContent(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.weight(1f))
-
             AnimatedAppearance(index = 6) {
                 Button(
                     onClick = onNavigateToSettings,
