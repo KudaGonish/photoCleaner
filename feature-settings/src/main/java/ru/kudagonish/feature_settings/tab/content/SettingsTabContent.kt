@@ -18,9 +18,6 @@ import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Shield
-import androidx.compose.material.icons.outlined.Bolt
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,10 +27,6 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,8 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.feature_settings.R
 import ru.kudagonish.feature_settings.tab.ui.DoubleContentRow
@@ -51,11 +42,11 @@ import ru.kudagonish.feature_settings.tab.ui.SettingsSection
 import ru.kudagonish.feature_settings.tab.ui.StatisticCard
 import ru.kudagonish.feature_settings.tab.ui.UtilizationRadioButton
 import ru.kudagonish.feature_settings.tab.ui.itemsRoundedShape
-import kotlin.time.Clock
+import ru.kudagonish.feature_settings.tab.viewModel.SettingsTabState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SettingsTabContent() {
+internal fun SettingsTabContent(state: SettingsTabState) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -76,7 +67,7 @@ internal fun SettingsTabContent() {
         StatisticCard()
         SettingsSection(
             titleIcon = Icons.Filled.ColorLens,
-            titleText = R.string.selection_theme,
+            titleText = R.string.selection_ui,
             content = {
                 DoubleContentRow(
                     leftContent = {
@@ -108,8 +99,6 @@ internal fun SettingsTabContent() {
             titleIcon = Icons.Filled.AutoFixHigh,
             titleText = R.string.selection_search_algorithm,
             content = {
-                var selectedIndex by remember { mutableIntStateOf(0) }
-                val options = listOf("Воспоминания", "Уборка")
                 SingleChoiceSegmentedButtonRow(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -118,8 +107,7 @@ internal fun SettingsTabContent() {
                         .clip(RoundedCornerShape(16.dp))
                         .background(Color.Gray.copy(alpha = 0.2f))
                 ) {
-                    options.forEachIndexed { index, label ->
-                        val isSelected = selectedIndex == index
+                    state.deletionTypes.forEach { type ->
                         SegmentedButton(
                             modifier = Modifier
                                 .weight(1f)
@@ -130,14 +118,14 @@ internal fun SettingsTabContent() {
                                 activeContainerColor = Color.Blue.copy(alpha = 0.7f),
                                 inactiveContainerColor = Color.Transparent
                             ),
-                            onClick = { selectedIndex = index },
-                            selected = isSelected,
+                            onClick = { /*TODO event */ },
+                            selected = type.isSelected,
                             icon = { },
                             label = {
                                 Text(
-                                    text = label,
+                                    text = stringResource(type.title!!),
                                     style = MaterialTheme.typography.titleSmall,
-                                    color = if (isSelected) Color.White else Color.Black
+                                    color = if (type.isSelected) Color.White else Color.Black
                                 )
                             }
                         )
@@ -149,38 +137,25 @@ internal fun SettingsTabContent() {
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 20.dp),
                     style = MaterialTheme.typography.bodyMedium,
-                    text = "Какой то текст с описанием работы режимов ляляля пару строчек надо сделать"
+                    text = stringResource(state.deletionTypes.first { it.isSelected }.description!!)
                 )
             }
         )
         SettingsSection(
             titleIcon = Icons.Filled.Shield,
-            titleText = R.string.selection_utilization,
+            titleText = R.string.selection_util,
             content = {
-                UtilizationRadioButton(
-                    icon = Icons.Outlined.Bolt,
-                    iconColor = Color.Red,
-                    title = stringResource(R.string.utilization_instantly),
-                    description = "Какое-то описание",
-                    selected = true,
-                    onClick = {}
-                )
-                UtilizationRadioButton(
-                    icon = Icons.Outlined.Schedule,
-                    iconColor = Color.Green,
-                    title = stringResource(R.string.utilization_deffered),
-                    description = "Какое-то описание",
-                    selected = false,
-                    onClick = {}
-                )
-                UtilizationRadioButton(
-                    icon = Icons.Outlined.Delete,
-                    iconColor = Color.Blue,
-                    title = stringResource(R.string.utilization_system_basket),
-                    description = "Какое-то описание",
-                    selected = false,
-                    onClick = {}
-                )
+
+                state.algorithms.forEach { algorithm ->
+                    UtilizationRadioButton(
+                        icon = algorithm.icon!!,
+                        iconColor = algorithm.color!!,
+                        title = stringResource(algorithm.title!!),
+                        description = stringResource(algorithm.description!!),
+                        selected = algorithm.isSelected,
+                        onClick = {}
+                    )
+                }
             }
         )
         OutlinedButton(
@@ -191,15 +166,13 @@ internal fun SettingsTabContent() {
             onClick = {}
         ) {
             Icon(imageVector = Icons.Filled.Replay, contentDescription = null)
-            Text("Просканировать заново")
+            Text(stringResource(R.string.button_rescan))
         }
-        val timezone = TimeZone.currentSystemDefault()
-        val year = Clock.System.now().toLocalDateTime(timezone).year
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp),
-            text = "Версия 0.0.1 • $year"
+            text = "${state.version} • ${state.currentYear}"
         )
     }
 }

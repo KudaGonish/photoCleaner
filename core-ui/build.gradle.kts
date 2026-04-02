@@ -46,6 +46,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    //kotlinx
+    implementation(libs.kotlinx.collections.immutable)
+
+    //Inner modules
+
     // Debug Tools
     debugImplementation(libs.androidx.ui.tooling)
 }

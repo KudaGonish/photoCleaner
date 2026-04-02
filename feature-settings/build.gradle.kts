@@ -49,9 +49,11 @@ dependencies {
 
     // Kotlinx
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.collections.immutable)
 
     // Internal Modules
     implementation(project(":core-ui"))
+    implementation(project(":data-store"))
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

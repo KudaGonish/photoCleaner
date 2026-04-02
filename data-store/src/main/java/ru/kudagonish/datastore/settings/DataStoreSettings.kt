@@ -1,13 +1,16 @@
 package ru.kudagonish.datastore.settings
 
+import kotlinx.coroutines.flow.Flow
 import ru.kudagonish.datastore.settings.models.AppTheme
+import ru.kudagonish.datastore.settings.models.ApplicationSettings
 import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.datastore.settings.models.FullSettings
 import ru.kudagonish.datastore.settings.models.Language
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 
 interface DataStoreSettings {
-    suspend fun getSettings()
+    val settingsFlow: Flow<ApplicationSettings>
+    suspend fun getSettings(): ApplicationSettings
 
     fun changeTheme(newValue: AppTheme)
     fun changeLanguage(newValue: Language)

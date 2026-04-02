@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tab_settings">Настройки</string>
-    <string name="selection_theme">Внешний вид</string>
+
+    <string name="selection_ui">Внешний вид</string>
+    <string name="selection_ui_theme_title">Тема оформления</string>
+    <string name="selection_ui_lang_title">Язык</string>
+
     <string name="selection_search_algorithm">Алгоритм поиска</string>
-    <string name="selection_utilization">Утилизация</string>
-    <string name="utilization_instantly">Мгновенно</string>
-    <string name="utilization_deffered">Отложенное удаление</string>
-    <string name="utilization_system_basket">Системная корзина</string>
+    <string name="selection_algo_day_month">Воспоминания</string>
+    <string name="selection_algo_day_month_desc">Поиск похожих фото за текущую дату в разные года. Идеально для удаления по чуть-чуть.</string>
+    <string name="selection_algo_full_time">Уборка</string>
+    <string name="selection_algo_full_dec">Полный аудит всех фотографий на устройстве.  Даёт возможность очистить всю галерею, сохраняя прогресс.</string>
+
+    <string name="selection_util">Утилизация</string>
+    <string name="selection_util_instantly">Мгновенно</string>
+    <string name="selection_util_instantly_desc">Без возможности восстановления</string>
+    <string name="selection_util_deffered">Отложенное удаление</string>
+    <string name="selection_util_deffered_desc">Безопасный режим с буффером</string>
+    <string name="selection_util_system_basket">Системная корзина</string>
+    <string name="selection_util_system_basket_desc">Переместить в корзину Android</string>
+
+    <string name="button_rescan">Просканировать заново</string>
 </resources>
