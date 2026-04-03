@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
+import ru.kudagonish.core_ui.theme.LocalCustomColors
 
 
 private val bottomPadding = 16.dp
@@ -56,15 +58,16 @@ fun BoxScope.BottomMenu(
                 )
             )
             .clip(CircleShape)
-            .background(Color.White)
-            .padding(vertical = 4.dp, horizontal = 6.dp)
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 4.dp, horizontal = 4.dp)
             .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEachIndexed { index, item ->
             val backgroundColor by animateColorAsState(
-                targetValue = if (currentPage == index) Color.Green.copy(alpha = 0.2f) else Color.White,
+                targetValue = if (currentPage == index) LocalCustomColors.current.navActive//MaterialTheme.colorScheme.tertiaryContainer
+                else MaterialTheme.colorScheme.surface,
                 label = ""
             )
             key(item.icon) {
@@ -87,9 +90,13 @@ fun BoxScope.BottomMenu(
                         modifier = Modifier.size(itemIconSize),
                         imageVector = item.icon,
                         contentDescription = null,
-                        tint = Color.Black
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
-                    Text(text = stringResource(item.title))
+                    Text(
+                        text = stringResource(item.title),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
                 if (items.lastIndex != index)
                     Spacer(Modifier.width(8.dp))

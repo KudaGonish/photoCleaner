@@ -38,8 +38,7 @@ internal fun MainScreen() {
             content = {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Green),
+                        .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     //TODO таб из модуля корзины, виден только если выбран режим "удалить через N дней"
@@ -52,8 +51,7 @@ internal fun MainScreen() {
             content = {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Red),
+                        .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     //TODO таб из модуля с отчисткой

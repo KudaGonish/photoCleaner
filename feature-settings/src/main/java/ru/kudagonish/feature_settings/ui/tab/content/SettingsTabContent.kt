@@ -1,36 +1,30 @@
 package ru.kudagonish.feature_settings.ui.tab.content
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,10 +36,13 @@ import ru.kudagonish.datastore.settings.models.Language
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 import ru.kudagonish.feature_settings.R
 import ru.kudagonish.feature_settings.ui.tab.ui.DoubleContentRow
+import ru.kudagonish.feature_settings.ui.tab.ui.DropdownMenu
+import ru.kudagonish.feature_settings.ui.tab.ui.RescanButton
+import ru.kudagonish.feature_settings.ui.tab.ui.SelectorSegmentedButtons
 import ru.kudagonish.feature_settings.ui.tab.ui.SettingsSection
 import ru.kudagonish.feature_settings.ui.tab.ui.StatisticCard
+import ru.kudagonish.feature_settings.ui.tab.ui.ThemeSelector
 import ru.kudagonish.feature_settings.ui.tab.ui.UtilizationRadioButton
-import ru.kudagonish.feature_settings.ui.tab.ui.itemsRoundedShape
 import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabState
 import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabViewModel.Event
 import ru.kudagonish.feature_settings.ui.tab.viewModel.mapAlgorithms
@@ -76,85 +73,55 @@ internal fun SettingsTabContent(
                 fontWeight = FontWeight.Bold,
             )
         }
-        StatisticCard()
+//        StatisticCard()
         SettingsSection(
             titleIcon = Icons.Filled.ColorLens,
             titleText = R.string.selection_ui,
             content = {
+                Spacer(Modifier.height(16.dp))
                 DoubleContentRow(
                     leftContent = {
                         Text(
-                            text = "Язык"
+                            text = stringResource(R.string.selection_ui_lang_title),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleSmall
                         )
                     },
                     rightContent = {
-                        Text(
-                            text = "\uD83C\uDDF7\uD83C\uDDFA Русский"
+                        DropdownMenu(
+                            languages = state.languages,
+                            onSelectItem = { sendEvent(Event.OnChangeLanguage(it)) }
                         )
                     }
                 )
+                Spacer(Modifier.height(12.dp))
                 DoubleContentRow(
                     leftContent = {
                         Text(
-                            text = "Тема"
+                            text = stringResource(R.string.selection_ui_theme_title),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleSmall
                         )
                     },
                     rightContent = {
-                        Text(
-                            text = "Светлая|Тёмная|Системная"
+                        ThemeSelector(
+                            themes = state.themes,
+                            onSelectItem = { sendEvent(Event.OnChangeTheme(it)) }
                         )
                     }
                 )
+                Spacer(Modifier.height(16.dp))
             }
         )
         SettingsSection(
             titleIcon = Icons.Filled.AutoFixHigh,
             titleText = R.string.selection_search_algorithm,
             content = {
-                SingleChoiceSegmentedButtonRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp)
-                        .padding(top = 12.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.Gray.copy(alpha = 0.2f))
-                ) {
-                    state.algorithms.forEach { type ->
-                        SegmentedButton(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(40.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            border = BorderStroke(0.dp, Color.Transparent),
-                            colors = SegmentedButtonDefaults.colors().copy(
-                                activeContainerColor = Color.Blue.copy(alpha = 0.7f),
-                                inactiveContainerColor = Color.Transparent
-                            ),
-                            onClick = { /*TODO event */ },
-                            selected = type.isSelected,
-                            icon = { },
-                            label = {
-                                Text(
-                                    text = stringResource(type.title!!),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = if (type.isSelected) Color.White else Color.Black
-                                )
-                            }
-                        )
-                    }
-                }
-                Spacer(Modifier.height(16.dp))
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .padding(bottom = 20.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    text = state.algorithms
-                        .firstOrNull { it.isSelected }?.description
-                        ?.let {
-                            stringResource(it)
-                        } ?: ""
+                SelectorSegmentedButtons(
+                    algorithms = state.algorithms,
+                    onChangeValue = { sendEvent(Event.OnChangeAlgorithm(it)) }
                 )
+
             }
         )
         SettingsSection(
@@ -173,16 +140,7 @@ internal fun SettingsTabContent(
                 }
             }
         )
-        OutlinedButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            shape = itemsRoundedShape,
-            onClick = {}
-        ) {
-            Icon(imageVector = Icons.Filled.Replay, contentDescription = null)
-            Text(stringResource(R.string.button_rescan))
-        }
+        RescanButton()
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

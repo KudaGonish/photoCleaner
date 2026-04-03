@@ -39,12 +39,12 @@ internal fun SettingsSection(
                 modifier = Modifier.size(16.dp),
                 imageVector = titleIcon,
                 contentDescription = null,
-                tint = Color.Gray
+                tint = MaterialTheme.colorScheme.secondary
             )
             Spacer(Modifier.width(4.dp))
             Text(
                 text = stringResource(titleText).uppercase(),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )

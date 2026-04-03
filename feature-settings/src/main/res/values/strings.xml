@@ -5,8 +5,8 @@
     <string name="selection_ui">Appearance</string>
     <string name="selection_ui_theme_title">Theme</string>
     <string name="selection_ui_lang_title">Language</string>
-    <string name="selection_ui_lang_ru" translatable="false">Русский</string>
-    <string name="selection_ui_lang_en" translatable="false">English</string>
+    <string name="selection_ui_lang_ru" translatable="false">🇷🇺 Русский</string>
+    <string name="selection_ui_lang_en" translatable="false">🇬🇧 English</string>
 
     <string name="selection_search_algorithm">Search algorithm</string>
     <string name="selection_algo_day_month">Memories</string>

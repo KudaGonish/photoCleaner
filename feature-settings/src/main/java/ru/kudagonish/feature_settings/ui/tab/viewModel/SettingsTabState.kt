@@ -26,14 +26,15 @@ internal data class SettingsTabState(
     val currentYear: String = TimeZone.currentSystemDefault().let {
         Clock.System.now().toLocalDateTime(it).year.toString()
     },
-    val themes: ImmutableList<SelectionItem> = persistentListOf(),
-    val languages: ImmutableList<SelectionItem> = persistentListOf(),
-    val algorithms: ImmutableList<SelectionItem> = persistentListOf(),
-    val deletionTypes: ImmutableList<SelectionItem> = persistentListOf()
+    val languages: ImmutableList<SelectionItem<Language>> = persistentListOf(),
+    val themes: ImmutableList<SelectionItem<AppTheme>> = persistentListOf(),
+    val algorithms: ImmutableList<SelectionItem<WorkAlgorithm>> = persistentListOf(),
+    val deletionTypes: ImmutableList<SelectionItem<DeletionType>> = persistentListOf()
 )
 
 internal fun AppTheme.mapThemes() = defaultSettings.themes.map {
     SelectionItem(
+        setting = it,
         isSelected = it == this,
         icon = when (it) {
             AppTheme.Light -> Icons.Outlined.LightMode
@@ -45,6 +46,7 @@ internal fun AppTheme.mapThemes() = defaultSettings.themes.map {
 
 internal fun Language.mapLanguages() = defaultSettings.languages.map {
     SelectionItem(
+        setting = it,
         isSelected = it == this,
         title = when (it) {
             Language.Ru -> R.string.selection_ui_lang_ru
@@ -55,6 +57,7 @@ internal fun Language.mapLanguages() = defaultSettings.languages.map {
 
 internal fun WorkAlgorithm.mapAlgorithms() = defaultSettings.algorithms.map {
     SelectionItem(
+        setting = it,
         isSelected = it == this,
         title = when (it) {
             WorkAlgorithm.DayMoth -> R.string.selection_algo_day_month
@@ -69,6 +72,7 @@ internal fun WorkAlgorithm.mapAlgorithms() = defaultSettings.algorithms.map {
 
 internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map {
     SelectionItem(
+        setting = it,
         isSelected = when {
             it is DeletionType.Deffered && this is DeletionType.Deffered -> true
             else -> it == this

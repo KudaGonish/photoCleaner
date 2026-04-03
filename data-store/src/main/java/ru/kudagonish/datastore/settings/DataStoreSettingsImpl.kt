@@ -3,6 +3,7 @@ package ru.kudagonish.datastore.settings
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -35,19 +36,25 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
         return settingsFlow.first()
     }
 
-    override fun changeTheme(newValue: AppTheme) {
-        TODO("Not yet implemented")
+    override suspend fun changeLanguage(newValue: Language) {
+        context.dataStore.edit { preferences ->
+            preferences[languageKey] = newValue.toString()
+        }
     }
 
-    override fun changeLanguage(newValue: Language) {
-        TODO("Not yet implemented")
+    override suspend fun changeTheme(newValue: AppTheme) {
+        context.dataStore.edit { preferences ->
+            preferences[themeKey] = newValue.toString()
+        }
     }
 
-    override fun changAlgorithm(newValue: WorkAlgorithm) {
-        TODO("Not yet implemented")
+    override suspend fun changAlgorithm(newValue: WorkAlgorithm) {
+        context.dataStore.edit { preferences ->
+            preferences[algorithmKey] = newValue.toString()
+        }
     }
 
-    override fun changeDeletionType(newValue: DeletionType) {
+    override suspend fun changeDeletionType(newValue: DeletionType) {
         TODO("Not yet implemented")
     }
 

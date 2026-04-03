@@ -8,6 +8,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -17,19 +18,38 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primary = DeepAnthracite,
     onPrimary = Color.White,
+    primaryContainer = Color(0xFFE2E8F0),
+    onPrimaryContainer = DeepAnthracite,
+
+    // Вторичный акцент (Активные табы, выделенные значения в настройках)
+    secondary = BubbleBlue,
     onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    secondaryContainer = Color(0xFFF1F5F9), // Неактивный фон табов/селекторов
+    onSecondaryContainer = SlateGray,
+
+    // Третичный акцент (Иконки в настройках — теперь используем нежно-голубой из градиента)
+    tertiary = BubbleBlue,
+    onTertiary = DeepAnthracite,
+    tertiaryContainer = BubbleBlue.copy(alpha = 0.2f),
+    onTertiaryContainer = DeepAnthracite,
+
+    // Фон всего приложения
+    background = SoftBackground,
+    onBackground = DeepAnthracite,
+
+    // Поверхности (Карточки, плашки настроек)
+    surface = Color.White,
+    onSurface = DeepAnthracite,
+
+    // Второстепенный текст и разделители
+    surfaceVariant = Color(0xFFF1F5F9),
+    onSurfaceVariant = SlateGray,
+
+    outline = Color(0xFFE2E8F0),
+    error = RedInstant,
+    onError = Color.White
 )
 
 @Composable
