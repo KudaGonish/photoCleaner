@@ -12,10 +12,54 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Color.White,              // Кнопки инвертируются в белый
+    onPrimary = DeepAnthracite,
+    primaryContainer = Color(0xFF334155),
+    onPrimaryContainer = Color.White,
+
+    secondary = BubbleBlue,             // Акценты сохраняем пастельными
+    onSecondary = DeepAnthracite,
+    secondaryContainer = Color(0xFF334155),
+    onSecondaryContainer = BubbleBlue,
+
+    background = DarkBg,
+    onBackground = Color.White,
+
+    surface = DarkSurface,
+    onSurface = Color.White,
+
+    surfaceVariant = Color(0xFF334155),
+    onSurfaceVariant = DarkOnSurfaceVariant,
+
+    outline = Color(0xFF334155),
+    error = RedInstant,
+    onError = Color.White
 )
+/*  TODO нужно будет выбрать какую тему ставить, после того как закончу со статистикой
+  darkColorScheme(
+    primary = Color.White,              // Кнопки инвертируются в белый
+    onPrimary = DeepAnthracite,
+    primaryContainer = DarkSurfaceVariant,
+    onPrimaryContainer = Color.White,
+
+    secondary = BubbleBlue,             // Акценты сохраняем пастельными
+    onSecondary = DeepAnthracite,
+    secondaryContainer = DarkSurfaceVariant,
+
+    background = DarkBg,
+    onBackground = Color.White,
+
+    surface = DarkSurface,
+    onSurface = Color.White,
+
+    surfaceVariant = DarkSurfaceVariant,
+    // onSurfaceVariant здесь отвечает за второстепенный текст
+    onSurfaceVariant = DarkOnSurfaceVariant,
+
+    outline = DarkSurfaceVariant,
+    error = RedInstant,
+    onError = Color.White
+)*/
 
 private val LightColorScheme = lightColorScheme(
     primary = DeepAnthracite,

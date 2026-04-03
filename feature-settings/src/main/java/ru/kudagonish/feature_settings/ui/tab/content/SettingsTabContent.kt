@@ -68,6 +68,7 @@ internal fun SettingsTabContent(
             Text(
                 text = stringResource(R.string.tab_settings),
                 style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
             )
         }

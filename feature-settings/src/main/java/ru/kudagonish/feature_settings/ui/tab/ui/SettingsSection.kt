@@ -61,7 +61,7 @@ internal fun SettingsSection(
                     )
                 )
                 .clip(itemsRoundedShape)
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.surface),
             content = content
         )
     }
