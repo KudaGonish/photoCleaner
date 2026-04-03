@@ -58,7 +58,7 @@ internal fun DropdownMenu(
         ) {
             Text(
                 text = selectedLanguage,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             Spacer(Modifier.width(8.dp))
@@ -89,7 +89,7 @@ internal fun DropdownMenu(
                         )
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     text = stringResource(language.title!!),
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }

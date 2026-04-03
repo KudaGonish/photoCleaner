@@ -1,17 +1,12 @@
 package ru.kudagonish.feature_settings.ui.tab.content
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.kudagonish.core_ui.elements.bottomMenuPadding
+import ru.kudagonish.core_ui.theme.LocalCustomColors
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
 import ru.kudagonish.datastore.settings.models.AppTheme
 import ru.kudagonish.datastore.settings.models.DeletionType
@@ -60,7 +57,8 @@ internal fun SettingsTabContent(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = bottomMenuPadding),
         verticalArrangement = Arrangement.spacedBy(28.dp)
     ) {
         Box(
@@ -73,7 +71,7 @@ internal fun SettingsTabContent(
                 fontWeight = FontWeight.Bold,
             )
         }
-//        StatisticCard()
+        StatisticCard()
         SettingsSection(
             titleIcon = Icons.Filled.ColorLens,
             titleText = R.string.selection_ui,
@@ -84,7 +82,7 @@ internal fun SettingsTabContent(
                         Text(
                             text = stringResource(R.string.selection_ui_lang_title),
                             color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.titleMedium
                         )
                     },
                     rightContent = {
@@ -100,7 +98,7 @@ internal fun SettingsTabContent(
                         Text(
                             text = stringResource(R.string.selection_ui_theme_title),
                             color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.titleMedium
                         )
                     },
                     rightContent = {
@@ -121,31 +119,40 @@ internal fun SettingsTabContent(
                     algorithms = state.algorithms,
                     onChangeValue = { sendEvent(Event.OnChangeAlgorithm(it)) }
                 )
-
             }
         )
         SettingsSection(
             titleIcon = Icons.Filled.Shield,
             titleText = R.string.selection_util,
             content = {
-                state.deletionTypes.forEach { algorithm ->
+                state.deletionTypes.forEach { type ->
+                    val color = when (type.setting) {
+                        DeletionType.Instant -> LocalCustomColors.current.instant
+                        is DeletionType.Deffered -> LocalCustomColors.current.safe
+                        DeletionType.SystemTrash -> LocalCustomColors.current.bin
+                    }
+                    Spacer(Modifier.height(16.dp))
                     UtilizationRadioButton(
-                        icon = algorithm.icon!!,
-                        iconColor = algorithm.color!!,
-                        title = stringResource(algorithm.title!!),
-                        description = stringResource(algorithm.description!!),
-                        selected = algorithm.isSelected,
+                        icon = type.icon!!,
+                        iconColor = color,
+                        title = stringResource(type.title!!),
+                        description = stringResource(type.description!!),
+                        selected = type.isSelected,
                         onClick = {}
                     )
                 }
+                Spacer(Modifier.height(16.dp))
             }
         )
         RescanButton()
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
+                .offset(y = (-16).dp)
                 .padding(bottom = 8.dp),
-            text = "${state.version} • ${state.currentYear}"
+            text = stringResource(R.string.app_version, state.version, state.currentYear),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelMedium
         )
     }
 }

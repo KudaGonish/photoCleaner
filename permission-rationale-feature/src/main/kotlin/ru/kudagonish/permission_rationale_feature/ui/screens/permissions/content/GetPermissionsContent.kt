@@ -126,8 +126,7 @@ internal fun PermissionRationaleContent(
                             text = stringResource(R.string.button_grant_permission),
                             style = MaterialTheme.typography.labelLarge.copy(
                                 fontWeight = FontWeight.Normal,
-                                fontSize = 16.sp,
-                                fontFamily = null
+                                fontSize = 16.sp
                             )
                         )
                     }

@@ -7,7 +7,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.SettingsSuggest
-import androidx.compose.ui.graphics.Color
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -91,11 +90,6 @@ internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map
             DeletionType.Instant -> Icons.Outlined.Bolt
             is DeletionType.Deffered -> Icons.Outlined.Schedule
             DeletionType.SystemTrash -> Icons.Outlined.Delete
-        },
-        color = when (it) {
-            DeletionType.Instant -> Color.Red
-            is DeletionType.Deffered -> Color.Green
-            DeletionType.SystemTrash -> Color.Blue
         }
     )
 }.toImmutableList()

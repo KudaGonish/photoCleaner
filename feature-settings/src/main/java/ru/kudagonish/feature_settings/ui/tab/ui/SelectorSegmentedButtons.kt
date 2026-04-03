@@ -58,7 +58,7 @@ internal fun SelectorSegmentedButtons(
                 label = {
                     Text(
                         text = stringResource(type.title!!),
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.titleMedium,
                         color = if (type.isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
@@ -85,7 +85,8 @@ internal fun SelectorSegmentedButtons(
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 20.dp),
             style = MaterialTheme.typography.bodySmall,
-            text = targetLabel
+            text = targetLabel,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

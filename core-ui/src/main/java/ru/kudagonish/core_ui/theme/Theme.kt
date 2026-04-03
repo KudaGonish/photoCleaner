@@ -23,29 +23,21 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = Color(0xFFE2E8F0),
     onPrimaryContainer = DeepAnthracite,
 
-    // Вторичный акцент (Активные табы, выделенные значения в настройках)
     secondary = BubbleBlue,
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFF1F5F9), // Неактивный фон табов/селекторов
+    secondaryContainer = Color(0xFFF1F5F9),
     onSecondaryContainer = SlateGray,
 
-    // Третичный акцент (Иконки в настройках — теперь используем нежно-голубой из градиента)
-    tertiary = BubbleBlue,
-    onTertiary = DeepAnthracite,
     tertiaryContainer = BubbleBlue.copy(alpha = 0.2f),
-    onTertiaryContainer = DeepAnthracite,
 
-    // Фон всего приложения
     background = SoftBackground,
     onBackground = DeepAnthracite,
 
-    // Поверхности (Карточки, плашки настроек)
     surface = Color.White,
     onSurface = DeepAnthracite,
 
-    // Второстепенный текст и разделители
     surfaceVariant = Color(0xFFF1F5F9),
-    onSurfaceVariant = SlateGray,
+    onSurfaceVariant = SurfaceGray,
 
     outline = Color(0xFFE2E8F0),
     error = RedInstant,

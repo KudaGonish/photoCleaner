@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,11 +33,8 @@ import kotlinx.collections.immutable.ImmutableList
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
 import ru.kudagonish.core_ui.theme.LocalCustomColors
 
-
-private val bottomPadding = 16.dp
-private val itemIconSize = 28.dp
-private val itemVerticalPadding = 4.dp
-val bottomMenuPadding = bottomPadding + itemIconSize + itemVerticalPadding * 2
+private val menuHeight = 61.dp
+val bottomMenuPadding = menuHeight
 
 @Composable
 fun BoxScope.BottomMenu(
@@ -59,14 +57,15 @@ fun BoxScope.BottomMenu(
             )
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = 4.dp, horizontal = 4.dp)
+            .padding( horizontal = 4.dp)
+            .height(menuHeight)
             .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEachIndexed { index, item ->
             val backgroundColor by animateColorAsState(
-                targetValue = if (currentPage == index) LocalCustomColors.current.navActive//MaterialTheme.colorScheme.tertiaryContainer
+                targetValue = if (currentPage == index) LocalCustomColors.current.navActive
                 else MaterialTheme.colorScheme.surface,
                 label = ""
             )
@@ -87,7 +86,7 @@ fun BoxScope.BottomMenu(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        modifier = Modifier.size(itemIconSize),
+                        modifier = Modifier.size(28.dp),
                         imageVector = item.icon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface

@@ -26,13 +26,13 @@ internal fun ThemeSelector(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(vertical = 4.dp, horizontal = 4.dp),
+            .padding(4.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         themes.forEach { theme ->
             Icon(
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(32.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .then(
                         if (!theme.isSelected) Modifier

@@ -11,6 +11,5 @@ internal data class SelectionItem<SettingType>(
     val isSelected: Boolean,
     @StringRes val title: Int? = null,
     @StringRes val description: Int? = null,
-    val icon: ImageVector? = null,
-    val color: Color? = null
+    val icon: ImageVector? = null
 )

@@ -23,4 +23,5 @@
     <string name="selection_util_system_basket_desc">Move to the Android Shopping Cart</string>
 
     <string name="button_rescan">Scan again</string>
+    <string name="app_version">Version %s • %s</string>
 </resources>

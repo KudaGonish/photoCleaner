@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,14 +36,14 @@ internal fun UtilizationRadioButton(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(iconColor.copy(alpha = 0.05f))
+                .background(MaterialTheme.colorScheme.secondaryContainer)
                 .padding(6.dp)
                 .size(24.dp),
             imageVector = icon,
@@ -53,19 +54,24 @@ internal fun UtilizationRadioButton(
         Column {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(Modifier.height(3.dp))
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Spacer(Modifier.weight(1f))
         RadioButton(
             modifier = Modifier,
             selected = selected,
+            colors =  RadioButtonDefaults.colors().copy(
+                selectedColor = MaterialTheme.colorScheme.onSurface,
+                unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
             onClick = onClick,
         )
     }
