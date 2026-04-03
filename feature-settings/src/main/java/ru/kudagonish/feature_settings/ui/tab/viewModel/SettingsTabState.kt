@@ -21,6 +21,7 @@ import ru.kudagonish.feature_settings.R
 import kotlin.time.Clock
 
 internal data class SettingsTabState(
+    val isLoading: Boolean = true,
     val version: String = String(),
     val currentYear: String = TimeZone.currentSystemDefault().let {
         Clock.System.now().toLocalDateTime(it).year.toString()
@@ -70,10 +71,12 @@ internal fun WorkAlgorithm.mapAlgorithms() = defaultSettings.algorithms.map {
 }.toImmutableList()
 
 internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map {
+    val settingIsDeffered = it is DeletionType.Deffered && this is DeletionType.Deffered
+
     SelectionItem(
-        setting = it,
+        setting = if (settingIsDeffered) this else it,
         isSelected = when {
-            it is DeletionType.Deffered && this is DeletionType.Deffered -> true
+            settingIsDeffered -> true
             else -> it == this
         },
         title = when (it) {

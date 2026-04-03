@@ -13,6 +13,7 @@ internal fun SettingsTab(viewModel: SettingsTabViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        viewModel.sendEvent(SettingsTabViewModel.Event.LoadData)
         viewModel.action.collect { action ->
             when (action) {
                 else -> Unit

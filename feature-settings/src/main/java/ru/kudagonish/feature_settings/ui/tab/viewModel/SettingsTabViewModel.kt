@@ -22,6 +22,7 @@ internal class SettingsTabViewModel(
 
     override fun handleEvent(event: Event) {
         when (event) {
+            Event.LoadData -> /*loadData()*/{}
             is Event.OnChangeLanguage -> changeLanguage(event.value)
             is Event.OnChangeTheme -> changeTheme(event.value)
             is Event.OnChangeAlgorithm -> changeAlgorithm(event.value)
@@ -37,6 +38,7 @@ internal class SettingsTabViewModel(
                 updateState { currentState ->
                     with(settings) {
                         currentState.copy(
+                            isLoading = false,
                             themes = theme.mapThemes(),
                             languages = language.mapLanguages(),
                             algorithms = algorithm.mapAlgorithms(),
@@ -73,6 +75,7 @@ internal class SettingsTabViewModel(
     }
 
     sealed interface Event : ViewModelEvent {
+        data object LoadData: Event
         data class OnChangeLanguage(val value: Language) : Event
         data class OnChangeTheme(val value: AppTheme) : Event
         data class OnChangeAlgorithm(val value: WorkAlgorithm) : Event

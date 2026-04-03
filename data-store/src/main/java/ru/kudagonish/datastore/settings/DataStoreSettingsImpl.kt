@@ -66,7 +66,6 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
     private fun Preferences.createSettingsModel(): ApplicationSettings {
         val deletionDays = this[deletionDaysKey]
             ?.toInt() ?: ApplicationSettings.DEFAULT_DEFFERED_DAYS
-
         val deletionType = this[deletionTypeKey]
             ?.mapToDeletionType(deletionDays) ?: defaultSettings.deletionType
 

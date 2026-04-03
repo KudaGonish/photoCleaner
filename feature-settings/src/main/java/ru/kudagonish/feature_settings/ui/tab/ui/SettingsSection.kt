@@ -1,5 +1,6 @@
 package ru.kudagonish.feature_settings.ui.tab.ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -61,7 +62,8 @@ internal fun SettingsSection(
                     )
                 )
                 .clip(itemsRoundedShape)
-                .background(MaterialTheme.colorScheme.surface),
+                .background(MaterialTheme.colorScheme.surface)
+                .animateContentSize(),
             content = content
         )
     }
