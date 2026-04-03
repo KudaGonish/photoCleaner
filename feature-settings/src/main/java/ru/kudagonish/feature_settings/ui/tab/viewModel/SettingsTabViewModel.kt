@@ -1,17 +1,12 @@
-package ru.kudagonish.feature_settings.tab
+package ru.kudagonish.feature_settings.ui.tab.viewModel
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
 import ru.kudagonish.datastore.settings.DataStoreSettings
-import ru.kudagonish.feature_settings.tab.SettingsTabViewModel.Action
-import ru.kudagonish.feature_settings.tab.SettingsTabViewModel.Event
-import ru.kudagonish.feature_settings.tab.viewModel.SettingsTabState
-import ru.kudagonish.feature_settings.tab.viewModel.mapAlgorithms
-import ru.kudagonish.feature_settings.tab.viewModel.mapDeletionTypes
-import ru.kudagonish.feature_settings.tab.viewModel.mapLanguages
-import ru.kudagonish.feature_settings.tab.viewModel.mapThemes
+import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabViewModel.Action
+import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabViewModel.Event
 
 internal class SettingsTabViewModel(
     private val dataStoreSettings: DataStoreSettings

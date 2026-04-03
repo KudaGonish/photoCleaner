@@ -14,10 +14,6 @@ import ru.kudagonish.datastore.settings.models.DeletionType
 
 internal class DataStoreManagerImpl(private val context: Context) : DataStoreManager {
 
-    init {
-        Log.d("TAG", "data as string : ${DeletionType.Deffered(0).toString()}")
-    }
-
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences")
 
     override suspend fun saveValue(key: String, value: String) {

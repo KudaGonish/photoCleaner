@@ -1,4 +1,4 @@
-package ru.kudagonish.feature_settings.tab.ui
+package ru.kudagonish.feature_settings.ui.tab.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

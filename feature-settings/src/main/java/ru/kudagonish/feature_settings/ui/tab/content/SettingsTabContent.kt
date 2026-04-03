@@ -1,4 +1,4 @@
-package ru.kudagonish.feature_settings.tab.content
+package ru.kudagonish.feature_settings.ui.tab.content
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -36,17 +36,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
+import ru.kudagonish.datastore.settings.models.AppTheme
+import ru.kudagonish.datastore.settings.models.DeletionType
+import ru.kudagonish.datastore.settings.models.Language
+import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 import ru.kudagonish.feature_settings.R
-import ru.kudagonish.feature_settings.tab.ui.DoubleContentRow
-import ru.kudagonish.feature_settings.tab.ui.SettingsSection
-import ru.kudagonish.feature_settings.tab.ui.StatisticCard
-import ru.kudagonish.feature_settings.tab.ui.UtilizationRadioButton
-import ru.kudagonish.feature_settings.tab.ui.itemsRoundedShape
-import ru.kudagonish.feature_settings.tab.viewModel.SettingsTabState
+import ru.kudagonish.feature_settings.ui.tab.ui.DoubleContentRow
+import ru.kudagonish.feature_settings.ui.tab.ui.SettingsSection
+import ru.kudagonish.feature_settings.ui.tab.ui.StatisticCard
+import ru.kudagonish.feature_settings.ui.tab.ui.UtilizationRadioButton
+import ru.kudagonish.feature_settings.ui.tab.ui.itemsRoundedShape
+import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabState
+import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabViewModel.Event
+import ru.kudagonish.feature_settings.ui.tab.viewModel.mapAlgorithms
+import ru.kudagonish.feature_settings.ui.tab.viewModel.mapDeletionTypes
+import ru.kudagonish.feature_settings.ui.tab.viewModel.mapLanguages
+import ru.kudagonish.feature_settings.ui.tab.viewModel.mapThemes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SettingsTabContent(state: SettingsTabState) {
+internal fun SettingsTabContent(
+    state: SettingsTabState,
+    sendEvent: (Event) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -107,7 +119,7 @@ internal fun SettingsTabContent(state: SettingsTabState) {
                         .clip(RoundedCornerShape(16.dp))
                         .background(Color.Gray.copy(alpha = 0.2f))
                 ) {
-                    state.deletionTypes.forEach { type ->
+                    state.algorithms.forEach { type ->
                         SegmentedButton(
                             modifier = Modifier
                                 .weight(1f)
@@ -137,7 +149,11 @@ internal fun SettingsTabContent(state: SettingsTabState) {
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 20.dp),
                     style = MaterialTheme.typography.bodyMedium,
-                    text = stringResource(state.deletionTypes.first { it.isSelected }.description!!)
+                    text = state.algorithms
+                        .firstOrNull { it.isSelected }?.description
+                        ?.let {
+                            stringResource(it)
+                        } ?: ""
                 )
             }
         )
@@ -145,8 +161,7 @@ internal fun SettingsTabContent(state: SettingsTabState) {
             titleIcon = Icons.Filled.Shield,
             titleText = R.string.selection_util,
             content = {
-
-                state.algorithms.forEach { algorithm ->
+                state.deletionTypes.forEach { algorithm ->
                     UtilizationRadioButton(
                         icon = algorithm.icon!!,
                         iconColor = algorithm.color!!,
@@ -181,6 +196,13 @@ internal fun SettingsTabContent(state: SettingsTabState) {
 @Composable
 private fun SettingsTabContentPreview() {
     PhotoCleanerTheme {
-        SettingsTabContent()
+        val state = SettingsTabState(
+            version = "0.0.0",
+            themes = AppTheme.Light.mapThemes(),
+            languages = Language.Ru.mapLanguages(),
+            algorithms = WorkAlgorithm.DayMoth.mapAlgorithms(),
+            deletionTypes = DeletionType.Instant.mapDeletionTypes()
+        )
+        SettingsTabContent(state) {}
     }
 }

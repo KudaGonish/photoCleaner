@@ -1,4 +1,4 @@
-package ru.kudagonish.feature_settings.tab.ui
+package ru.kudagonish.feature_settings.ui.tab.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

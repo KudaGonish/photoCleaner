@@ -1,4 +1,4 @@
-package ru.kudagonish.feature_settings.tab.ui
+package ru.kudagonish.feature_settings.ui.tab.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp

@@ -1,7 +1,7 @@
 package ru.kudagonish.datastore.settings.models
 
 data class ApplicationSettings(
-    val theme: AppTheme ,
+    val theme: AppTheme,
     val language: Language,
     val algorithm: WorkAlgorithm,
     val deletionType: DeletionType

@@ -9,6 +9,7 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import ru.kudagonish.core.di.coreModule
 import ru.kudagonish.datastore.di.dataStoreModule
+import ru.kudagonish.feature_settings.di.settingsModule
 import ru.kudagonish.permission_rationale_feature.di.permissionRationaleModule
 import ru.kudagonish.photocleaner.di.appModule
 import ru.kudagonish.photofinder.di.photoFinderModule
@@ -31,7 +32,8 @@ class PhotoCleanerApplication : Application(), Configuration.Provider {
                 dataStoreModule,
                 coreModule,
                 photoFinderModule,
-                appModule
+                appModule,
+                settingsModule
             )
         }
         SyncGalleryWorker.schedulePeriodicWorkRequest(this)

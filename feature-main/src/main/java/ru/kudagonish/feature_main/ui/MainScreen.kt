@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.elements.BottomMenu
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
 import ru.kudagonish.feature_main.R
-import ru.kudagonish.feature_settings.tab.settingsTabItem
+import ru.kudagonish.feature_settings.ui.navigation.settingsTabItem
 
 @Composable
 internal fun MainScreen() {

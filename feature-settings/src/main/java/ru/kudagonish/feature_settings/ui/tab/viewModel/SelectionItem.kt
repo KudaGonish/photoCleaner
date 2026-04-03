@@ -1,4 +1,4 @@
-package ru.kudagonish.feature_settings.tab.viewModel
+package ru.kudagonish.feature_settings.ui.tab.viewModel
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
