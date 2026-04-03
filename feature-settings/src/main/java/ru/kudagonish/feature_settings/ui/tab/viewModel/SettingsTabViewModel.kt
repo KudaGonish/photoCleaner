@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
 import ru.kudagonish.datastore.settings.DataStoreSettings
 import ru.kudagonish.datastore.settings.models.AppTheme
+import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.datastore.settings.models.Language
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabViewModel.Action
@@ -24,6 +25,7 @@ internal class SettingsTabViewModel(
             is Event.OnChangeLanguage -> changeLanguage(event.value)
             is Event.OnChangeTheme -> changeTheme(event.value)
             is Event.OnChangeAlgorithm -> changeAlgorithm(event.value)
+            is Event.OnChangeDeletionType -> changeDeletionType(event.value)
         }
     }
 
@@ -64,10 +66,17 @@ internal class SettingsTabViewModel(
         }
     }
 
+    private fun changeDeletionType(value: DeletionType) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreSettings.changeDeletionType(value)
+        }
+    }
+
     sealed interface Event : ViewModelEvent {
         data class OnChangeLanguage(val value: Language) : Event
         data class OnChangeTheme(val value: AppTheme) : Event
         data class OnChangeAlgorithm(val value: WorkAlgorithm) : Event
+        data class OnChangeDeletionType(val value: DeletionType) : Event
     }
 
     sealed interface Action : ViewModelAction

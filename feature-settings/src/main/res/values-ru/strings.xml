@@ -20,6 +20,14 @@
     <string name="selection_util_system_basket">Системная корзина</string>
     <string name="selection_util_system_basket_desc">Переместить в корзину Android</string>
 
+    <string name="selection_util_slider_self_life">Срок хранения</string>
+    <plurals name="selection_util_slider_days">
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d дня</item>
+        <item quantity="many">%d дней</item>
+        <item quantity="other">%d дня</item>
+    </plurals>
+
     <string name="button_rescan">Просканировать заново</string>
     <string name="app_version">Версия %s • %s</string>
 </resources>

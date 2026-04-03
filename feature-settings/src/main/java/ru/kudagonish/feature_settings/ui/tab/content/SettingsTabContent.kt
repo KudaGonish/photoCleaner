@@ -1,10 +1,13 @@
 package ru.kudagonish.feature_settings.ui.tab.content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -16,10 +19,13 @@ import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +52,7 @@ import ru.kudagonish.feature_settings.ui.tab.viewModel.mapAlgorithms
 import ru.kudagonish.feature_settings.ui.tab.viewModel.mapDeletionTypes
 import ru.kudagonish.feature_settings.ui.tab.viewModel.mapLanguages
 import ru.kudagonish.feature_settings.ui.tab.viewModel.mapThemes
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,8 +146,51 @@ internal fun SettingsTabContent(
                         title = stringResource(type.title!!),
                         description = stringResource(type.description!!),
                         selected = type.isSelected,
-                        onClick = {}
+                        onClick = { sendEvent(Event.OnChangeDeletionType(type.setting)) }
                     )
+                    if (type.setting is DeletionType.Deffered && type.isSelected) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .padding(vertical = 8.dp)
+                                .padding(start = 24.dp, end = 32.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.selection_util_slider_self_life),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                )
+                                Text(
+                                    text = pluralStringResource(
+                                        id = R.plurals.selection_util_slider_days,
+                                        count = type.setting.days,
+                                        type.setting.days
+                                    ),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                )
+                            }
+                            Spacer(Modifier.height(4.dp))
+                            Slider(
+                                value = type.setting.days.toFloat(),
+                                onValueChange = {
+                                    sendEvent(Event.OnChangeDeletionType(DeletionType.Deffered(it.roundToInt())))
+                                },
+                                valueRange = 1f..30f,
+                                colors = SliderDefaults.colors().copy(
+                                    activeTrackColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer
+                                )
+//                                steps = 28
+                            )
+                        }
+                    }
                 }
                 Spacer(Modifier.height(16.dp))
             }
@@ -167,7 +217,7 @@ private fun SettingsTabContentPreview() {
             themes = AppTheme.Light.mapThemes(),
             languages = Language.Ru.mapLanguages(),
             algorithms = WorkAlgorithm.DayMoth.mapAlgorithms(),
-            deletionTypes = DeletionType.Instant.mapDeletionTypes()
+            deletionTypes = DeletionType.Deffered(3).mapDeletionTypes()
         )
         SettingsTabContent(state) {}
     }

@@ -55,7 +55,12 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
     }
 
     override suspend fun changeDeletionType(newValue: DeletionType) {
-        TODO("Not yet implemented")
+        context.dataStore.edit { preferences ->
+            preferences[deletionTypeKey] = newValue.toString()
+            if(newValue is DeletionType.Deffered) {
+                preferences[deletionDaysKey] = newValue.days.toString()
+            }
+        }
     }
 
     private fun Preferences.createSettingsModel(): ApplicationSettings {
