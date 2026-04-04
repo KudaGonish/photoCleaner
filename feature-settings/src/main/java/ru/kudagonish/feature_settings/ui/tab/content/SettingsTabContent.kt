@@ -24,14 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import ru.kudagonish.core_ui.elements.bottomMenuPadding
 import ru.kudagonish.core_ui.theme.LocalCustomColors
 import ru.kudagonish.core_ui.theme.PhotoCleanerTheme
-import ru.kudagonish.datastore.settings.models.AppTheme
 import ru.kudagonish.datastore.settings.models.DeletionType
-import ru.kudagonish.datastore.settings.models.Language
-import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 import ru.kudagonish.feature_settings.R
 import ru.kudagonish.feature_settings.ui.tab.ui.DoubleContentRow
 import ru.kudagonish.feature_settings.ui.tab.ui.DropdownMenu
@@ -43,11 +41,8 @@ import ru.kudagonish.feature_settings.ui.tab.ui.StatisticCard
 import ru.kudagonish.feature_settings.ui.tab.ui.ThemeSelector
 import ru.kudagonish.feature_settings.ui.tab.ui.UtilizationRadioButton
 import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabState
+import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabStateProvider
 import ru.kudagonish.feature_settings.ui.tab.viewModel.SettingsTabViewModel.Event
-import ru.kudagonish.feature_settings.ui.tab.viewModel.mapAlgorithms
-import ru.kudagonish.feature_settings.ui.tab.viewModel.mapDeletionTypes
-import ru.kudagonish.feature_settings.ui.tab.viewModel.mapLanguages
-import ru.kudagonish.feature_settings.ui.tab.viewModel.mapThemes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,8 +135,8 @@ internal fun SettingsTabContent(
                         UtilizationRadioButton(
                             icon = type.icon!!,
                             iconColor = color,
-                            title = stringResource(type.title!!),
-                            description = stringResource(type.description!!),
+                            title = type.title?.asString()!!,
+                            description = type.description?.asString()!!,
                             selected = type.isSelected,
                             onClick = { sendEvent(Event.OnChangeDeletionType(type.setting)) }
                         )
@@ -182,15 +177,10 @@ internal fun SettingsTabContent(
 
 @Preview(showBackground = true, locale = "ru")
 @Composable
-private fun SettingsTabContentPreview() {
+private fun SettingsTabContentPreview(
+    @PreviewParameter(SettingsTabStateProvider::class) state: SettingsTabState
+) {
     PhotoCleanerTheme {
-        val state = SettingsTabState(
-            version = "0.0.0",
-            themes = AppTheme.Light.mapThemes(),
-            languages = Language.Ru.mapLanguages(),
-            algorithms = WorkAlgorithm.DayMoth.mapAlgorithms(),
-            deletionTypes = DeletionType.Deffered(3).mapDeletionTypes()
-        )
-        SettingsTabContent(state) {}
+        SettingsTabContent(state = state, sendEvent = {})
     }
 }

@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
@@ -57,7 +56,7 @@ internal fun SelectorSegmentedButtons(
                 icon = { },
                 label = {
                     Text(
-                        text = stringResource(type.title!!),
+                        text = type.title?.asString()!!,
                         style = MaterialTheme.typography.titleMedium,
                         color = if (type.isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -65,13 +64,10 @@ internal fun SelectorSegmentedButtons(
             )
         }
     }
-
     Spacer(Modifier.height(16.dp))
 
     val description = algorithms
-        .firstOrNull { it.isSelected }?.description
-        ?.let { stringResource(it) } ?: ""
-
+        .firstOrNull { it.isSelected }?.description?.asString() ?: ""
     AnimatedContent(
         targetState = description,
         transitionSpec = {

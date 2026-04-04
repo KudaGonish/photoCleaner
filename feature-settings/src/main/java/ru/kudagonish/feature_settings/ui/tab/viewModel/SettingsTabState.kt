@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import ru.kudagonish.core_ui.elements.UiText
 import ru.kudagonish.datastore.settings.DataStoreSettings.Companion.defaultSettings
 import ru.kudagonish.datastore.settings.models.AppTheme
 import ru.kudagonish.datastore.settings.models.DeletionType
@@ -49,8 +50,8 @@ internal fun Language.mapLanguages() = defaultSettings.languages.map {
         setting = it,
         isSelected = it == this,
         title = when (it) {
-            Language.Ru -> R.string.selection_ui_lang_ru
-            Language.Eng -> R.string.selection_ui_lang_en
+            Language.Ru -> UiText.StringResource(R.string.selection_ui_lang_ru)
+            Language.Eng -> UiText.StringResource(R.string.selection_ui_lang_en)
         }
     )
 }.toImmutableList()
@@ -60,12 +61,18 @@ internal fun WorkAlgorithm.mapAlgorithms() = defaultSettings.algorithms.map {
         setting = it,
         isSelected = it == this,
         title = when (it) {
-            WorkAlgorithm.DayMoth -> R.string.selection_algo_day_month
-            WorkAlgorithm.FullTime -> R.string.selection_algo_full_time
+            WorkAlgorithm.DayMoth ->
+                UiText.StringResource(R.string.selection_algo_day_month)
+
+            WorkAlgorithm.FullTime ->
+                UiText.StringResource(R.string.selection_algo_full_time)
         },
         description = when (it) {
-            WorkAlgorithm.DayMoth -> R.string.selection_algo_day_month_desc
-            WorkAlgorithm.FullTime -> R.string.selection_algo_full_dec
+            WorkAlgorithm.DayMoth ->
+                UiText.StringResource(R.string.selection_algo_day_month_desc)
+
+            WorkAlgorithm.FullTime ->
+                UiText.StringResource(R.string.selection_algo_full_dec)
         }
     )
 }.toImmutableList()
@@ -80,14 +87,24 @@ internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map
             else -> it == this
         },
         title = when (it) {
-            DeletionType.Instant -> R.string.selection_util_instantly
-            is DeletionType.Deffered -> R.string.selection_util_deffered
-            DeletionType.SystemTrash -> R.string.selection_util_system_basket
+            DeletionType.Instant ->
+                UiText.StringResource(R.string.selection_util_instantly)
+
+            is DeletionType.Deffered ->
+                UiText.StringResource(R.string.selection_util_deffered)
+
+            DeletionType.SystemTrash ->
+                UiText.StringResource(R.string.selection_util_system_basket)
         },
         description = when (it) {
-            DeletionType.Instant -> R.string.selection_util_instantly_desc
-            is DeletionType.Deffered -> R.string.selection_util_deffered_desc
-            DeletionType.SystemTrash -> R.string.selection_util_system_basket_desc
+            DeletionType.Instant ->
+                UiText.StringResource(R.string.selection_util_instantly_desc)
+
+            is DeletionType.Deffered ->
+                UiText.StringResource(R.string.selection_util_deffered_desc)
+
+            DeletionType.SystemTrash ->
+                UiText.StringResource(R.string.selection_util_system_basket_desc)
         },
         icon = when (it) {
             DeletionType.Instant -> Icons.Outlined.Bolt

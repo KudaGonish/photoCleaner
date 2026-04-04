@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import ru.kudagonish.datastore.settings.models.Language
@@ -40,8 +39,7 @@ internal fun DropdownMenu(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val selectedLanguage = languages
-        .firstOrNull { it.isSelected }?.title
-        ?.let { stringResource(it) } ?: ""
+        .firstOrNull { it.isSelected }?.title?.asString() ?: ""
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -88,7 +86,7 @@ internal fun DropdownMenu(
                             }
                         )
                         .padding(horizontal = 8.dp, vertical = 4.dp),
-                    text = stringResource(language.title!!),
+                    text = language.title?.asString()!!,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
