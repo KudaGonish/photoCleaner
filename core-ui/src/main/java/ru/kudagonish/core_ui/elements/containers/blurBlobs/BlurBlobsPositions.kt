@@ -1,7 +1,9 @@
 package ru.kudagonish.core_ui.elements.containers.blurBlobs
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Offset
 
+@Stable
 data class BlurBlobsPositions(
     val circle1: Offset,
     val circle2: Offset,

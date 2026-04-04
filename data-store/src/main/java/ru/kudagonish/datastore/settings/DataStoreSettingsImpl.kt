@@ -36,6 +36,14 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
         return settingsFlow.first()
     }
 
+    override suspend fun setSystemLanguage(value: Language) {
+        context.dataStore.edit { preferences ->
+            val currentLocale = preferences[languageKey]
+            if(currentLocale == null)
+                preferences[languageKey] = value.toString()
+        }
+    }
+
     override suspend fun changeLanguage(newValue: Language) {
         context.dataStore.edit { preferences ->
             preferences[languageKey] = newValue.toString()

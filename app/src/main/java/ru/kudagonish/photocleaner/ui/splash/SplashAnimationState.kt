@@ -1,4 +1,4 @@
-package ru.kudagonish.photocleaner.splash
+package ru.kudagonish.photocleaner.ui.splash
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter

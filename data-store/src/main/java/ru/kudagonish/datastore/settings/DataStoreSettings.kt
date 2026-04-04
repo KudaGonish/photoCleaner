@@ -12,6 +12,7 @@ interface DataStoreSettings {
     val settingsFlow: Flow<ApplicationSettings>
     suspend fun getSettings(): ApplicationSettings
 
+    suspend fun setSystemLanguage(value: Language)
     suspend fun changeLanguage(newValue: Language)
     suspend fun changeTheme(newValue: AppTheme)
     suspend fun changAlgorithm(newValue: WorkAlgorithm)
