@@ -1,6 +1,5 @@
 package ru.kudagonish.feature_main.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,13 +15,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.elements.BottomMenu
+import ru.kudagonish.core_ui.elements.UiText
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
-import ru.kudagonish.feature_main.R
 import ru.kudagonish.feature_settings.ui.navigation.settingsTabItem
 
 @Composable
@@ -34,7 +32,7 @@ internal fun MainScreen() {
     val pages = persistentListOf(
         PagerItem(
             icon = Icons.Outlined.DeleteSweep,
-            title = R.string.tab_trash,
+            title = UiText.DynamicString("Корзина"),
             content = {
                 Box(
                     modifier = Modifier
@@ -47,7 +45,7 @@ internal fun MainScreen() {
         ),
         PagerItem(
             icon = Icons.Outlined.ViewCozy,
-            title = R.string.tab_clean,
+            title = UiText.DynamicString("Отчистка"),
             content = {
                 Box(
                     modifier = Modifier

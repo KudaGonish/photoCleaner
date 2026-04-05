@@ -1,5 +1,6 @@
 package ru.kudagonish.permission_rationale_feature.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
@@ -8,17 +9,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import org.koin.androidx.compose.koinViewModel
+import ru.kudagonish.core.PermissionStatus
+import ru.kudagonish.feature_main.ui.navigation.MainNavigation
 import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation.PermissionRationaleScreen
 import ru.kudagonish.permission_rationale_feature.ui.navigation.PermissionsNavigation.SettingsRationaleScreen
 import ru.kudagonish.permission_rationale_feature.ui.screens.permissions.PermissionRationaleScreen
 import ru.kudagonish.permission_rationale_feature.ui.screens.settings.SettingsRationaleScreen
-import ru.kudagonish.core.PermissionStatus
-import ru.kudagonish.feature_main.ui.navigation.MainNavigation
 
 fun NavGraphBuilder.registerPermissionsScreens(
     navController: NavController,
     permissionStatus: PermissionStatus
 ) {
+    Log.d("TAG", "registerPermissionsScreens: ${permissionStatus}")
     val startDestination: Any = when (permissionStatus) {
         PermissionStatus.PermanentlyDenied -> SettingsRationaleScreen
         else -> PermissionRationaleScreen

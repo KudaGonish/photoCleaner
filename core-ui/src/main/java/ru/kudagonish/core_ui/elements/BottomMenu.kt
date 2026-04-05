@@ -27,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
@@ -92,7 +91,7 @@ fun BoxScope.BottomMenu(
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(item.title),
+                        text = item.title.asString(),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium
                     )

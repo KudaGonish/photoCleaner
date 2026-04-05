@@ -1,7 +1,6 @@
 package ru.kudagonish.photocleaner.ui.activity
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -30,37 +29,36 @@ import ru.kudagonish.photocleaner.ui.splash.SplashBlurBlobs
 internal fun ComponentActivity.setApplicationContent(viewModel: MainViewModel) {
     setContent {
         val state by viewModel.state.collectAsStateWithLifecycle()
-        Log.d("TAG", "setApplicationContent: $state")
-        PhotoCleanerTheme(darkTheme = state.theme) {
-            val navController = rememberNavController()
-            var showSplashAnim by rememberSaveable { mutableStateOf(true) }
-            val permissionRequestCount by viewModel.requestPermissionCount.collectAsState()
+        LocaleWrapper(state.language){
+            PhotoCleanerTheme(darkTheme = state.theme) {
+                val navController = rememberNavController()
+                var showSplashAnim by rememberSaveable { mutableStateOf(true) }
+                val permissionRequestCount by viewModel.requestPermissionCount.collectAsState()
 
-            if (showSplashAnim) SplashBlurBlobs(onAnimationFinished = {
-                showSplashAnim = false
-            })
-            else permissionRequestCount?.let { count ->
-                val permissionStatus = remember(count) {
-                    getPermissionStatus(
-                        this@setApplicationContent.applicationContext,
-                        this@setApplicationContent as Activity,
-                        count
-                    )
-                }
-                val startDestination: Any = when (permissionStatus) {
-                    PermissionStatus.Granted -> MainNavigation.MainScreen
-                    else -> PermissionsNavigation.Route
-                }
+                if (showSplashAnim) SplashBlurBlobs(onAnimationFinished = { showSplashAnim = false })
+                else permissionRequestCount?.let { count ->
+                    val permissionStatus = remember(count) {
+                        getPermissionStatus(
+                            this@setApplicationContent.applicationContext,
+                            this@setApplicationContent as Activity,
+                            count
+                        )
+                    }
+                    val startDestination: Any = when (permissionStatus) {
+                        PermissionStatus.Granted -> MainNavigation.MainScreen
+                        else -> PermissionsNavigation.Route
+                    }
 
-                NavHost(
-                    modifier = Modifier
-                        .safeContentPadding()
-                        .background(MaterialTheme.colorScheme.background),
-                    navController = navController,
-                    startDestination = startDestination
-                ) {
-                    registerPermissionsScreens(navController, permissionStatus)
-                    registerMainScreen()
+                    NavHost(
+                        modifier = Modifier
+                            .safeContentPadding()
+                            .background(MaterialTheme.colorScheme.background),
+                        navController = navController,
+                        startDestination = startDestination
+                    ) {
+                        registerPermissionsScreens(navController, permissionStatus)
+                        registerMainScreen()
+                    }
                 }
             }
         }
