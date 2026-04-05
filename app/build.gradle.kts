@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":photo-finder"))
     implementation(project(":permission-rationale-feature"))
     implementation(project(":feature-main"))
+    implementation(project(":feature-settings"))
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

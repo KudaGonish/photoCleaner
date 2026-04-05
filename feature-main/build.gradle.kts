@@ -6,9 +6,7 @@ plugins {
 
 android {
     namespace = "ru.kudagonish.feature_main"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 29
@@ -41,10 +39,12 @@ kotlin {
 }
 
 dependencies {
+    // AndroidX & Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
@@ -53,8 +53,12 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.material.icons.extended)
 
+    // Kotlinx Immutable
+    implementation(libs.kotlinx.collections.immutable)
+
     // Internal Modules
     implementation(project(":core-ui"))
+    implementation(project(":feature-settings"))
 
     // Navigation & Serialization
     implementation(libs.androidx.navigation.compose)

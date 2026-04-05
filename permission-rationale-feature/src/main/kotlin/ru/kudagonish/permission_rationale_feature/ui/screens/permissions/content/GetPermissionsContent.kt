@@ -52,7 +52,7 @@ internal fun PermissionRationaleContent(
         if (strings.size >= 2) {
             append(strings[0])
             append(" ")
-            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = Color(0xFF111827))) {
+            withStyle(SpanStyle( color = Color(0xFF111827))) {
                 append(strings[1])
             }
         }
@@ -125,7 +125,7 @@ internal fun PermissionRationaleContent(
                         Text(
                             text = stringResource(R.string.button_grant_permission),
                             style = MaterialTheme.typography.labelLarge.copy(
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.Normal,
                                 fontSize = 16.sp
                             )
                         )

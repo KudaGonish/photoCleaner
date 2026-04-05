@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_settings">Settings</string>
+
+    <string name="selection_ui">Appearance</string>
+    <string name="selection_ui_theme_title">Theme</string>
+    <string name="selection_ui_lang_title">Language</string>
+    <string name="selection_ui_lang_ru" translatable="false">🇷🇺 Русский</string>
+    <string name="selection_ui_lang_en" translatable="false">🇬🇧 English</string>
+
+    <string name="selection_search_algorithm">Search algorithm</string>
+    <string name="selection_algo_day_month">Memories</string>
+    <string name="selection_algo_day_month_desc">Search for similar photos for the current date in different years. Ideal for removing just a little bit.</string>
+    <string name="selection_algo_full_time">Cleaning</string>
+    <string name="selection_algo_full_dec">Complete audit of all photos on the device.  Allows you to clear the entire gallery while saving your progress.</string>
+
+    <string name="selection_util">Utilization</string>
+    <string name="selection_util_instantly">Instantly</string>
+    <string name="selection_util_instantly_desc">Without the possibility of recovery</string>
+    <string name="selection_util_deffered">Deffered deletion</string>
+    <string name="selection_util_deffered_desc">Safe mode with buffer</string>
+    <string name="selection_util_system_basket">System trash bin</string>
+    <string name="selection_util_system_basket_desc">Move to the Android Shopping Cart</string>
+
+    <string name="selection_util_slider_self_life">Shelf life</string>
+    <plurals name="selection_util_slider_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d ays</item>
+    </plurals>
+
+    <string name="button_rescan">Scan again</string>
+    <string name="app_version">Version %s • %s</string>
+</resources>
