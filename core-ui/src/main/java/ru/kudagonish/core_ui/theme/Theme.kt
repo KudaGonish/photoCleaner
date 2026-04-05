@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color.White,              // Кнопки инвертируются в белый
+    primary = Color.White,
     onPrimary = DeepAnthracite,
     primaryContainer = Color(0xFF334155),
     onPrimaryContainer = Color.White,
 
-    secondary = BubbleBlue,             // Акценты сохраняем пастельными
+    secondary = BubbleBlue,
     onSecondary = DeepAnthracite,
     secondaryContainer = Color(0xFF334155),
     onSecondaryContainer = BubbleBlue,
@@ -33,12 +33,12 @@ private val DarkColorScheme = darkColorScheme(
 )
 /*  TODO нужно будет выбрать какую тему ставить, после того как закончу со статистикой
   darkColorScheme(
-    primary = Color.White,              // Кнопки инвертируются в белый
+    primary = Color.White,
     onPrimary = DeepAnthracite,
     primaryContainer = DarkSurfaceVariant,
     onPrimaryContainer = Color.White,
 
-    secondary = BubbleBlue,             // Акценты сохраняем пастельными
+    secondary = BubbleBlue,
     onSecondary = DeepAnthracite,
     secondaryContainer = DarkSurfaceVariant,
 
