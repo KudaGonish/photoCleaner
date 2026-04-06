@@ -1,37 +1,80 @@
 package ru.kudagonish.feature_clearing.ui.tab.content
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.MeasurePolicy
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import ru.kudagonish.core_ui.elements.containers.SwipeableCard
+
+data class Item(
+    val name: String,
+    val background: Color,
+    val size: DpSize
+)
 
 @Composable
 internal fun ClearingTabContent() {
     val items = remember {
         mutableStateListOf(
-            "Фото 1" to Color.Red,
-            "Фото 2" to Color.Blue,
-            "Фото 3" to Color.Green,
-            "Фото 4" to Color.Yellow,
-            "Фото 5" to Color.Magenta
+            Item(
+                name = "Фото 1",
+                background = Color.Red,
+                size = DpSize(400.dp, 300.dp)
+            ),
+            Item(
+                name = "Фото 2",
+                background = Color.Blue,
+                size = DpSize(300.dp, 450.dp)
+            ),
+            Item(
+                name = "Фото 3",
+                background = Color.Green,
+                size = DpSize(400.dp, 300.dp)
+            ),
+            Item(
+                name = "Фото 4",
+                background = Color.Yellow,
+                size = DpSize(300.dp, 450.dp)
+            ),
+            Item(
+                name = "Фото 5",
+                background = Color.Magenta,
+                size = DpSize(300.dp, 450.dp)
+            )
         )
     }
 
-    Box(
+    LazyColumn() {
+        item{
+            Box(Modifier.animateItem())
+        }
+    }
+    Layout(
+        measurePolicy = rememberMeasurePolicy(),
+        content = {
+            items.asReversed().forEach {
+                Box(
+                    Modifier
+                        .size(it.size)
+                        .clickable { items.remove(it) }
+                        .background(it.background.copy(alpha = 0.2f))
+                )
+            }
+        }
+    )
+
+    /*Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
@@ -47,10 +90,10 @@ internal fun ClearingTabContent() {
             ) {
                 Card(
                     modifier = Modifier
-                        .size(300.dp, 450.dp)
+                        .size(item.size)
                         .padding(16.dp),
                     shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(containerColor = item.second),
+                    colors = CardDefaults.cardColors(containerColor = item.background),
                     elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
                 ) {
                     Box(
@@ -58,7 +101,7 @@ internal fun ClearingTabContent() {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = item.first,
+                            text = item.name,
                             style = MaterialTheme.typography.headlineMedium,
                             color = Color.White
                         )
@@ -73,6 +116,33 @@ internal fun ClearingTabContent() {
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
+        }
+    }*/
+}
+
+@Composable
+fun rememberMeasurePolicy(): MeasurePolicy = remember {
+    MeasurePolicy { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints) }
+
+        val centerWidth = constraints.maxWidth / 2
+        val centerHeight = constraints.maxHeight / 2
+        Log.d("TAG", "rememberMeasurePolicy: ")
+        layout(constraints.maxWidth, constraints.maxHeight) {
+            placeables.forEachIndexed { index, placeable ->
+                // Располагаем в центре
+                val x = centerWidth - placeable.width / 2
+                val y = centerHeight - placeable.height / 2
+
+                placeable.placeWithLayer(x = x, y = y) {
+                    val scale = if(index == 0) 1f else 0f
+                    scaleX = scale
+                    scaleY = scale
+
+                    shape = RoundedCornerShape(16.dp)
+                    clip = true
+                }
+            }
         }
     }
 }
