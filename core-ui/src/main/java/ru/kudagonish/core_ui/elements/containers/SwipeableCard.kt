@@ -34,11 +34,11 @@ fun SwipeableCard(
             .offset {
                 IntOffset(
                     offset.value.x.roundToInt(),
-                    offset.value.y.roundToInt()
+                    0
                 )
             }
             .graphicsLayer {
-                rotationZ = offset.value.x / 20f
+                rotationZ = offset.value.x / 30f
             }
             .pointerInput(Unit) {
                 detectDragGestures(
