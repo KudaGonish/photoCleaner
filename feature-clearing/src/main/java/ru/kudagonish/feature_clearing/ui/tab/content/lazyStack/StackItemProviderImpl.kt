@@ -6,6 +6,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.referentialEqualityPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import ru.kudagonish.feature_clearing.ui.tab.content.LazyStackState
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.CustomLazyListScopeImpl
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.CustomLazyListScopeImpl.LazyItem
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.LazyStackScope
@@ -25,9 +26,12 @@ class StackItemProviderImpl(private val items: List<LazyItem>) : LazyLayoutItemP
 }
 
 @Composable
-internal fun rememberStackItemProviderLambda(content: LazyStackScope.() -> Unit): () -> LazyLayoutItemProvider {
+internal fun rememberStackItemProviderLambda(
+    content: LazyStackScope.() -> Unit,
+    stackState: LazyStackState
+): () -> LazyLayoutItemProvider {
     val latestContent = rememberUpdatedState(content)
-    return remember {
+    return remember(stackState) {
         val itemProvider = derivedStateOf(referentialEqualityPolicy()) {
             val scope = CustomLazyListScopeImpl().apply(latestContent.value)
             StackItemProviderImpl(scope.items)

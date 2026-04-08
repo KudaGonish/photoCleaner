@@ -1,13 +1,17 @@
 package ru.kudagonish.feature_clearing.ui.tab.content.lazyStack
 
+import android.util.Log
 import androidx.compose.foundation.lazy.layout.LazyLayoutItemProvider
 import androidx.compose.foundation.lazy.layout.LazyLayoutMeasurePolicy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEachIndexed
+import ru.kudagonish.feature_clearing.ui.tab.content.LazyStackState
 
 @Composable
 internal fun rememberStackMeasurePolicy(
+    stackState: LazyStackState,
     itemProvider: () -> LazyLayoutItemProvider
 ) = remember {
     LazyLayoutMeasurePolicy { constraints ->
@@ -29,10 +33,17 @@ internal fun rememberStackMeasurePolicy(
         val centerHeight = constraints.maxHeight / 2
 
         layout(constraints.maxWidth, constraints.maxHeight) {
-            placeables.forEach { placeble ->
+            placeables.fastForEachIndexed { index, placeble ->
                 val x = centerWidth - placeble.width / 2
                 val y = centerHeight - placeble.height / 2
-                placeble.place(x, y)
+
+                placeble.placeWithLayer(x, y) {
+                    if (index == 0 && placeables.size != 1) {
+                        scaleX = stackState.itemScaling
+                        scaleY = stackState.itemScaling
+                        this.alpha = stackState.itemAlpha
+                    }
+                }
             }
         }
     }
