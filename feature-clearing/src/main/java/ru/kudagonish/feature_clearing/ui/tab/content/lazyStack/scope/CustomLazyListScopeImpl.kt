@@ -10,7 +10,8 @@ class CustomLazyListScopeImpl : LazyStackScope {
 
     override fun items(
         items: ImmutableList<Item>,
-        content: @Composable (Int) -> Unit
+//        key: ((item: Item) -> Any)?,
+        content: @Composable (index: Int) -> Unit
     ) {
         items.forEachIndexed { index, item ->
             _items.add(LazyItem(index, item.name, content))

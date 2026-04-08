@@ -5,6 +5,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +33,7 @@ import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.items
 import kotlin.math.abs
 
 data class Item(
+    val id: String,
     val name: String,
     val background: Color,
     val size: DpSize
@@ -42,40 +45,24 @@ internal fun ClearingTabContent() {
     var photoItems by remember {
         mutableStateOf(
             persistentListOf(
-                Item(
-                    name = "Фото 1",
-                    background = Color.Red,
-                    size = DpSize(400.dp, 300.dp)
-                ),
-                Item(
-                    name = "Фото 2",
-                    background = Color.Blue,
-                    size = DpSize(300.dp, 450.dp)
-                ),
-                Item(
-                    name = "Фото 3",
-                    background = Color.Green,
-                    size = DpSize(400.dp, 300.dp)
-                ),
-                Item(
-                    name = "Фото 4",
-                    background = Color.Yellow,
-                    size = DpSize(300.dp, 450.dp)
-                ),
-                Item(
-                    name = "Фото 5",
-                    background = Color.Magenta,
-                    size = DpSize(300.dp, 450.dp)
-                )
+                Item(id = "1", name = "Фото 1", background = Color.Red, size = DpSize(400.dp, 300.dp)),
+                Item(id = "2", name = "Фото 2", background = Color.Blue, size = DpSize(300.dp, 450.dp)),
+                Item(id = "3", name = "Фото 3", background = Color.Green, size = DpSize(400.dp, 300.dp)),
+                Item(id = "4", name = "Фото 4", background = Color.Yellow, size = DpSize(300.dp, 450.dp)),
+                Item(id = "5", name = "Фото 5", background = Color.Magenta, size = DpSize(300.dp, 450.dp))
             )
         )
     }
     val stackState = rememberLazyStackState()
-    val z = rememberLazyListState()
+
     LazyStackBox(modifier = Modifier, stackState = stackState) {
-        items(photoItems) { item: Item ->
+        items(photoItems, key = { it.id }) { index, item: Item ->
             SwipeableCard(
-                onSwiped = { photoItems = photoItems.remove(item) },
+                onSwiped = {
+                    stackState.updateTopItemOffset(0)
+                    photoItems = photoItems.remove(item) 
+                },
+                enabled = index == 0,
                 onOffsetChange = { stackState.updateTopItemOffset(it) }
             ) {
                 Box(
