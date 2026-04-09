@@ -1,91 +1,55 @@
 package ru.kudagonish.feature_clearing.ui.tab.content
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.persistentListOf
+import coil.compose.AsyncImage
+import ru.kudagonish.core_ui.elements.bottomMenuPadding
+import ru.kudagonish.core_ui.elements.containers.SwipeDirection
 import ru.kudagonish.core_ui.elements.containers.SwipeableCard
+import ru.kudagonish.feature_clearing.ui.tab.ClearingTabState
+import ru.kudagonish.feature_clearing.ui.tab.ClearingTabViewModel.Event
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.LazyStackBox
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.items
 import kotlin.math.abs
 
-data class Item(
-    val id: String,
-    val name: String,
-    val background: Color,
-    val size: DpSize
-)
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun ClearingTabContent() {
-    var photoItems by remember {
-        mutableStateOf(
-            persistentListOf(
-                Item(
-                    id = "1",
-                    name = "Фото 1",
-                    background = Color.Red,
-                    size = DpSize(400.dp, 300.dp)
-                ),
-                Item(
-                    id = "2",
-                    name = "Фото 2",
-                    background = Color.Blue,
-                    size = DpSize(300.dp, 450.dp)
-                ),
-                Item(
-                    id = "3",
-                    name = "Фото 3",
-                    background = Color.Green,
-                    size = DpSize(400.dp, 300.dp)
-                ),
-                Item(
-                    id = "4",
-                    name = "Фото 4",
-                    background = Color.Yellow,
-                    size = DpSize(300.dp, 450.dp)
-                ),
-                Item(
-                    id = "5",
-                    name = "Фото 5",
-                    background = Color.Magenta,
-                    size = DpSize(300.dp, 450.dp)
-                )
-            )
-        )
-    }
+internal fun ClearingTabContent(
+    state: ClearingTabState,
+    sendEvent: (Event) -> Unit
+) {
     val stackState = rememberLazyStackState()
 
-    LazyStackBox(modifier = Modifier, stackState = stackState) {
-        items(photoItems) { index, item: Item ->
+    LazyStackBox(
+        modifier = Modifier
+            .padding(bottom = bottomMenuPadding + 32.dp, top = 36.dp),
+        stackState = stackState
+    ) {
+        items(state.images, key = { it.src }) { index, item ->
             SwipeableCard(
-                onSwiped = { photoItems = photoItems.remove(item) },
+                onSwiped = { direction ->
+                    val event = when (direction) {
+                        SwipeDirection.Right -> Event.SaveImage(item)
+                        else -> Event.DeleteImage(item)
+                    }
+                    sendEvent(event)
+                },
                 enabled = index == 0,
                 onOffsetChange = { stackState.updateTopItemOffset(it) }
             ) {
-                Box(
+                AsyncImage(
                     modifier = Modifier
-                        .size(item.size)
                         .dropShadow(
                             shape = RoundedCornerShape(16.dp),
                             shadow = Shadow(
@@ -94,16 +58,31 @@ internal fun ClearingTabContent() {
                                 alpha = 0.2f
                             )
                         )
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(item.background),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = item.name,
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.White
-                    )
-                }
+                        .clip(RoundedCornerShape(16.dp)),
+                    model = item.src,
+                    contentDescription = null
+                )
+                /*                Box(
+                                    modifier = Modifier
+                                        .size(item.size)
+                                        .dropShadow(
+                                            shape = RoundedCornerShape(16.dp),
+                                            shadow = Shadow(
+                                                radius = 6.dp,
+                                                color = Color.Black,
+                                                alpha = 0.2f
+                                            )
+                                        )
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .background(item.background),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = item.name,
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        color = Color.White
+                                    )
+                                }*/
             }
         }
     }

@@ -11,7 +11,7 @@ import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.CustomLazyL
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.CustomLazyListScopeImpl.LazyItem
 import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.LazyStackScope
 
-class StackItemProviderImpl(private val items: List<LazyItem>) : LazyLayoutItemProvider {
+internal class StackItemProviderImpl(private val items: List<LazyItem>) : LazyLayoutItemProvider {
     override val itemCount: Int
         get() = items.size
 
@@ -21,7 +21,7 @@ class StackItemProviderImpl(private val items: List<LazyItem>) : LazyLayoutItemP
         item?.item?.invoke(index)
     }
 
-    override fun getKey(index: Int): Any = items.getOrNull(index)?.key ?: "empty"
+    override fun getKey(index: Int): Any = items.getOrNull(index)?.key ?: "empty_$index"
     override fun getIndex(key: Any): Int = items.indexOfFirst { it.key == key }
 }
 

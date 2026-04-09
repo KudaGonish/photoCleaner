@@ -51,7 +51,7 @@ internal fun SettingsTabContent(
     sendEvent: (Event) -> Unit
 ) {
     if (state.isLoading) SettingsTabShimmer()
-    else{
+    else {
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -171,8 +171,6 @@ internal fun SettingsTabContent(
             )
         }
     }
-
-
 }
 
 @Preview(showBackground = true, locale = "ru")

@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.material.icons.extended)
+    implementation(libs.coil.compose)
 
     // Koin
     implementation(libs.koin.android)
@@ -54,6 +55,8 @@ dependencies {
     // Internal Modules
     implementation(project(":core-ui"))
     implementation(project(":data-store"))
+    implementation(project(":photo-finder"))
+    implementation(project(":feature-settings"))
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

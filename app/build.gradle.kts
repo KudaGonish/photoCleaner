@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":permission-rationale-feature"))
     implementation(project(":feature-main"))
     implementation(project(":feature-settings"))
+    implementation(project(":feature-clearing"))
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)
