@@ -1,6 +1,5 @@
 package ru.kudagonish.core_ui.elements.containers
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
@@ -40,11 +39,9 @@ fun SwipeableCard(
     val offset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
     val scope = rememberCoroutineScope()
 
-    // Флаг, который предотвратит отправку обновлений после того, как мы решили свайпнуть карточку окончательно
     var isFinishing by remember { mutableStateOf(false) }
 
     LaunchedEffect(offset, enabled, isFinishing) {
-        Log.d("TAG", "SwipeableCard: effect ${enabled} ${!isFinishing}")
         if (enabled && !isFinishing) {
             snapshotFlow { offset.value.x }
                 .filter { it.fastIsFinite() }
@@ -68,7 +65,7 @@ fun SwipeableCard(
                         scope.launch {
                             val currentX = offset.value.x
                             if (abs(currentX) > 400) {
-                                val targetValueX  = if (currentX > 0) 1200f else -1200f
+                                val targetValueX = if (currentX > 0) 1200f else -1200f
                                 offset.animateTo(
                                     targetValue = Offset(targetValueX, 0f),
                                     animationSpec = tween(300)

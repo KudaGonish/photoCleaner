@@ -11,7 +11,10 @@ import ru.kudagonish.photofinder.data.db.entity.GalleryInformationEntity
 @Dao
 interface GalleryInformationDao {
     @Query("SELECT * FROM ${Tables.GalleryInformation.NAME} WHERE takenTimestamp = :date")
-    fun getPhotosForDate(date: String): Flow<List<GalleryInformationEntity>>
+    fun getPhotos(date: Long): Flow<List<GalleryInformationEntity>>
+
+    @Query("SELECT * FROM ${Tables.GalleryInformation.NAME}")
+    fun getPhotos(): Flow<List<GalleryInformationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPhotos(photos: List<GalleryInformationEntity>)
