@@ -1,13 +1,9 @@
 package ru.kudagonish.feature_clearing.ui.tab.content
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,23 +41,45 @@ internal fun ClearingTabContent() {
     var photoItems by remember {
         mutableStateOf(
             persistentListOf(
-                Item(id = "1", name = "Фото 1", background = Color.Red, size = DpSize(400.dp, 300.dp)),
-                Item(id = "2", name = "Фото 2", background = Color.Blue, size = DpSize(300.dp, 450.dp)),
-                Item(id = "3", name = "Фото 3", background = Color.Green, size = DpSize(400.dp, 300.dp)),
-                Item(id = "4", name = "Фото 4", background = Color.Yellow, size = DpSize(300.dp, 450.dp)),
-                Item(id = "5", name = "Фото 5", background = Color.Magenta, size = DpSize(300.dp, 450.dp))
+                Item(
+                    id = "1",
+                    name = "Фото 1",
+                    background = Color.Red,
+                    size = DpSize(400.dp, 300.dp)
+                ),
+                Item(
+                    id = "2",
+                    name = "Фото 2",
+                    background = Color.Blue,
+                    size = DpSize(300.dp, 450.dp)
+                ),
+                Item(
+                    id = "3",
+                    name = "Фото 3",
+                    background = Color.Green,
+                    size = DpSize(400.dp, 300.dp)
+                ),
+                Item(
+                    id = "4",
+                    name = "Фото 4",
+                    background = Color.Yellow,
+                    size = DpSize(300.dp, 450.dp)
+                ),
+                Item(
+                    id = "5",
+                    name = "Фото 5",
+                    background = Color.Magenta,
+                    size = DpSize(300.dp, 450.dp)
+                )
             )
         )
     }
     val stackState = rememberLazyStackState()
 
     LazyStackBox(modifier = Modifier, stackState = stackState) {
-        items(photoItems, key = { it.id }) { index, item: Item ->
+        items(photoItems) { index, item: Item ->
             SwipeableCard(
-                onSwiped = {
-                    stackState.updateTopItemOffset(0)
-                    photoItems = photoItems.remove(item) 
-                },
+                onSwiped = { photoItems = photoItems.remove(item) },
                 enabled = index == 0,
                 onOffsetChange = { stackState.updateTopItemOffset(it) }
             ) {
@@ -92,14 +110,14 @@ internal fun ClearingTabContent() {
 }
 
 @Stable
-internal class LazyStackState() {
+internal class LazyStackState {
     private var _offset = mutableIntStateOf(0)
 
     val itemScaling: Float
         get() = (abs(_offset.intValue) / 900f).coerceIn(0f, 1f)
 
     val itemAlpha: Float
-        get()= (abs(_offset.intValue) / 600f).coerceIn(0f,1f)
+        get() = (abs(_offset.intValue) / 600f).coerceIn(0f, 1f)
 
     fun updateTopItemOffset(value: Int) {
         _offset.intValue = value

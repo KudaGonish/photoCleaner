@@ -10,17 +10,17 @@ class CustomLazyListScopeImpl : LazyStackScope {
 
     override fun items(
         items: ImmutableList<Item>,
-//        key: ((item: Item) -> Any)?,
+        key: ((item: Item) -> Any)?,
         content: @Composable (index: Int) -> Unit
     ) {
-        items.forEachIndexed { index, item ->
-            _items.add(LazyItem(index, item.name, content))
+        items.forEach { item ->
+            val itemKey = key?.invoke(item) ?: item.id
+            _items.add(LazyItem(itemKey, content))
         }
     }
 
     data class LazyItem(
-        val index: Int,
-        val key: String,
+        val key: Any,
         val item: @Composable (index: Int) -> Unit
     )
 }

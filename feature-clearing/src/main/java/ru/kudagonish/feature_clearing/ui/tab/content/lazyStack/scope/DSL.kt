@@ -6,7 +6,8 @@ import ru.kudagonish.feature_clearing.ui.tab.content.Item
 
 inline fun LazyStackScope.items(
     items: ImmutableList<Item>,
+    noinline key: ((item: Item) -> Any)? = null,
     crossinline content: @Composable (index: Int, Item) -> Unit
 ) {
-    items(items) { index -> content(index, items[index]) }
+    items(items, key = key) { index -> content(index, items[index]) }
 }
