@@ -10,7 +10,7 @@ import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.LazyStackSc
 
 @Composable
 internal fun LazyStackBox(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     stackState: LazyStackState,
     content: LazyStackScope.() -> Unit
 ) {

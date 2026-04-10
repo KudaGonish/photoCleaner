@@ -2,6 +2,10 @@ package ru.kudagonish.photocleaner
 
 import android.app.Application
 import androidx.work.Configuration
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.request.CachePolicy
+import coil3.request.crossfade
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.factory.KoinWorkerFactory
@@ -39,5 +43,11 @@ class PhotoCleanerApplication : Application(), Configuration.Provider {
             )
         }
         SyncGalleryWorker.schedulePeriodicWorkRequest(this)
+        SingletonImageLoader.setSafe { context ->
+            ImageLoader.Builder(context)
+                .crossfade(true)
+                .diskCachePolicy(CachePolicy.DISABLED)
+                .build()
+        }
     }
 }

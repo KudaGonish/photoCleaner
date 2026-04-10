@@ -44,7 +44,7 @@ internal class ClearingTabViewModel(
     override fun loadData() {
         imagesUseCase.invoke(today)
             .onEach { list ->
-                val mappedList = list.map { Image(it.src) }.toImmutableList()
+                val mappedList = list.map { Image(src = it.src) }.toImmutableList()
                 updateState { it.copy(images = mappedList) }
             }
             .flowOn(Dispatchers.IO)

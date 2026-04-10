@@ -1,19 +1,14 @@
 package ru.kudagonish.feature_clearing.ui.tab.content
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import ru.kudagonish.core_ui.elements.bottomMenuPadding
 import ru.kudagonish.core_ui.elements.containers.SwipeDirection
 import ru.kudagonish.core_ui.elements.containers.SwipeableCard
@@ -30,59 +25,26 @@ internal fun ClearingTabContent(
     sendEvent: (Event) -> Unit
 ) {
     val stackState = rememberLazyStackState()
-
-    LazyStackBox(
-        modifier = Modifier
-            .padding(bottom = bottomMenuPadding + 32.dp, top = 36.dp),
-        stackState = stackState
+    BoxWithConstraints(
+        modifier = Modifier.padding(bottom = bottomMenuPadding, top = 36.dp),
     ) {
-        items(state.images, key = { it.src }) { index, item ->
-            SwipeableCard(
-                onSwiped = { direction ->
-                    val event = when (direction) {
-                        SwipeDirection.Right -> Event.SaveImage(item)
-                        else -> Event.DeleteImage(item)
-                    }
-                    sendEvent(event)
-                },
-                enabled = index == 0,
-                onOffsetChange = { stackState.updateTopItemOffset(it) }
-            ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .dropShadow(
-                            shape = RoundedCornerShape(16.dp),
-                            shadow = Shadow(
-                                radius = 6.dp,
-                                color = Color.Black,
-                                alpha = 0.2f
-                            )
-                        )
-                        .clip(RoundedCornerShape(16.dp)),
-                    model = item.src,
-                    contentDescription = null
+        val maxCardHeight = (this.maxHeight.value * 0.9f).dp
+        LazyStackBox(stackState = stackState) {
+            items(state.images, key = { it.src }) { index, item ->
+                SwipeableCard(
+                    modifier = Modifier,
+                    onSwiped = { direction ->
+                        val event = when (direction) {
+                            SwipeDirection.Right -> Event.SaveImage(item)
+                            else -> Event.DeleteImage(item)
+                        }
+                        sendEvent(event)
+                    },
+                    enabled = index == 0,
+                    onOffsetChange = { stackState.updateTopItemOffset(it) },
+                    imageSrc = item.src,
+                    cardMaxHeight = maxCardHeight
                 )
-                /*                Box(
-                                    modifier = Modifier
-                                        .size(item.size)
-                                        .dropShadow(
-                                            shape = RoundedCornerShape(16.dp),
-                                            shadow = Shadow(
-                                                radius = 6.dp,
-                                                color = Color.Black,
-                                                alpha = 0.2f
-                                            )
-                                        )
-                                        .clip(RoundedCornerShape(16.dp))
-                                        .background(item.background),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = item.name,
-                                        style = MaterialTheme.typography.headlineMedium,
-                                        color = Color.White
-                                    )
-                                }*/
             }
         }
     }
