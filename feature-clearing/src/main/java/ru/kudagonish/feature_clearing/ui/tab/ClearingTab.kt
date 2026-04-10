@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.kudagonish.feature_clearing.ui.tab.content.ClearingTabContent
+import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel
 
 @Composable
 internal fun ClearingTab(

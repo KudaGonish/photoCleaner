@@ -1,8 +1,6 @@
-package ru.kudagonish.feature_clearing.ui.tab
+package ru.kudagonish.feature_clearing.ui.tab.viewModel
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -12,8 +10,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
 import ru.kudagonish.feature_clearing.domain.GetImagesUseCase
-import ru.kudagonish.feature_clearing.ui.tab.ClearingTabViewModel.Action
-import ru.kudagonish.feature_clearing.ui.tab.ClearingTabViewModel.Event
+import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Action
+import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Event
 import kotlin.time.Clock
 
 internal class ClearingTabViewModel(
@@ -44,7 +42,7 @@ internal class ClearingTabViewModel(
     override fun loadData() {
         imagesUseCase.invoke(today)
             .onEach { list ->
-                val mappedList = list.map { Image(src = it.src) }.toImmutableList()
+                val mappedList = list.map { ImageUiModel(src = it.src) }.toImmutableList()
                 updateState { it.copy(images = mappedList) }
             }
             .flowOn(Dispatchers.IO)
@@ -52,17 +50,9 @@ internal class ClearingTabViewModel(
     }
 
     sealed interface Event : ViewModelEvent {
-        data class SaveImage(val image: Image) : Event
-        data class DeleteImage(val image: Image) : Event
+        data class SaveImage(val image: ImageUiModel) : Event
+        data class DeleteImage(val image: ImageUiModel) : Event
     }
 
     sealed interface Action : ViewModelAction
 }
-
-internal data class ClearingTabState(
-    val images: ImmutableList<Image> = persistentListOf()
-)
-
-internal data class Image(
-    val src: String,
-)

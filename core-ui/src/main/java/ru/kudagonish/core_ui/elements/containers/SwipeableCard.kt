@@ -1,5 +1,6 @@
 package ru.kudagonish.core_ui.elements.containers
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
@@ -44,7 +45,6 @@ enum class SwipeDirection {
 
 @Composable
 fun SwipeableCard(
-    modifier: Modifier,
     onSwiped: (SwipeDirection) -> Unit,
     onOffsetChange: (Int) -> Unit,
     enabled: Boolean = true,
@@ -52,11 +52,13 @@ fun SwipeableCard(
     cardMaxHeight: Dp
 ) {
     val scope = rememberCoroutineScope()
-    val offset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
+    val offset = remember(imageSrc) { Animatable(Offset.Zero, Offset.VectorConverter) }
     var contentScale by remember { mutableStateOf(ContentScale.Fit) }
     var isLoaded by remember { mutableStateOf(false) }
     var isFinishing by remember { mutableStateOf(false) }
-
+    LaunchedEffect(enabled, isFinishing) {
+        Log.d("TAG", "SwipeableCard: $imageSrc en ${enabled} finish ${isFinishing}")
+    }
     LaunchedEffect(offset, enabled, isFinishing) {
         if (enabled && !isFinishing) {
             snapshotFlow { offset.value.x }
@@ -66,17 +68,20 @@ fun SwipeableCard(
                 .collect { onOffsetChange(it) }
         }
     }
-
     Box(
-        modifier = modifier
+        modifier = Modifier
             .graphicsLayer {
                 translationX = offset.value.x
                 rotationZ = offset.value.x / 30f
             }
             .pointerInput(enabled) {
+                Log.d("TAG", "SwipeableCard: ${imageSrc} input  $enabled")
                 if (!enabled) return@pointerInput
-
+                Log.d("TAG", "SwipeableCard: input detected")
                 detectDragGestures(
+                    onDragCancel = {
+                        Log.d("TAG", "SwipeableCard: cancel drag for $imageSrc")
+                    },
                     onDragEnd = {
                         scope.launch {
                             val currentX = offset.value.x
@@ -95,6 +100,7 @@ fun SwipeableCard(
                         }
                     },
                     onDrag = { change, dragAmount ->
+                        Log.d("TAG", "SwipeableCard: onDrag")
                         change.consume()
                         scope.launch {
                             offset.snapTo(offset.value + dragAmount)
@@ -116,6 +122,7 @@ fun SwipeableCard(
                 }
             },
             modifier = Modifier
+
                 .fillMaxWidth()
                 .then(
                     if (!isLoaded) Modifier

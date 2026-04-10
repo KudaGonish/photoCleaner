@@ -1,4 +1,4 @@
-package ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope
+package ru.kudagonish.feature_clearing.ui.tab.lazyStack.scope
 
 import androidx.compose.runtime.Composable
 import kotlinx.collections.immutable.ImmutableList

@@ -1,11 +1,10 @@
-package ru.kudagonish.feature_clearing.ui.tab.content.lazyStack
+package ru.kudagonish.feature_clearing.ui.tab.lazyStack
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.layout.LazyLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ru.kudagonish.feature_clearing.ui.tab.content.LazyStackState
-import ru.kudagonish.feature_clearing.ui.tab.content.lazyStack.scope.LazyStackScope
+import ru.kudagonish.feature_clearing.ui.tab.lazyStack.scope.LazyStackScope
 
 
 @Composable
