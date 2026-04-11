@@ -25,4 +25,8 @@ internal class ImagesRepositoryImpl(
             }
         }
     }
+
+    override suspend fun keepPhoto(uri: String) {
+        imagesLocalDataSource.keepPhoto(uri)
+    }
 }

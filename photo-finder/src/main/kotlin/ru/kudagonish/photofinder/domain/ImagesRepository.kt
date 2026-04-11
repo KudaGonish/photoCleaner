@@ -8,4 +8,5 @@ interface ImagesRepository {
     fun getPhotos(): Flow<List<ImageModel>>
     fun getPhotos(timeStamp: Long): Flow<List<ImageModel>>
 
+    suspend fun keepPhoto(uri: String)
 }

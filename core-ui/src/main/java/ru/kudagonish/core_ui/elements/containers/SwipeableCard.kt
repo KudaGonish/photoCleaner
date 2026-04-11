@@ -95,7 +95,6 @@ fun SwipeableCard(
                                     targetValue = Offset(targetValueX, 0f),
                                     animationSpec = tween(300)
                                 )
-                                onOffsetChange(0)
                                 isFinishing = true
                                 onSwiped(if (currentX > 0) SwipeDirection.Right else SwipeDirection.Left)
                             } else {

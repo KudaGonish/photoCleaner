@@ -6,4 +6,6 @@ import ru.kudagonish.photofinder.data.db.entity.GalleryInformationEntity
 internal interface ImagesLocalDataSource {
     fun getPhotos(): Flow<List<GalleryInformationEntity>>
     fun getPhotos(date: Long): Flow<List<GalleryInformationEntity>>
+
+    suspend fun keepPhoto(uri: String)
 }

@@ -6,16 +6,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
 import ru.kudagonish.feature_clearing.domain.GetImagesUseCase
+import ru.kudagonish.feature_clearing.domain.KeepImageUseCase
 import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Action
 import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Event
 import kotlin.time.Clock
 
 internal class ClearingTabViewModel(
     private val imagesUseCase: GetImagesUseCase,
+    private val keepImageUseCase: KeepImageUseCase,
 ) : BaseViewModel<ClearingTabState, Event, Action>(ClearingTabState()) {
 
     private val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
@@ -29,10 +32,9 @@ internal class ClearingTabViewModel(
             is Event.DeleteImage -> updateState {
                 it.copy(images = it.images.filter { it != event.image }.toImmutableList())
             }
-            is Event.SaveImage -> {
-                updateState {
-                    it.copy(images = it.images.filter { it != event.image }.toImmutableList())
-                }
+
+            is Event.KeepImage -> viewModelScope.launch(Dispatchers.IO) {
+                keepImageUseCase.invoke(event.image.src)
             }
         }
     }
@@ -50,7 +52,7 @@ internal class ClearingTabViewModel(
     }
 
     sealed interface Event : ViewModelEvent {
-        data class SaveImage(val image: ImageUiModel) : Event
+        data class KeepImage(val image: ImageUiModel) : Event
         data class DeleteImage(val image: ImageUiModel) : Event
     }
 

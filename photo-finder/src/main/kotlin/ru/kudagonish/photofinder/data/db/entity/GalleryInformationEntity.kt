@@ -10,3 +10,7 @@ data class GalleryInformationEntity(
     val takenTimestamp: Long,
     val plannedDeletionTimestamp: Long?
 )
+
+data class UriColumn(
+    val uri: String
+)
