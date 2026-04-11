@@ -1,6 +1,5 @@
 package ru.kudagonish.core_ui.elements.containers
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
@@ -43,23 +42,29 @@ enum class SwipeDirection {
     Left, Right
 }
 
+private const val DRAG_ANIMATION_DURATION = 1200f
+private const val ROTATION_DIVIDER = 30f
+private const val SWIPE_WORK_DISTANCE = 400f
+private const val SWIPE_DIRECTION_INDICATOR_DISTANCE = 200f
+
 @Composable
 fun SwipeableCard(
     onSwiped: (SwipeDirection) -> Unit,
     onOffsetChange: (Int) -> Unit,
-    enabled: Boolean = true,
+    onSwipeDirectionChanged: (SwipeDirection?) -> Unit,
+    enabled: Boolean,
     imageSrc: String,
     cardMaxHeight: Dp
 ) {
+
     val scope = rememberCoroutineScope()
-    val offset = remember(imageSrc) { Animatable(Offset.Zero, Offset.VectorConverter) }
+
+    val offset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
     var contentScale by remember { mutableStateOf(ContentScale.Fit) }
     var isLoaded by remember { mutableStateOf(false) }
     var isFinishing by remember { mutableStateOf(false) }
+
     LaunchedEffect(enabled, isFinishing) {
-        Log.d("TAG", "SwipeableCard: $imageSrc en ${enabled} finish ${isFinishing}")
-    }
-    LaunchedEffect(offset, enabled, isFinishing) {
         if (enabled && !isFinishing) {
             snapshotFlow { offset.value.x }
                 .filter { it.fastIsFinite() }
@@ -68,25 +73,24 @@ fun SwipeableCard(
                 .collect { onOffsetChange(it) }
         }
     }
+
     Box(
         modifier = Modifier
             .graphicsLayer {
                 translationX = offset.value.x
-                rotationZ = offset.value.x / 30f
+                rotationZ = offset.value.x / ROTATION_DIVIDER
             }
             .pointerInput(enabled) {
-                Log.d("TAG", "SwipeableCard: ${imageSrc} input  $enabled")
                 if (!enabled) return@pointerInput
-                Log.d("TAG", "SwipeableCard: input detected")
+
                 detectDragGestures(
-                    onDragCancel = {
-                        Log.d("TAG", "SwipeableCard: cancel drag for $imageSrc")
-                    },
                     onDragEnd = {
                         scope.launch {
+                            onSwipeDirectionChanged(null)
                             val currentX = offset.value.x
-                            if (abs(currentX) > 400) {
-                                val targetValueX = if (currentX > 0) 1200f else -1200f
+                            if (abs(currentX) > SWIPE_WORK_DISTANCE) {
+                                val targetValueX = if (currentX > 0) DRAG_ANIMATION_DURATION
+                                else -DRAG_ANIMATION_DURATION
                                 offset.animateTo(
                                     targetValue = Offset(targetValueX, 0f),
                                     animationSpec = tween(300)
@@ -100,10 +104,17 @@ fun SwipeableCard(
                         }
                     },
                     onDrag = { change, dragAmount ->
-                        Log.d("TAG", "SwipeableCard: onDrag")
                         change.consume()
                         scope.launch {
                             offset.snapTo(offset.value + dragAmount)
+                            val intOffset = offset.value.x.roundToInt()
+                            val direction = when {
+                                intOffset == 0 -> null
+                                intOffset >= SWIPE_DIRECTION_INDICATOR_DISTANCE -> SwipeDirection.Right
+                                intOffset <= -SWIPE_DIRECTION_INDICATOR_DISTANCE -> SwipeDirection.Left
+                                else -> null
+                            }
+                            onSwipeDirectionChanged(direction)
                         }
                     }
                 )
@@ -122,7 +133,6 @@ fun SwipeableCard(
                 }
             },
             modifier = Modifier
-
                 .fillMaxWidth()
                 .then(
                     if (!isLoaded) Modifier

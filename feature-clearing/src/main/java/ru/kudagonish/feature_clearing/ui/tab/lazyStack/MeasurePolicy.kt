@@ -21,7 +21,7 @@ internal fun rememberStackMeasurePolicy(
             maxWidth = constraints.maxWidth - with(this) { 32.dp.roundToPx() }
         )
 
-        val placeables = (0 until minOf(2, provider.itemCount))
+        val placeableList = (0 until minOf(2, provider.itemCount))
             .reversed()
             .map { placeableIndex ->
                 compose(placeableIndex).first().measure(looseConstraints)
@@ -31,16 +31,18 @@ internal fun rememberStackMeasurePolicy(
         val centerHeight = constraints.maxHeight / 2
 
         layout(constraints.maxWidth, constraints.maxHeight) {
-            placeables.fastForEachIndexed { index, placeble ->
-                val x = centerWidth - placeble.width / 2
-                val y = centerHeight - placeble.height / 2
+            placeableList.fastForEachIndexed { index, placeable ->
+                val x = centerWidth - placeable.width / 2
+                val y = centerHeight - placeable.height / 2
 
-                placeble.placeWithLayer(x, y) {
-                    if (index == 0 && placeables.size != 1) {
+                if (index == 0 && placeableList.size > 1) {
+                    placeable.placeWithLayer(x, y) {
                         scaleX = stackState.itemScaling
                         scaleY = stackState.itemScaling
-                        this.alpha = stackState.itemAlpha
+                        alpha = stackState.itemAlpha
                     }
+                } else {
+                    placeable.place(x, y)
                 }
             }
         }
