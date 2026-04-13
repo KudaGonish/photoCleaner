@@ -32,8 +32,8 @@ internal fun ClearingTabContent(
                 SwipeableCard(
                     onSwiped = { direction ->
                         val event = when (direction) {
-                            SwipeDirection.Right -> Event.KeepImage(item)
-                            else -> Event.DeleteImage(item)
+                            SwipeDirection.Right -> Event.KeepPhoto(item)
+                            else -> Event.DeletePhoto(item)
                         }
                         sendEvent(event)
                     },

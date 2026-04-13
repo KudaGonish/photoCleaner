@@ -4,10 +4,10 @@ import android.app.PendingIntent
 import kotlinx.coroutines.flow.first
 import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.feature_settings.domain.SettingsRepository
-import ru.kudagonish.photofinder.domain.PhotosRepository
+import ru.kudagonish.photofinder.domain.PhotoRequestRepository
 
 internal class PhotosOperationRequestInteractor(
-    private val photosRepository: PhotosRepository,
+    private val photosRepository: PhotoRequestRepository,
     private val settingsRepository: SettingsRepository
 ) {
     suspend operator fun invoke(uris: List<String>): PendingIntent {

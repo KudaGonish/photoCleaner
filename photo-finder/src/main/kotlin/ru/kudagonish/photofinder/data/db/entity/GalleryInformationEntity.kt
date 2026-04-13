@@ -19,7 +19,8 @@ data class GalleryInformationEntity(
 enum class PhotoStatus(val id: Int) {
     ACTIVE(0),
     DELETION(-1),
-    TRASH(1)
+    TRASH(1),
+    NEED_PUT_TO_TRASH(2),
 }
 
 internal class PhotoStatusConverter {

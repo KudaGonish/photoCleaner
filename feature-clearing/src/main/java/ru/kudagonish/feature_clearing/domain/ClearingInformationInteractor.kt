@@ -8,26 +8,31 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 import ru.kudagonish.feature_settings.domain.SettingsRepository
-import ru.kudagonish.photofinder.domain.PhotosRepository
+import ru.kudagonish.photofinder.domain.ActivePhotosRepository
+import ru.kudagonish.photofinder.domain.DeletionPhotosRepository
+import ru.kudagonish.photofinder.domain.TrashedPhotosRepository
 import ru.kudagonish.photofinder.domain.models.ImageModel
 
-internal class GetImagesUseCase(
+internal class ClearingInformationInteractor(
     private val settingsRepository: SettingsRepository,
-    private val photosRepository: PhotosRepository
+    private val activePhotosRepository: ActivePhotosRepository,
+    private val deletedPhotosRepository: DeletionPhotosRepository,
+    private val trashedPhotosRepository: TrashedPhotosRepository
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
-    operator fun invoke(date: LocalDate): Flow<List<ImageModel>> {
-        val timestamp = date.toEpochDays()
-
+    fun getPhotos(date: LocalDate): Flow<List<ImageModel>> {
         return settingsRepository.settingsFlow
             .map { it.algorithm }
             .distinctUntilChanged()
             .flatMapLatest { algorithm ->
                 if (algorithm is WorkAlgorithm.DayMoth) {
-                    photosRepository.getPhotos(timestamp)
+                    activePhotosRepository.getPhotos(date)
                 } else {
-                    photosRepository.getPhotos()
+                    activePhotosRepository.getPhotos()
                 }
             }
     }
+
+    fun getDeletionPhotoCount() = deletedPhotosRepository.getPhotoCount()
+    fun getTrashedPhotoCount() = trashedPhotosRepository.getPhotoCount()
 }

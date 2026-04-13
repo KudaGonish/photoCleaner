@@ -1,7 +1,6 @@
 package ru.kudagonish.feature_clearing.ui.tab.viewModel
 
 import android.content.IntentSender
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -12,19 +11,19 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
-import ru.kudagonish.feature_clearing.domain.DeleteImageUseCase
-import ru.kudagonish.feature_clearing.domain.GetImagesUseCase
-import ru.kudagonish.feature_clearing.domain.KeepImageUseCase
+import ru.kudagonish.feature_clearing.domain.ClearingInformationInteractor
+import ru.kudagonish.feature_clearing.domain.PhotoKeepActionUseCase
+import ru.kudagonish.feature_clearing.domain.PhotoNegativeActionUseCase
 import ru.kudagonish.feature_clearing.domain.PhotosOperationRequestInteractor
 import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Action
 import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Event
 import kotlin.time.Clock
 
 internal class ClearingTabViewModel(
-    private val imagesUseCase: GetImagesUseCase,
-    private val keepImageUseCase: KeepImageUseCase,
+    private val photosInteractor: ClearingInformationInteractor,
+    private val keepImageUseCase: PhotoKeepActionUseCase,
     private val crateOperationRequestUseCase: PhotosOperationRequestInteractor,
-    private val deleteImageUseCase: DeleteImageUseCase,
+    private val deleteImageUseCase: PhotoNegativeActionUseCase,
 ) : BaseViewModel<ClearingTabState, Event, Action>(ClearingTabState()) {
 
     private val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
@@ -36,21 +35,16 @@ internal class ClearingTabViewModel(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.DeleteImage -> viewModelScope.launch(Dispatchers.IO) {
-                pendingDeleteImage = event.image
-                val pendingIntent = crateOperationRequestUseCase(listOf(event.image.src))
-                produceAction(Action.RequestDeletePermission(pendingIntent.intentSender))
-            }
+            is Event.DeletePhoto -> photoNegativeAction(event.image.src)
+            is Event.KeepPhoto -> photoPositiveAction(event.image.src)
 
-            is Event.KeepImage -> viewModelScope.launch(Dispatchers.IO) {
-                keepImageUseCase.invoke(event.image.src)
-            }
-
+            //TODO отправляется когда мы сверху тыкаем "удалить"
             is Event.OnDeleteConfirmed -> viewModelScope.launch(Dispatchers.IO) {
-                pendingDeleteImage?.let { deleteImageUseCase.invoke(it.src,today) }
+                pendingDeleteImage?.let { deleteImageUseCase.invoke(it.src, today) }
                 pendingDeleteImage = null
             }
 
+            //TODO тут по идее если мы не согласились, то хз че делать, но не то что чичас написано
             is Event.OnDeleteCanceled -> {
                 pendingDeleteImage?.let { image ->
                     updateState { state ->
@@ -67,19 +61,40 @@ internal class ClearingTabViewModel(
     override fun resetState() {}
 
     override fun loadData() {
-        imagesUseCase.invoke(today)
+        photosInteractor.getPhotos(today)
             .onEach { list ->
                 val mappedList = list.map { ImageUiModel(src = it.src) }.toImmutableList()
                 updateState { it.copy(images = mappedList) }
-                Log.d("TAG", "loadData: ${mappedList.size}")
             }
+            .flowOn(Dispatchers.IO)
+            .launchIn(viewModelScope)
+
+        photosInteractor.getTrashedPhotoCount()
+            .onEach { updateState { state -> state.copy(countToTrash = it) } }
+            .flowOn(Dispatchers.IO)
+            .launchIn(viewModelScope)
+
+        photosInteractor.getDeletionPhotoCount()
+            .onEach { updateState { state -> state.copy(countToDelete = it) } }
             .flowOn(Dispatchers.IO)
             .launchIn(viewModelScope)
     }
 
+    private fun photoPositiveAction(uri: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            keepImageUseCase.invoke(uri)
+        }
+    }
+
+    private fun photoNegativeAction(uri: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteImageUseCase.invoke(uri, today)
+        }
+    }
+
     sealed interface Event : ViewModelEvent {
-        data class KeepImage(val image: ImageUiModel) : Event
-        data class DeleteImage(val image: ImageUiModel) : Event
+        data class KeepPhoto(val image: ImageUiModel) : Event
+        data class DeletePhoto(val image: ImageUiModel) : Event
         data object OnDeleteConfirmed : Event
         data object OnDeleteCanceled : Event
     }

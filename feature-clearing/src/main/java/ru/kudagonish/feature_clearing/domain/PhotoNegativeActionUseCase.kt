@@ -4,18 +4,18 @@ import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDate
 import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.feature_settings.domain.SettingsRepository
-import ru.kudagonish.photofinder.domain.PhotosRepository
+import ru.kudagonish.photofinder.domain.ActivePhotosRepository
 
-internal class DeleteImageUseCase(
-    private val repository: PhotosRepository,
+internal class PhotoNegativeActionUseCase(
+    private val repository: ActivePhotosRepository,
     private val settingsRepository: SettingsRepository
 ) {
-    suspend operator fun invoke(uris: List<String>, date: LocalDate) {
+    suspend operator fun invoke(uri: String, date: LocalDate) {
         val settings = settingsRepository.settingsFlow.first()
 
         when (settings.deletionType) {
-            DeletionType.Instant -> repository.deletePhoto(uris)
-            DeletionType.SystemTrash -> repository.markAsTrashed(uris, date)
+            DeletionType.Instant -> repository.markPhotoAsDeletion(uri)
+            DeletionType.SystemTrash -> repository.markPhotoAsTrashed(uri, date)
         }
     }
 }
