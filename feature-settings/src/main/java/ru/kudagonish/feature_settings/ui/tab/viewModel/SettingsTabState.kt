@@ -77,7 +77,6 @@ internal fun WorkAlgorithm.mapAlgorithms() = defaultSettings.algorithms.map {
 }.toImmutableList()
 
 internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map {
-
     SelectionItem(
         setting = it,
         isSelected = it == this,
