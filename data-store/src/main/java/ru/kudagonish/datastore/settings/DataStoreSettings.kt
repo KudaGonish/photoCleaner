@@ -35,7 +35,7 @@ interface DataStoreSettings {
                 WorkAlgorithm.FullTime
             ),
             deletionTypes = listOf(
-                DeletionType.Instant, DeletionType.Deffered(3),
+                DeletionType.Instant,
                 DeletionType.SystemTrash
             )
         )

@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "ru.kudagonish.photocleaner"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "ru.kudagonish.photocleaner"
-        minSdk = 29
-        targetSdk = 35
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 

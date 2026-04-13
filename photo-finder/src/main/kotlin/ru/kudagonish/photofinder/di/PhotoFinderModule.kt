@@ -16,9 +16,9 @@ import ru.kudagonish.photofinder.data.db.DATABASE_NAME
 import ru.kudagonish.photofinder.data.db.PhotoDatabase
 import ru.kudagonish.photofinder.data.db.dao.GalleryInformationDao
 import ru.kudagonish.photofinder.data.repository.GalleryRepositoryImpl
-import ru.kudagonish.photofinder.data.repository.ImagesRepositoryImpl
+import ru.kudagonish.photofinder.data.repository.PhotosRepositoryImpl
 import ru.kudagonish.photofinder.domain.GalleryRepository
-import ru.kudagonish.photofinder.domain.ImagesRepository
+import ru.kudagonish.photofinder.domain.PhotosRepository
 import ru.kudagonish.photofinder.domain.useCase.IScanGalleryUseCase
 import ru.kudagonish.photofinder.domain.useCase.ScanGalleryUseCase
 import ru.kudagonish.photofinder.worker.SyncGalleryWorker
@@ -38,7 +38,7 @@ val photoFinderModule = module {
     factoryOf(::ImagesLocalDataSourceImpl) bind ImagesLocalDataSource::class
 
     factoryOf(::GalleryRepositoryImpl) bind GalleryRepository::class
-    factoryOf(::ImagesRepositoryImpl) bind ImagesRepository::class
+    factoryOf(::PhotosRepositoryImpl) bind PhotosRepository::class
     factoryOf(::ScanGalleryUseCase) bind IScanGalleryUseCase::class
 
     workerOf(::SyncGalleryWorker)

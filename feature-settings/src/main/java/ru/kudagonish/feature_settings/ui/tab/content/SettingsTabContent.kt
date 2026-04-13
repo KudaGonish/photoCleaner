@@ -36,7 +36,6 @@ import ru.kudagonish.feature_settings.ui.tab.ui.DropdownMenu
 import ru.kudagonish.feature_settings.ui.tab.ui.RescanButton
 import ru.kudagonish.feature_settings.ui.tab.ui.SelectorSegmentedButtons
 import ru.kudagonish.feature_settings.ui.tab.ui.SettingsSection
-import ru.kudagonish.feature_settings.ui.tab.ui.SliderChoiceDefferedDays
 import ru.kudagonish.feature_settings.ui.tab.ui.StatisticCard
 import ru.kudagonish.feature_settings.ui.tab.ui.ThemeSelector
 import ru.kudagonish.feature_settings.ui.tab.ui.UtilizationRadioButton
@@ -128,7 +127,6 @@ internal fun SettingsTabContent(
                     state.deletionTypes.forEachIndexed { index, type ->
                         val color = when (type.setting) {
                             DeletionType.Instant -> LocalCustomColors.current.instant
-                            is DeletionType.Deffered -> LocalCustomColors.current.safe
                             DeletionType.SystemTrash -> LocalCustomColors.current.bin
                         }
                         Spacer(Modifier.height(16.dp))
@@ -140,15 +138,6 @@ internal fun SettingsTabContent(
                             selected = type.isSelected,
                             onClick = { sendEvent(Event.OnChangeDeletionType(type.setting)) }
                         )
-                        if (type.setting is DeletionType.Deffered && type.isSelected) {
-                            SliderChoiceDefferedDays(
-                                days = type.setting.days,
-                                onSetValue = {
-                                    sendEvent(Event.OnChangeDeletionType(it))
-                                }
-                            )
-                        }
-                        Spacer(Modifier.height(8.dp))
                         if (index != state.deletionTypes.lastIndex) {
                             HorizontalDivider(
                                 modifier = Modifier.padding(horizontal = 16.dp),

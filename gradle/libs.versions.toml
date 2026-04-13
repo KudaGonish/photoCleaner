@@ -22,6 +22,10 @@ work = "2.11.2"
 kotlinxImmutable = "0.4.0"
 kotlinx-datetime = "0.7.1"
 
+compileSdk = "36"
+minSdk = "30"
+targetSdk = "35"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -1,21 +1,22 @@
 package ru.kudagonish.photofinder.data.dataSource.gallery
 
+import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.ContentUris
-import android.content.Context
 import android.database.Cursor
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.core.net.toUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.kudagonish.core.ContextProvider
 import ru.kudagonish.photofinder.data.dataSource.gallery.model.PhotoInfoDto
 import java.util.Date
 
 private const val SECONDS_TO_MILLIS = 1000L
 private const val PAGE_SIZE = 500
 
-internal class GalleryDataSourceImpl(private val context: Context) : GalleryDataSource {
+internal class GalleryDataSourceImpl(private val contextProvider: ContextProvider) : GalleryDataSource {
 
     private val projection = arrayOf(
         MediaStore.Images.Media._ID,
@@ -48,10 +49,20 @@ internal class GalleryDataSourceImpl(private val context: Context) : GalleryData
         return queryPhotos(queryArgs).firstOrNull()
     }
 
+    override fun createDeleteRequest(uris: List<String>): PendingIntent {
+        val contentUris = uris.map { it.toUri() }
+        return MediaStore.createDeleteRequest(contextProvider.context.contentResolver, contentUris)
+    }
+
+    override fun createTrashRequest(uris: List<String>, isPut: Boolean): PendingIntent {
+        val contentUris = uris.map { it.toUri() }
+        return MediaStore.createTrashRequest(contextProvider.context.contentResolver, contentUris, isPut)
+    }
+
     private fun queryPhotos(queryArgs: Bundle): List<PhotoInfoDto> {
         val photos = mutableListOf<PhotoInfoDto>()
 
-        context.contentResolver.query(
+        contextProvider.context.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             projection,
             queryArgs,
@@ -96,10 +107,6 @@ internal class GalleryDataSourceImpl(private val context: Context) : GalleryData
         putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
     }
 
-    private fun getSelectionParams() = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->
-            "${MediaStore.MediaColumns.IS_TRASHED} = 0 AND ${MediaStore.MediaColumns.IS_PENDING} = 0"
-
-        else -> "${MediaStore.MediaColumns.IS_PENDING} = 0"
-    }
+    private fun getSelectionParams() =
+        "${MediaStore.MediaColumns.IS_TRASHED} = 0 AND ${MediaStore.MediaColumns.IS_PENDING} = 0"
 }

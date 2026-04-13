@@ -18,7 +18,7 @@ internal class SettingsTabStateProvider : PreviewParameterProvider<SettingsTabSt
             languages = Language.Ru.mapLanguages(),
             themes = AppTheme.Light.mapThemes(),
             algorithms = WorkAlgorithm.DayMoth.mapAlgorithms(),
-            deletionTypes = DeletionType.Deffered(3).mapDeletionTypes()
+            deletionTypes = DeletionType.Instant.mapDeletionTypes()
         ),
 
         // Альтернативное состояние (Темная тема, Английский, Мгновенное удаление)

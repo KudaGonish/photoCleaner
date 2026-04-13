@@ -26,7 +26,7 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
         theme = AppTheme.System,
         language = Language.Ru,
         algorithm = WorkAlgorithm.DayMoth,
-        deletionType = DeletionType.Deffered(ApplicationSettings.DEFAULT_DEFFERED_DAYS)
+        deletionType = DeletionType.SystemTrash
     )
 
     override val settingsFlow: Flow<ApplicationSettings> =
@@ -39,7 +39,7 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
     override suspend fun setSystemLanguage(value: Language) {
         context.dataStore.edit { preferences ->
             val currentLocale = preferences[languageKey]
-            if(currentLocale == null)
+            if (currentLocale == null)
                 preferences[languageKey] = value.toString()
         }
     }
@@ -65,17 +65,12 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
     override suspend fun changeDeletionType(newValue: DeletionType) {
         context.dataStore.edit { preferences ->
             preferences[deletionTypeKey] = newValue.toString()
-            if(newValue is DeletionType.Deffered) {
-                preferences[deletionDaysKey] = newValue.days.toString()
-            }
         }
     }
 
     private fun Preferences.createSettingsModel(): ApplicationSettings {
-        val deletionDays = this[deletionDaysKey]
-            ?.toInt() ?: ApplicationSettings.DEFAULT_DEFFERED_DAYS
         val deletionType = this[deletionTypeKey]
-            ?.mapToDeletionType(deletionDays) ?: defaultSettings.deletionType
+            ?.mapToDeletionType() ?: defaultSettings.deletionType
 
         return ApplicationSettings(
             theme = this[themeKey]?.mapToAppTheme() ?: defaultSettings.theme,
@@ -91,6 +86,5 @@ internal class DataStoreSettingsImpl(private val context: Context) : DataStoreSe
         val languageKey = stringPreferencesKey("language")
         val algorithmKey = stringPreferencesKey("algorithm")
         val deletionTypeKey = stringPreferencesKey("deletionType")
-        val deletionDaysKey = stringPreferencesKey("deletionDays")
     }
 }

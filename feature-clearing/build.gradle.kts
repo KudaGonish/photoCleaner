@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "ru.kudagonish.feature_clearing"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 29
+        minSdk = libs.versions.minSdk.get().toInt()
     }
 
     buildTypes {

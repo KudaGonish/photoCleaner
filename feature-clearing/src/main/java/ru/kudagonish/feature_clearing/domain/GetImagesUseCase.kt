@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 import ru.kudagonish.feature_settings.domain.SettingsRepository
-import ru.kudagonish.photofinder.domain.ImagesRepository
+import ru.kudagonish.photofinder.domain.PhotosRepository
 import ru.kudagonish.photofinder.domain.models.ImageModel
 
 internal class GetImagesUseCase(
     private val settingsRepository: SettingsRepository,
-    private val imagesRepository: ImagesRepository
+    private val photosRepository: PhotosRepository
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(date: LocalDate): Flow<List<ImageModel>> {
@@ -24,9 +24,9 @@ internal class GetImagesUseCase(
             .distinctUntilChanged()
             .flatMapLatest { algorithm ->
                 if (algorithm is WorkAlgorithm.DayMoth) {
-                    imagesRepository.getPhotos(timestamp)
+                    photosRepository.getPhotos(timestamp)
                 } else {
-                    imagesRepository.getPhotos()
+                    photosRepository.getPhotos()
                 }
             }
     }
