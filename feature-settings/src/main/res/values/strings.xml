@@ -17,8 +17,6 @@
     <string name="selection_util">Utilization</string>
     <string name="selection_util_instantly">Instantly</string>
     <string name="selection_util_instantly_desc">Without the possibility of recovery</string>
-    <string name="selection_util_deffered">Deffered deletion</string>
-    <string name="selection_util_deffered_desc">Safe mode with buffer</string>
     <string name="selection_util_system_basket">System trash bin</string>
     <string name="selection_util_system_basket_desc">Move to the Android Shopping Cart</string>
 

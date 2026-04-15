@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "ru.kudagonish.core_ui"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 29
+        minSdk = libs.versions.minSdk.get().toInt()
     }
 
     buildTypes {
@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.coil.compose)
 
     //kotlinx
     implementation(libs.kotlinx.collections.immutable)

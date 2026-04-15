@@ -33,7 +33,7 @@ import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
 import ru.kudagonish.core_ui.theme.LocalCustomColors
 
 private val menuHeight = 61.dp
-val bottomMenuPadding = menuHeight
+val bottomMenuPadding = menuHeight + 32.dp
 
 @Composable
 fun BoxScope.BottomMenu(

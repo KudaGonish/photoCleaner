@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "ru.kudagonish.feature_main"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 29
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -59,6 +59,7 @@ dependencies {
     // Internal Modules
     implementation(project(":core-ui"))
     implementation(project(":feature-settings"))
+    implementation(project(":feature-clearing"))
 
     // Navigation & Serialization
     implementation(libs.androidx.navigation.compose)

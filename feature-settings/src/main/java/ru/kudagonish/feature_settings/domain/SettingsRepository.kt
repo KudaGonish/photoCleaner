@@ -7,7 +7,7 @@ import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.datastore.settings.models.Language
 import ru.kudagonish.datastore.settings.models.WorkAlgorithm
 
-internal interface SettingsRepository {
+interface SettingsRepository {
     val settingsFlow: Flow<ApplicationSettings>
 
     suspend fun changeLanguage(newValue: Language)

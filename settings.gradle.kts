@@ -2,6 +2,7 @@
 
 include(":feature-main")
 include(":feature-settings")
+include(":feature-clearing")
 
 pluginManagement {
     repositories {

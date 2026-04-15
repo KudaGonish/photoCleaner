@@ -6,7 +6,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.ViewCozy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +20,7 @@ import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.elements.BottomMenu
 import ru.kudagonish.core_ui.elements.UiText
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
+import ru.kudagonish.feature_clearing.ui.navigation.clearingTabItem
 import ru.kudagonish.feature_settings.ui.navigation.settingsTabItem
 
 @Composable
@@ -43,19 +43,7 @@ internal fun MainScreen() {
                 }
             }
         ),
-        PagerItem(
-            icon = Icons.Outlined.ViewCozy,
-            title = UiText.DynamicString("Отчистка"),
-            content = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    //TODO таб из модуля с отчисткой
-                }
-            }
-        ),
+        clearingTabItem(),
         settingsTabItem()
     )
 

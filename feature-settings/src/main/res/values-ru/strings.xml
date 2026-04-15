@@ -15,8 +15,6 @@
     <string name="selection_util">Утилизация</string>
     <string name="selection_util_instantly">Мгновенно</string>
     <string name="selection_util_instantly_desc">Без возможности восстановления</string>
-    <string name="selection_util_deffered">Отложенное удаление</string>
-    <string name="selection_util_deffered_desc">Безопасный режим с буффером</string>
     <string name="selection_util_system_basket">Системная корзина</string>
     <string name="selection_util_system_basket_desc">Переместить в корзину Android</string>
 

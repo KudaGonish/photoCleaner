@@ -5,7 +5,6 @@ import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -78,20 +77,12 @@ internal fun WorkAlgorithm.mapAlgorithms() = defaultSettings.algorithms.map {
 }.toImmutableList()
 
 internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map {
-    val settingIsDeffered = it is DeletionType.Deffered && this is DeletionType.Deffered
-
     SelectionItem(
-        setting = if (settingIsDeffered) this else it,
-        isSelected = when {
-            settingIsDeffered -> true
-            else -> it == this
-        },
+        setting = it,
+        isSelected = it == this,
         title = when (it) {
             DeletionType.Instant ->
                 UiText.StringResource(R.string.selection_util_instantly)
-
-            is DeletionType.Deffered ->
-                UiText.StringResource(R.string.selection_util_deffered)
 
             DeletionType.SystemTrash ->
                 UiText.StringResource(R.string.selection_util_system_basket)
@@ -100,15 +91,11 @@ internal fun DeletionType.mapDeletionTypes() = defaultSettings.deletionTypes.map
             DeletionType.Instant ->
                 UiText.StringResource(R.string.selection_util_instantly_desc)
 
-            is DeletionType.Deffered ->
-                UiText.StringResource(R.string.selection_util_deffered_desc)
-
             DeletionType.SystemTrash ->
                 UiText.StringResource(R.string.selection_util_system_basket_desc)
         },
         icon = when (it) {
             DeletionType.Instant -> Icons.Outlined.Bolt
-            is DeletionType.Deffered -> Icons.Outlined.Schedule
             DeletionType.SystemTrash -> Icons.Outlined.Delete
         }
     )

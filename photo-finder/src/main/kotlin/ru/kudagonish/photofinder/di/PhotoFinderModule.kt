@@ -6,15 +6,25 @@ import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import ru.kudagonish.photofinder.data.dataSource.db.ImagesLocalDataSource
 import ru.kudagonish.photofinder.data.dataSource.db.ScannedPhotoDataSource
+import ru.kudagonish.photofinder.data.dataSource.db.local.ImagesLocalDataSourceImpl
 import ru.kudagonish.photofinder.data.dataSource.db.local.ScannedPhotoDataSourceImpl
 import ru.kudagonish.photofinder.data.dataSource.gallery.GalleryDataSource
 import ru.kudagonish.photofinder.data.dataSource.gallery.GalleryDataSourceImpl
 import ru.kudagonish.photofinder.data.db.DATABASE_NAME
 import ru.kudagonish.photofinder.data.db.PhotoDatabase
 import ru.kudagonish.photofinder.data.db.dao.GalleryInformationDao
+import ru.kudagonish.photofinder.data.repository.ActivePhotoRepositoryImpl
+import ru.kudagonish.photofinder.data.repository.DeletionPhotoRepositoryImpl
 import ru.kudagonish.photofinder.data.repository.GalleryRepositoryImpl
+import ru.kudagonish.photofinder.data.repository.PhotoRequestRepositoryImpl
+import ru.kudagonish.photofinder.data.repository.TrashedPhotosRepositoryImpl
+import ru.kudagonish.photofinder.domain.ActivePhotosRepository
+import ru.kudagonish.photofinder.domain.DeletionPhotosRepository
 import ru.kudagonish.photofinder.domain.GalleryRepository
+import ru.kudagonish.photofinder.domain.PhotoRequestRepository
+import ru.kudagonish.photofinder.domain.TrashedPhotosRepository
 import ru.kudagonish.photofinder.domain.useCase.IScanGalleryUseCase
 import ru.kudagonish.photofinder.domain.useCase.ScanGalleryUseCase
 import ru.kudagonish.photofinder.worker.SyncGalleryWorker
@@ -31,6 +41,13 @@ val photoFinderModule = module {
 
     factoryOf(::GalleryDataSourceImpl) bind GalleryDataSource::class
     factoryOf(::ScannedPhotoDataSourceImpl) bind ScannedPhotoDataSource::class
+    factoryOf(::ImagesLocalDataSourceImpl) bind ImagesLocalDataSource::class
+
+    factoryOf(::PhotoRequestRepositoryImpl) bind PhotoRequestRepository::class
+    factoryOf(::ActivePhotoRepositoryImpl) bind ActivePhotosRepository::class
+    factoryOf(::TrashedPhotosRepositoryImpl) bind TrashedPhotosRepository::class
+    factoryOf(::DeletionPhotoRepositoryImpl) bind DeletionPhotosRepository::class
+
     factoryOf(::GalleryRepositoryImpl) bind GalleryRepository::class
     factoryOf(::ScanGalleryUseCase) bind IScanGalleryUseCase::class
 

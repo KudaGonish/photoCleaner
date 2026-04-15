@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "ru.kudagonish.photo_finder"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 29
+        minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,6 +31,7 @@ dependencies {
     // AndroidX & Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.kotlinx.datetime)
 
     // Room
     implementation(libs.androidx.room.runtime)

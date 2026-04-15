@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_clearing">Clearing</string>
+    <string name="to_trash_count">Total to the bin:</string>
+    <string name="to_deletion_count">Total to delete:</string>
+</resources>

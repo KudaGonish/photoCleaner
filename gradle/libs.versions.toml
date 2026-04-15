@@ -11,7 +11,7 @@ composeBom = "2026.02.00"
 appcompat = "1.7.1"
 material = "1.13.0"
 koin = "4.2.0"
-coil = "2.7.0"
+coil = "3.4.0"
 navigationCompose = "2.9.7"
 kotlinxSerializationJson = "1.10.0"
 coreSplashscreen = "1.2.0"
@@ -21,6 +21,10 @@ ksp = "2.3.6"
 work = "2.11.2"
 kotlinxImmutable = "0.4.0"
 kotlinx-datetime = "0.7.1"
+
+compileSdk = "36"
+minSdk = "30"
+targetSdk = "35"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +46,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-androidx-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
