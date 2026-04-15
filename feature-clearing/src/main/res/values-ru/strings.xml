@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tab_clearing">Очистка</string>
+    <string name="to_trash_count">Всего в корзину:</string>
+    <string name="to_deletion_count">Всего к удалению:</string>
 </resources>
