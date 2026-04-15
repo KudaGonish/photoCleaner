@@ -154,7 +154,7 @@ private fun ActionContainer(
                 )
             )
             .clip(shape)
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.surface)
             .then(modifier)
             .padding(paddings),
         verticalAlignment = Alignment.CenterVertically
