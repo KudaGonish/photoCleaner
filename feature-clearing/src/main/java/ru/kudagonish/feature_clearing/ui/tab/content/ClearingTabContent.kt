@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import ru.kudagonish.core_ui.elements.bottomMenuPadding
 import ru.kudagonish.core_ui.elements.containers.SwipeDirection
 import ru.kudagonish.core_ui.elements.containers.SwipeableCard
+import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.feature_clearing.ui.tab.lazyStack.LazyStackBox
 import ru.kudagonish.feature_clearing.ui.tab.lazyStack.rememberLazyStackState
 import ru.kudagonish.feature_clearing.ui.tab.lazyStack.scope.items
@@ -34,9 +35,13 @@ internal fun ClearingTabContent(
             SelectedPhotosInformation(
                 countToTrash = state.countToTrash,
                 countToDelete = state.countToDelete,
-                onMoveToTrashClick = { },
+                onMoveToTrashClick = {
+                    sendEvent(Event.OnNegativeActionApplied(DeletionType.SystemTrash))
+                },
                 onViewDeletionItemsClick = { },
-                onDeleteClick = { }
+                onDeleteClick = {
+                    sendEvent(Event.OnNegativeActionApplied(DeletionType.Instant))
+                }
             )
         }
         LazyStackBox(stackState = stackState) {

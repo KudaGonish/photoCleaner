@@ -1,8 +1,8 @@
 package ru.kudagonish.photofinder.data.dataSource.gallery.model
 
-import java.util.Date
+import kotlinx.datetime.LocalDate
 
 internal data class PhotoInfoDto(
     val uri: String,
-    val dateAdded: Date,
+    val dateAdded: LocalDate,
 )

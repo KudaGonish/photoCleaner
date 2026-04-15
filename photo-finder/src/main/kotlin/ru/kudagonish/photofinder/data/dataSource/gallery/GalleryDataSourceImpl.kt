@@ -9,11 +9,12 @@ import android.provider.MediaStore
 import androidx.core.net.toUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import ru.kudagonish.core.ContextProvider
 import ru.kudagonish.photofinder.data.dataSource.gallery.model.PhotoInfoDto
-import java.util.Date
+import kotlin.time.Instant
 
-private const val SECONDS_TO_MILLIS = 1000L
 private const val PAGE_SIZE = 500
 
 internal class GalleryDataSourceImpl(private val contextProvider: ContextProvider) : GalleryDataSource {
@@ -87,9 +88,13 @@ internal class GalleryDataSourceImpl(private val contextProvider: ContextProvide
             id
         )
 
+        val date = Instant.fromEpochSeconds(dateAdded)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
+
         return PhotoInfoDto(
             uri = contentUri.toString(),
-            dateAdded = Date(dateAdded * SECONDS_TO_MILLIS),
+            dateAdded = date,
         )
     }
 
