@@ -3,6 +3,7 @@
 include(":feature-main")
 include(":feature-settings")
 include(":feature-clearing")
+include(":feature-trash-bin")
 
 pluginManagement {
     repositories {

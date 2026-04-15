@@ -1,36 +1,27 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "ru.kudagonish.feature_main"
+    namespace = "ru.kudagonish.feature_trash_bin"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        compose = true
     }
 }
 
@@ -41,8 +32,7 @@ kotlin {
 dependencies {
     // AndroidX & Core
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -53,18 +43,19 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.material.icons.extended)
 
-    // Kotlinx Immutable
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
+    // Kotlinx
+    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.collections.immutable)
 
     // Internal Modules
     implementation(project(":core-ui"))
+    implementation(project(":data-store"))
+    implementation(project(":photo-finder"))
     implementation(project(":feature-settings"))
-    implementation(project(":feature-clearing"))
-    implementation(project(":feature-trash-bin"))
-
-    // Navigation & Serialization
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

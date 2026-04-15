@@ -4,24 +4,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.elements.BottomMenu
-import ru.kudagonish.core_ui.elements.UiText
-import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
 import ru.kudagonish.feature_clearing.ui.navigation.clearingTabItem
 import ru.kudagonish.feature_settings.ui.navigation.settingsTabItem
+import ru.kudagonish.feature_trash_bin.ui.navigation.trashBinTabItem
 
 @Composable
 internal fun MainScreen() {
@@ -30,19 +26,7 @@ internal fun MainScreen() {
     var jumpInfo by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
     val pages = persistentListOf(
-        PagerItem(
-            icon = Icons.Outlined.DeleteSweep,
-            title = UiText.DynamicString("Корзина"),
-            content = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    //TODO таб из модуля корзины, виден только если выбран режим "удалить через N дней"
-                }
-            }
-        ),
+        trashBinTabItem(),
         clearingTabItem(),
         settingsTabItem()
     )
