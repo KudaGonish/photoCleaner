@@ -54,20 +54,22 @@ internal fun SelectedPhotosInformation(
             .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        InformationSnackbar(
-            title = stringResource(R.string.to_trash_count),
-            count = countToTrash.toString(),
-        ) {
-            ActionContainer(
-                modifier = Modifier.clickable(onClick = onMoveToTrashClick),
-                shape = CircleShape,
-                paddings = PaddingValues(6.dp)
+        if (countToTrash > 0) {
+            InformationSnackbar(
+                title = stringResource(R.string.to_trash_count),
+                count = countToTrash.toString(),
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Delete,
-                    tint = LocalCustomColors.current.bin,
-                    contentDescription = null
-                )
+                ActionContainer(
+                    modifier = Modifier.clickable(onClick = onMoveToTrashClick),
+                    shape = CircleShape,
+                    paddings = PaddingValues(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        tint = LocalCustomColors.current.bin,
+                        contentDescription = null
+                    )
+                }
             }
         }
 
@@ -153,8 +155,8 @@ private fun ActionContainer(
             )
             .clip(shape)
             .background(MaterialTheme.colorScheme.background)
-            .padding(paddings)
-            .then(modifier) ,
+            .then(modifier)
+            .padding(paddings),
         verticalAlignment = Alignment.CenterVertically
     ) {
         content()

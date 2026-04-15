@@ -39,9 +39,7 @@ internal fun ClearingTabContent(
                 onDeleteClick = { }
             )
         }
-        LazyStackBox(
-            stackState = stackState
-        ) {
+        LazyStackBox(stackState = stackState) {
             items(state.images, key = { it.src }) { index, item ->
                 SwipeableCard(
                     onSwiped = { direction ->

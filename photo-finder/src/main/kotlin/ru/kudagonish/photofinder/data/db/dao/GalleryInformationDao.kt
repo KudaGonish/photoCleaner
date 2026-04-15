@@ -40,7 +40,7 @@ interface GalleryInformationDao {
     suspend fun markAsTrashed(
         uri: String,
         timestamp: Long,
-        status: PhotoStatus = PhotoStatus.TRASH
+        status: PhotoStatus = PhotoStatus.NEED_PUT_TO_TRASH
     )
 
     @Query(

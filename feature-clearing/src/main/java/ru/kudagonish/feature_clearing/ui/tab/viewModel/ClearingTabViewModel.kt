@@ -12,8 +12,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
 import ru.kudagonish.feature_clearing.domain.ClearingInformationInteractor
-import ru.kudagonish.feature_clearing.domain.PhotoKeepActionUseCase
-import ru.kudagonish.feature_clearing.domain.PhotoNegativeActionUseCase
+import ru.kudagonish.feature_clearing.domain.PhotoActionInteractor
 import ru.kudagonish.feature_clearing.domain.PhotosOperationRequestInteractor
 import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Action
 import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Event
@@ -21,13 +20,11 @@ import kotlin.time.Clock
 
 internal class ClearingTabViewModel(
     private val photosInteractor: ClearingInformationInteractor,
-    private val keepImageUseCase: PhotoKeepActionUseCase,
+    private val photoActionInteractor: PhotoActionInteractor,
     private val crateOperationRequestUseCase: PhotosOperationRequestInteractor,
-    private val deleteImageUseCase: PhotoNegativeActionUseCase,
 ) : BaseViewModel<ClearingTabState, Event, Action>(ClearingTabState()) {
 
     private val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-    private var pendingDeleteImage: ImageUiModel? = null
 
     init {
         loadData()
@@ -40,20 +37,20 @@ internal class ClearingTabViewModel(
 
             //TODO отправляется когда мы сверху тыкаем "удалить"
             is Event.OnDeleteConfirmed -> viewModelScope.launch(Dispatchers.IO) {
-                pendingDeleteImage?.let { deleteImageUseCase.invoke(it.src, today) }
-                pendingDeleteImage = null
+                //pendingDeleteImage?.let { deleteImageUseCase.invoke(it.src, today) }
+//                pendingDeleteImage = null
             }
 
             //TODO тут по идее если мы не согласились, то хз че делать, но не то что чичас написано
             is Event.OnDeleteCanceled -> {
-                pendingDeleteImage?.let { image ->
+                /*pendingDeleteImage?.let { image ->
                     updateState { state ->
                         val newList = state.images.filter { it.src != image.src }.toMutableList()
                             .apply { this.add(image) }
                         state.copy(images = newList.toImmutableList())
                     }
                 }
-                pendingDeleteImage = null
+                pendingDeleteImage = null*/
             }
         }
     }
@@ -82,13 +79,13 @@ internal class ClearingTabViewModel(
 
     private fun photoPositiveAction(uri: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            keepImageUseCase.invoke(uri)
+            photoActionInteractor.positive(uri)
         }
     }
 
     private fun photoNegativeAction(uri: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteImageUseCase.invoke(uri, today)
+            photoActionInteractor.negative(uri, today)
         }
     }
 
