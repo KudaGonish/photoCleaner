@@ -17,6 +17,13 @@ internal class DeletionPhotoRepositoryImpl(
 
     override fun getPhotoCount(): Flow<Int> = dataSource.getDeletionPhotoCount()
 
+    override suspend fun getPhotoUris(): List<String> =
+        dataSource.getDeletionPhotoUris()
+
+    override suspend fun clearPhotos(uris: List<String>) {
+        dataSource.removePhotoFromStorage(uris)
+    }
+
     override suspend fun restorePhoto(uri: String) {
         dataSource.restorePhoto(uri)
     }

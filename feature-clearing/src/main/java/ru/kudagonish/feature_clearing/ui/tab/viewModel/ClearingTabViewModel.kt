@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
+import ru.kudagonish.datastore.settings.models.DeletionType
 import ru.kudagonish.feature_clearing.domain.ClearingInformationInteractor
 import ru.kudagonish.feature_clearing.domain.PhotoActionInteractor
 import ru.kudagonish.feature_clearing.domain.PhotosOperationRequestInteractor
@@ -25,6 +27,8 @@ internal class ClearingTabViewModel(
 ) : BaseViewModel<ClearingTabState, Event, Action>(ClearingTabState()) {
 
     private val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+    private val actionMutex = Mutex()
+    private var deletionType: DeletionType? = null
 
     init {
         loadData()
@@ -33,25 +37,18 @@ internal class ClearingTabViewModel(
     override fun handleEvent(event: Event) {
         when (event) {
             is Event.DeletePhoto -> photoNegativeAction(event.image.src)
-            is Event.KeepPhoto -> photoPositiveAction(event.image.src)
-
-            //TODO отправляется когда мы сверху тыкаем "удалить"
-            is Event.OnDeleteConfirmed -> viewModelScope.launch(Dispatchers.IO) {
-                //pendingDeleteImage?.let { deleteImageUseCase.invoke(it.src, today) }
-//                pendingDeleteImage = null
+            is Event.KeepPhoto -> {
+                photoPositiveAction(event.image.src)
             }
-
-            //TODO тут по идее если мы не согласились, то хз че делать, но не то что чичас написано
-            is Event.OnDeleteCanceled -> {
-                /*pendingDeleteImage?.let { image ->
-                    updateState { state ->
-                        val newList = state.images.filter { it.src != image.src }.toMutableList()
-                            .apply { this.add(image) }
-                        state.copy(images = newList.toImmutableList())
-                    }
-                }
-                pendingDeleteImage = null*/
+            is Event.OnNegativeActionApplied -> {
+                onNegativeActionApplied(event.type)
+                deletionType = event.type
             }
+            Event.OnNegativeActionCompleted -> {
+                deletionType?.let { type -> onNegativeActionCompleted(type) }
+                deletionType = null
+            }
+            is Event.OnClickViewDeletionPhotos -> {}
         }
     }
 
@@ -78,22 +75,40 @@ internal class ClearingTabViewModel(
     }
 
     private fun photoPositiveAction(uri: String) {
+        if(!actionMutex.tryLock()) return
         viewModelScope.launch(Dispatchers.IO) {
             photoActionInteractor.positive(uri)
+            actionMutex.unlock()
         }
     }
 
     private fun photoNegativeAction(uri: String) {
+        if(!actionMutex.tryLock()) return
         viewModelScope.launch(Dispatchers.IO) {
-            photoActionInteractor.negative(uri, today)
+            photoActionInteractor.negative(uri)
+            actionMutex.unlock()
+        }
+    }
+
+    private fun onNegativeActionApplied(deleteType: DeletionType) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val intent = crateOperationRequestUseCase(deleteType)
+            produceAction(Action.RequestDeletePermission(intent.intentSender))
+        }
+    }
+
+    private fun onNegativeActionCompleted(deleteType: DeletionType) {
+        viewModelScope.launch(Dispatchers.IO) {
+            crateOperationRequestUseCase.completeNegativeAction(deleteType,today)
         }
     }
 
     sealed interface Event : ViewModelEvent {
         data class KeepPhoto(val image: ImageUiModel) : Event
         data class DeletePhoto(val image: ImageUiModel) : Event
-        data object OnDeleteConfirmed : Event
-        data object OnDeleteCanceled : Event
+        data class OnNegativeActionApplied(val type: DeletionType) : Event
+        data object OnNegativeActionCompleted : Event
+        data object OnClickViewDeletionPhotos : Event
     }
 
     sealed interface Action : ViewModelAction {

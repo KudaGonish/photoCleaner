@@ -24,9 +24,7 @@ internal fun ClearingTab(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            viewModel.sendEvent(ClearingTabViewModel.Event.OnDeleteConfirmed)
-        } else {
-            viewModel.sendEvent(ClearingTabViewModel.Event.OnDeleteCanceled)
+            viewModel.sendEvent(ClearingTabViewModel.Event.OnNegativeActionCompleted)
         }
     }
 

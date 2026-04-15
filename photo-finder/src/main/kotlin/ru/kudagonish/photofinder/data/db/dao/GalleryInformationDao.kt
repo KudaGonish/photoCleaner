@@ -33,14 +33,31 @@ interface GalleryInformationDao {
     //endregion
 
     @Query(
+        "SELECT uri " +
+                "FROM ${Tables.GalleryInformation.NAME} " +
+                "WHERE status = :status"
+    )
+    suspend fun getPhotoUris(status: PhotoStatus): List<String>
+
+    @Query(
         "UPDATE ${Tables.GalleryInformation.NAME} " +
-                "SET plannedDeletionTimestamp = :timestamp, status = :status " +
+                "SET status = :status " +
                 "WHERE uri = :uri"
     )
-    suspend fun markAsTrashed(
+    suspend fun markAsNeedToTrash(
         uri: String,
-        timestamp: Long,
         status: PhotoStatus = PhotoStatus.NEED_PUT_TO_TRASH
+    )
+
+    @Query(
+        "UPDATE ${Tables.GalleryInformation.NAME} " +
+                "SET plannedDeletionTimestamp = :timestamp, status = :status " +
+                "WHERE uri in (:uris)"
+    )
+    suspend fun markAsTrashed(
+        uris: List<String>,
+        timestamp: Long,
+        status: PhotoStatus = PhotoStatus.TRASH
     )
 
     @Query(

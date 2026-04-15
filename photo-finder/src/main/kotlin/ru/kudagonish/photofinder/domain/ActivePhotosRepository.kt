@@ -9,6 +9,6 @@ interface ActivePhotosRepository {
     fun getPhotos(date: LocalDate): Flow<List<ImageModel>>
 
     suspend fun keepPhoto(uri: String)
-    suspend fun markPhotoAsTrashed(uri: String, date: LocalDate)
+    suspend fun markPhotoAsNeedToTrash(uri: String)
     suspend fun markPhotoAsDeletion(uri: String)
 }

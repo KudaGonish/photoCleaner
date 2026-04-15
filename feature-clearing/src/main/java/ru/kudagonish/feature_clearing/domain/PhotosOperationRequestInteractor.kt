@@ -1,21 +1,42 @@
 package ru.kudagonish.feature_clearing.domain
 
 import android.app.PendingIntent
-import kotlinx.coroutines.flow.first
+import kotlinx.datetime.LocalDate
 import ru.kudagonish.datastore.settings.models.DeletionType
-import ru.kudagonish.feature_settings.domain.SettingsRepository
+import ru.kudagonish.photofinder.domain.DeletionPhotosRepository
 import ru.kudagonish.photofinder.domain.PhotoRequestRepository
+import ru.kudagonish.photofinder.domain.TrashedPhotosRepository
 
 internal class PhotosOperationRequestInteractor(
     private val photosRepository: PhotoRequestRepository,
-    private val settingsRepository: SettingsRepository
+    private val trashedPhotosRepository: TrashedPhotosRepository,
+    private val deletionPhotosRepository: DeletionPhotosRepository
 ) {
-    suspend operator fun invoke(uris: List<String>): PendingIntent {
-        val settings = settingsRepository.settingsFlow.first()
+    suspend operator fun invoke(deletionType: DeletionType): PendingIntent {
+        return when (deletionType) {
+            is DeletionType.SystemTrash -> {
+                val uris = trashedPhotosRepository.getPhotoUris()
+                photosRepository.createTrashRequest(uris, true)
+            }
 
-        return when (settings.deletionType) {
-            is DeletionType.SystemTrash -> photosRepository.createTrashRequest(uris, true)
-            is DeletionType.Instant -> photosRepository.createDeleteRequest(uris)
+            is DeletionType.Instant -> {
+                val uris = deletionPhotosRepository.getPhotoUris()
+                photosRepository.createDeleteRequest(uris)
+            }
+        }
+    }
+
+    suspend fun completeNegativeAction(deletionType: DeletionType, date: LocalDate) {
+        when (deletionType) {
+            DeletionType.Instant -> {
+                val uris = deletionPhotosRepository.getPhotoUris()
+                deletionPhotosRepository.clearPhotos(uris)
+            }
+
+            DeletionType.SystemTrash -> {
+                val uris = trashedPhotosRepository.getPhotoUris()
+                trashedPhotosRepository.markPhotoAsTrashed(uris, date)
+            }
         }
     }
 }

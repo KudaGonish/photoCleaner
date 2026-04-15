@@ -30,12 +30,8 @@ internal class ActivePhotoRepositoryImpl(
     override suspend fun keepPhoto(uri: String) =
         dataSource.removePhotoFromStorage(uri)
 
-    override suspend fun markPhotoAsTrashed(
-        uri: String,
-        date: LocalDate
-    ) = date.atStartOfDayIn(timeZone).toEpochMilliseconds().let { timestamp ->
-        dataSource.markPhotoAsTrashed(uri, timestamp)
-    }
+    override suspend fun markPhotoAsNeedToTrash(uri: String) =
+        dataSource.markPhotoAsNeedToTrash(uri)
 
     override suspend fun markPhotoAsDeletion(uri: String) =
         dataSource.markPhotoAsDeletion(uri)

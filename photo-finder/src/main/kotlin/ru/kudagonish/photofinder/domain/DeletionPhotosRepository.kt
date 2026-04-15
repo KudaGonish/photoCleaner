@@ -7,5 +7,7 @@ interface DeletionPhotosRepository {
     fun getPhotos(): Flow<List<ImageModel>>
     fun getPhotoCount(): Flow<Int>
 
+    suspend fun getPhotoUris(): List<String>
+    suspend fun clearPhotos(uris: List<String>)
     suspend fun restorePhoto(uri: String)
 }

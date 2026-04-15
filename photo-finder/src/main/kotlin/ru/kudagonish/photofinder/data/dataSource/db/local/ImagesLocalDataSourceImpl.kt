@@ -24,14 +24,23 @@ internal class ImagesLocalDataSourceImpl(
     override fun getTrashPhotoCount(): Flow<Int> =
         galleryInformationDao.getPhotos(status = PhotoStatus.NEED_PUT_TO_TRASH).map { it.count() }
 
+    override suspend fun getTrashedPhotoUris(): List<String> =
+        galleryInformationDao.getPhotoUris(status = PhotoStatus.NEED_PUT_TO_TRASH)
+
     override fun getDeletionPhotos(): Flow<List<GalleryInformationEntity>> =
         galleryInformationDao.getPhotos(status = PhotoStatus.DELETION)
 
     override fun getDeletionPhotoCount(): Flow<Int> =
         galleryInformationDao.getPhotos(status = PhotoStatus.DELETION).map { it.count() }
 
-    override suspend fun markPhotoAsTrashed(uri: String, timestamp: Long) =
-        galleryInformationDao.markAsTrashed(uri, timestamp)
+    override suspend fun getDeletionPhotoUris(): List<String> =
+        galleryInformationDao.getPhotoUris(status = PhotoStatus.DELETION)
+
+    override suspend fun markPhotoAsNeedToTrash(uri: String) =
+        galleryInformationDao.markAsNeedToTrash(uri)
+
+    override suspend fun markPhotosAsTrashed(uris: List<String>, timestamp: Long) =
+        galleryInformationDao.markAsTrashed(uris,timestamp)
 
     override suspend fun markPhotoAsDeletion(uri: String) =
         galleryInformationDao.markAsDeletion(uri)
