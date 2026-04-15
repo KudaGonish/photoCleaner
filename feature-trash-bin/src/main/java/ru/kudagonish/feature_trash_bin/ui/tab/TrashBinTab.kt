@@ -1,18 +1,17 @@
 package ru.kudagonish.feature_trash_bin.ui.tab
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import ru.kudagonish.feature_trash_bin.ui.tab.content.TrashBinTabContent
+import ru.kudagonish.feature_trash_bin.ui.tab.viewModel.TrashBinViewModel
 
 @Composable
-internal fun TrashBinTab() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Trash Bin Tab")
-    }
+internal fun TrashBinTab(
+    viewModel: TrashBinViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    TrashBinTabContent(state, viewModel::sendEvent)
 }

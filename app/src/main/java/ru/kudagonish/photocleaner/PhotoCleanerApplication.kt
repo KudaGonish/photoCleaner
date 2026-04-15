@@ -15,6 +15,7 @@ import ru.kudagonish.core.di.coreModule
 import ru.kudagonish.datastore.di.dataStoreModule
 import ru.kudagonish.feature_clearing.di.clearingModule
 import ru.kudagonish.feature_settings.di.settingsModule
+import ru.kudagonish.feature_trash_bin.di.trashBinModule
 import ru.kudagonish.permission_rationale_feature.di.permissionRationaleModule
 import ru.kudagonish.photocleaner.di.appModule
 import ru.kudagonish.photofinder.di.photoFinderModule
@@ -39,7 +40,8 @@ class PhotoCleanerApplication : Application(), Configuration.Provider {
                 photoFinderModule,
                 appModule,
                 clearingModule,
-                settingsModule
+                settingsModule,
+                trashBinModule
             )
         }
         SyncGalleryWorker.schedulePeriodicWorkRequest(this)

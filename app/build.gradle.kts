@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":feature-main"))
     implementation(project(":feature-settings"))
     implementation(project(":feature-clearing"))
+    implementation(project(":feature-trash-bin"))
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)
