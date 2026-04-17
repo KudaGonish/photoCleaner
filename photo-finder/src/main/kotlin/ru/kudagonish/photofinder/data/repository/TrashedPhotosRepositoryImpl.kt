@@ -23,6 +23,9 @@ internal class TrashedPhotosRepositoryImpl(
     override fun getPhotoCount(): Flow<Int> = dataSource.getTrashPhotoCount()
 
     override suspend fun getPhotoUris(): List<String> =
+        dataSource.getNeedToTrashPhotoUris()
+
+    override suspend fun getTrashedPhotoUris(): List<String> =
         dataSource.getTrashedPhotoUris()
 
     override suspend fun markPhotoAsTrashed(

@@ -9,6 +9,7 @@ interface TrashedPhotosRepository {
     fun getPhotoCount(): Flow<Int>
 
     suspend fun getPhotoUris(): List<String>
+    suspend fun getTrashedPhotoUris(): List<String>
     suspend fun markPhotoAsTrashed(
         uris: List<String>,
         date: LocalDate

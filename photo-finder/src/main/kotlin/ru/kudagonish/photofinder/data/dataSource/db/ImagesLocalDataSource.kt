@@ -11,6 +11,7 @@ internal interface ImagesLocalDataSource {
     // Фото помеченные корзиной
     fun getTrashedPhotos(): Flow<List<GalleryInformationEntity>>
     fun getTrashPhotoCount(): Flow<Int>
+    suspend fun getNeedToTrashPhotoUris(): List<String>
     suspend fun getTrashedPhotoUris(): List<String>
 
     // Фото помеченные на удаление

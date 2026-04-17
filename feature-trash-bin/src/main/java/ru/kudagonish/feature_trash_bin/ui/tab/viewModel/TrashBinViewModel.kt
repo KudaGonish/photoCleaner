@@ -1,5 +1,6 @@
 package ru.kudagonish.feature_trash_bin.ui.tab.viewModel
 
+import android.content.IntentSender
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -10,13 +11,17 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.viewModel.BaseViewModel
+import ru.kudagonish.datastore.settings.models.DeletionType
+import ru.kudagonish.feature_trash_bin.domain.PhotoActionInteractor
 import ru.kudagonish.feature_trash_bin.domain.PhotoListInteractor
 import ru.kudagonish.feature_trash_bin.ui.tab.viewModel.TrashBinViewModel.Action
 import ru.kudagonish.feature_trash_bin.ui.tab.viewModel.TrashBinViewModel.Event
 
 internal class TrashBinViewModel(
-    private val getTrashedPhotoUseCase: PhotoListInteractor
+    private val photoListInteraction: PhotoListInteractor,
+    private val photoActionInteraction: PhotoActionInteractor
 ) : BaseViewModel<TrashBinScreenState, Event, Action>(TrashBinScreenState()) {
 
     init {
@@ -25,9 +30,9 @@ internal class TrashBinViewModel(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.OnTabClick -> {
-                updateState { it.copy(currentTab = event.tab) }
-            }
+            Event.OnDeleteAllClick -> onDeleteAllPhotos()
+            is Event.OnTabClick -> updateState { it.copy(currentTab = event.tab) }
+            Event.OnDeleteCompleted -> onDeleteComplete()
         }
     }
 
@@ -39,8 +44,8 @@ internal class TrashBinViewModel(
             .distinctUntilChanged()
             .flatMapLatest { tab ->
                 when (tab) {
-                    TabType.ToDeletion -> getTrashedPhotoUseCase.getDeletionPhoto()
-                    TabType.TrashBin -> getTrashedPhotoUseCase.getTrashedPhoto()
+                    TabType.ToDeletion -> photoListInteraction.getDeletionPhoto()
+                    TabType.TrashBin -> photoListInteraction.getTrashedPhoto()
                 }
             }
             .onEach {
@@ -51,9 +56,33 @@ internal class TrashBinViewModel(
             .launchIn(viewModelScope)
     }
 
-    sealed interface Event : ViewModelEvent {
-        data class OnTabClick(val tab: TabType) : Event
+    private fun onDeleteAllPhotos() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val type = state.value.currentTab.mapToDeletionType()
+            val pendingIntent = photoActionInteraction.deleteAllPhotos(type)
+            produceAction(Action.RequestDeletePermission(pendingIntent.intentSender))
+        }
     }
 
-    sealed interface Action : ViewModelAction
+    private fun onDeleteComplete(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val type = state.value.currentTab.mapToDeletionType()
+            photoActionInteraction.completePhotoDeletion(type)
+        }
+    }
+
+    private fun TabType.mapToDeletionType() = when (this) {
+        TabType.ToDeletion -> DeletionType.Instant
+        TabType.TrashBin -> DeletionType.SystemTrash
+    }
+
+    sealed interface Event : ViewModelEvent {
+        data class OnTabClick(val tab: TabType) : Event
+        data object OnDeleteAllClick : Event
+        data object OnDeleteCompleted : Event
+    }
+
+    sealed interface Action : ViewModelAction {
+        data class RequestDeletePermission(val intentSender: IntentSender) : Action
+    }
 }
