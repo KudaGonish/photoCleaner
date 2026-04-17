@@ -17,13 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ru.kudagonish.core_ui.elements.shadow
 
 @Composable
 internal fun SettingsSection(
@@ -53,13 +51,10 @@ internal fun SettingsSection(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .dropShadow(
+                .shadow(
                     shape = itemsRoundedShape,
-                    shadow = Shadow(
-                        radius = 3.dp,
-                        color = Color.Black,
-                        alpha = 0.2f
-                    )
+                    radius = 3.dp,
+                    alpha = 0.2f
                 )
                 .clip(itemsRoundedShape)
                 .background(MaterialTheme.colorScheme.surface)

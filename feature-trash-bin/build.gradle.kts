@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.material.icons.extended)
+    implementation(libs.coil.compose)
 
     // Koin
     implementation(libs.koin.android)

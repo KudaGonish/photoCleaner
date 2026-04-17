@@ -7,10 +7,10 @@ import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
 import ru.kudagonish.feature_clearing.R
 import ru.kudagonish.feature_clearing.ui.tab.ClearingTab
 
-fun clearingTabItem(): PagerItem {
+fun clearingTabItem(onNavigateToBinDeletionTab: () -> Unit): PagerItem {
     return PagerItem(
         icon = Icons.Outlined.Settings,
         title = UiText.StringResource(R.string.tab_clearing),
-        content = { ClearingTab() }
+        content = { ClearingTab(onNavigateToBinDeletionTab = onNavigateToBinDeletionTab) }
     )
 }

@@ -35,10 +35,10 @@ internal fun ClearingTabContent(
             SelectedPhotosInformation(
                 countToTrash = state.countToTrash,
                 countToDelete = state.countToDelete,
+                onViewDeletionItemsClick = { sendEvent(Event.OnClickViewDeletionPhotos) },
                 onMoveToTrashClick = {
                     sendEvent(Event.OnNegativeActionApplied(DeletionType.SystemTrash))
                 },
-                onViewDeletionItemsClick = { },
                 onDeleteClick = {
                     sendEvent(Event.OnNegativeActionApplied(DeletionType.Instant))
                 }

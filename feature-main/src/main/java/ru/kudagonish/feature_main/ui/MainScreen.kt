@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import ru.kudagonish.core_ui.elements.BottomMenu
+import ru.kudagonish.core_ui.viewModel.rememberMainPagerState
 import ru.kudagonish.feature_clearing.ui.navigation.clearingTabItem
 import ru.kudagonish.feature_settings.ui.navigation.settingsTabItem
 import ru.kudagonish.feature_trash_bin.ui.navigation.trashBinTabItem
@@ -23,11 +24,19 @@ import ru.kudagonish.feature_trash_bin.ui.navigation.trashBinTabItem
 internal fun MainScreen() {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 1, pageCount = { 3 })
+    val mainPagerState = rememberMainPagerState()
     var jumpInfo by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
     val pages = persistentListOf(
-        trashBinTabItem(),
-        clearingTabItem(),
+        trashBinTabItem(mainPagerState),
+        clearingTabItem(
+            onNavigateToBinDeletionTab = {
+                scope.launch {
+                    pagerState.animateScrollToPage(0)
+                    mainPagerState.navigateToTrashDeletion()
+                }
+            }
+        ),
         settingsTabItem()
     )
 

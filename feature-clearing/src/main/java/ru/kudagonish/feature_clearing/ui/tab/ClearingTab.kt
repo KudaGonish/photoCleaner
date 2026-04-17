@@ -2,7 +2,7 @@ package ru.kudagonish.feature_clearing.ui.tab
 
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.IntentSenderRequest.Builder
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +16,8 @@ import ru.kudagonish.feature_clearing.ui.tab.viewModel.ClearingTabViewModel.Acti
 
 @Composable
 internal fun ClearingTab(
-    viewModel: ClearingTabViewModel = koinViewModel()
+    viewModel: ClearingTabViewModel = koinViewModel(),
+    onNavigateToBinDeletionTab: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -31,8 +32,9 @@ internal fun ClearingTab(
     LaunchedEffect(viewModel) {
         viewModel.action.collectLatest { action ->
             when (action) {
+                Action.NavigateToBinDeletionTab -> onNavigateToBinDeletionTab()
                 is Action.RequestDeletePermission -> {
-                    val request = IntentSenderRequest.Builder(action.intentSender).build()
+                    val request = Builder(action.intentSender).build()
                     intentSenderLauncher.launch(request)
                 }
             }

@@ -7,70 +7,14 @@ import kotlinx.collections.immutable.persistentListOf
 @Stable
 internal data class TrashBinScreenState(
     val currentTab: TabType = TabType.TrashBin,
-    val photos: ImmutableList<PhotoInformation> = persistentListOf(
-        PhotoInformation("1"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("2"),
-        PhotoInformation("3")
-    )
+    val photos: ImmutableList<ImageUiModel> = persistentListOf()
 )
 
 @Stable
-internal sealed interface TabType {
+sealed interface TabType {
     data object TrashBin : TabType
     data object ToDeletion : TabType
 }
 
 @Stable
-internal data class PhotoInformation(
-    val uri: String
-)
+internal data class ImageUiModel(val src: String)

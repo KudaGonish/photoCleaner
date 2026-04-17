@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
@@ -23,14 +22,13 @@ import ru.kudagonish.feature_trash_bin.ui.tab.viewModel.TabType
 
 @Composable
 internal fun SingleChoiceSegmentedButtons(
+    modifier:Modifier = Modifier,
     tabState: TabType,
     onTabClick: (TabType) -> Unit,
 ) {
     SingleChoiceSegmentedButtonRow(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            .padding(top = 12.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
     ) {

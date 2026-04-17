@@ -48,7 +48,7 @@ internal class ClearingTabViewModel(
                 deletionType?.let { type -> onNegativeActionCompleted(type) }
                 deletionType = null
             }
-            is Event.OnClickViewDeletionPhotos -> {}
+            is Event.OnClickViewDeletionPhotos -> produceAction(Action.NavigateToBinDeletionTab)
         }
     }
 
@@ -113,5 +113,6 @@ internal class ClearingTabViewModel(
 
     sealed interface Action : ViewModelAction {
         data class RequestDeletePermission(val intentSender: IntentSender) : Action
+        data object NavigateToBinDeletionTab: Action
     }
 }

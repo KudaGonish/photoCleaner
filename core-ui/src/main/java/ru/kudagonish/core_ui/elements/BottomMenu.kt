@@ -24,9 +24,6 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import ru.kudagonish.core_ui.elements.containers.pager.models.PagerItem
@@ -46,17 +43,10 @@ fun BoxScope.BottomMenu(
             .align(Alignment.BottomCenter)
             .padding(horizontal = 16.dp)
             .padding(bottom = 16.dp)
-            .dropShadow(
-                shape = CircleShape,
-                shadow = Shadow(
-                    radius = 6.dp,
-                    color = Color.Black,
-                    alpha = 0.2f
-                )
-            )
+            .shadow(shape = CircleShape, alpha = 0.2f)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surface)
-            .padding( horizontal = 4.dp)
+            .padding(horizontal = 4.dp)
             .height(menuHeight)
             .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically,

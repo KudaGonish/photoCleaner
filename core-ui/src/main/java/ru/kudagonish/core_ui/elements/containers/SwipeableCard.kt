@@ -19,11 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -33,6 +30,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import ru.kudagonish.core_ui.elements.shadow
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -132,15 +130,7 @@ fun SwipeableCard(
                 .fillMaxWidth()
                 .then(
                     if (!isLoaded) Modifier
-                    else Modifier
-                        .dropShadow(
-                            shape = RoundedCornerShape(16.dp),
-                            shadow = Shadow(
-                                radius = 6.dp,
-                                color = Color.Black,
-                                alpha = 0.3f
-                            )
-                        )
+                    else Modifier.shadow(shape = RoundedCornerShape(16.dp))
                 )
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.background),
