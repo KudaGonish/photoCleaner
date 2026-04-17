@@ -19,11 +19,26 @@ internal class PhotoActionInteractor(
         return photoRequestRepository.createDeleteRequest(photos)
     }
 
-    suspend fun completePhotoDeletion(type: DeletionType){
+    suspend fun completePhotosDeletion(type: DeletionType) {
         val photos = when (type) {
             DeletionType.Instant -> deletionPhotoRepository.getPhotoUris()
             DeletionType.SystemTrash -> trashPhotoRepository.getTrashedPhotoUris()
         }
         deletionPhotoRepository.clearPhotos(photos)
+    }
+
+    fun deletePhoto(uri: String): PendingIntent {
+        return photoRequestRepository.createDeleteRequest(listOf(uri))
+    }
+
+    suspend fun completePhotoDeletion(uri: String) {
+        deletionPhotoRepository.clearPhotos(listOf(uri))
+    }
+
+    suspend fun restorePhoto(uri: String,type: DeletionType){
+        when (type) {
+            DeletionType.Instant -> deletionPhotoRepository.restorePhoto(uri)
+            DeletionType.SystemTrash -> trashPhotoRepository.restorePhoto(uri)
+        }
     }
 }

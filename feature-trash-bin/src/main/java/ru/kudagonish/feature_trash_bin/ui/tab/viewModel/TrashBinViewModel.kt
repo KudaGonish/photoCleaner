@@ -24,6 +24,8 @@ internal class TrashBinViewModel(
     private val photoActionInteraction: PhotoActionInteractor
 ) : BaseViewModel<TrashBinScreenState, Event, Action>(TrashBinScreenState()) {
 
+    private var deleteSinglePhotoUri: String? = null
+
     init {
         loadData()
     }
@@ -33,6 +35,8 @@ internal class TrashBinViewModel(
             Event.OnDeleteAllClick -> onDeleteAllPhotos()
             is Event.OnTabClick -> updateState { it.copy(currentTab = event.tab) }
             Event.OnDeleteCompleted -> onDeleteComplete()
+            is Event.OnDeletePhoto -> onDeletePhoto(event.src)
+            is Event.OnRestorePhoto -> onRestorePhoto(event.src)
         }
     }
 
@@ -64,10 +68,29 @@ internal class TrashBinViewModel(
         }
     }
 
-    private fun onDeleteComplete(){
+    private fun onDeleteComplete() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (deleteSinglePhotoUri != null) {
+                photoActionInteraction.completePhotoDeletion(deleteSinglePhotoUri!!)
+            } else {
+                val type = state.value.currentTab.mapToDeletionType()
+                photoActionInteraction.completePhotosDeletion(type)
+            }
+        }
+    }
+
+    private fun onDeletePhoto(uri: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteSinglePhotoUri = uri
+            val pendingIntent = photoActionInteraction.deletePhoto(uri)
+            produceAction(Action.RequestDeletePermission(pendingIntent.intentSender))
+        }
+    }
+
+    private fun onRestorePhoto(src: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val type = state.value.currentTab.mapToDeletionType()
-            photoActionInteraction.completePhotoDeletion(type)
+            photoActionInteraction.restorePhoto(src, type)
         }
     }
 
@@ -80,6 +103,8 @@ internal class TrashBinViewModel(
         data class OnTabClick(val tab: TabType) : Event
         data object OnDeleteAllClick : Event
         data object OnDeleteCompleted : Event
+        data class OnRestorePhoto(val src: String) : Event
+        data class OnDeletePhoto(val src: String) : Event
     }
 
     sealed interface Action : ViewModelAction {

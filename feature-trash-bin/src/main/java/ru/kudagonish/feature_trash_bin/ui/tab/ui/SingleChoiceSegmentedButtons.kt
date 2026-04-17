@@ -91,6 +91,8 @@ internal fun Topbar(
                         }
                         .padding(vertical = 8.dp, horizontal = 16.dp),
                     text = stringResource(R.string.dropdown_delete_all),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

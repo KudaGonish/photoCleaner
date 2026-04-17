@@ -4,4 +4,6 @@
     <string name="selection_trash_bin">Trash</string>
     <string name="selection_to_deletion">To deletion</string>
     <string name="dropdown_delete_all">Delete all</string>
+    <string name="dropdown_delete_one">Delete</string>
+    <string name="dropdown_restore_one">Restore</string>
 </resources>

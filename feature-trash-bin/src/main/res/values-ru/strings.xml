@@ -4,4 +4,6 @@
     <string name="selection_trash_bin">Корзина</string>
     <string name="selection_to_deletion">На удаление</string>
     <string name="dropdown_delete_all">Удалить всё</string>
+    <string name="dropdown_delete_one">Удалить</string>
+    <string name="dropdown_restore_one">Восстановить</string>
 </resources>
